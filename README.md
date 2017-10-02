@@ -12,10 +12,14 @@ https://github.com/konfetti-app/konfetti-backend
 We recommend using NVM to use a fresh NodeJS environment for app development:
 https://github.com/creationix/nvm
 
+```bash
+$ nvm use
+```
+(if the displayed version is not install - install it )
+
 And then start the Konfetti app in your browser: 
 
 ```bash
-$ nvm use
 $ sudo npm install -g ionic cordova
 $ ionic serve
 ```
