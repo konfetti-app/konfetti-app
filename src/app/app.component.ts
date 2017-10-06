@@ -11,7 +11,8 @@ import { InitPage } from '../pages/init/init';
 import { MainPage } from '../pages/main/main';
 import { ProfilePage } from '../pages/profile/profile';
 
-import { AppStateProvider, AppData } from "../providers/app-state/app-state";
+import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
+import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
 
 @Component({
   templateUrl: 'app.html'
@@ -50,6 +51,7 @@ export class MyApp implements OnInit{
     private events: Events,
     private loadingCtrl: LoadingController,
     private translate: TranslateService,
+    private appPersistence: AppPersistenceProvider,
     private appState: AppStateProvider
   ) {
 
@@ -65,9 +67,9 @@ export class MyApp implements OnInit{
      */
 
     // init signals to go to main page
-    events.subscribe('init:goMain', () => {
+    events.subscribe('init:goProfile', () => {
       this.showSideMenu = false;
-      this.nav.setRoot(MainPage);
+      this.nav.setRoot(ProfilePage);
     });
 
     // async app init processes
@@ -87,7 +89,7 @@ export class MyApp implements OnInit{
       this.processPlatformIsReady();
 
       // async --> load app state (only do when IONIC is ready)
-      this.appState.getAppDataAsync().subscribe( (data : AppData) => {
+      this.appPersistence.getAppDataAsync().subscribe( (data : AppData) => {
         this.processAppData(data);
       });
 
@@ -136,9 +138,15 @@ export class MyApp implements OnInit{
       let langData =  data.i18n[i];
       console.log('LANG FOUND --> '+ langData.displayname);
 
+      // set translation data in i18n module
       this.translate.setTranslation(langData.locale, langData.translations, false);
 
-      // TODO: remember lang metadata - flush translation data to ngx-translate
+      // keep in app state the language metadata
+      let langMetadata: LanguageInfo = new LanguageInfo();
+      langMetadata.locale = langData.locale;
+      langMetadata.direction = langData.direction;
+      langMetadata.displayname = langData.displayname;
+      this.appState.addLanguage(langMetadata);
 
     }
 
@@ -148,19 +156,15 @@ export class MyApp implements OnInit{
     this.checkIfAllReady();
   }
 
-  processAppData(data : AppData) {
-    // TODO: based on app state set/refresh API tokens
-    console.log(data.i18nLocale)
-    this.readyAppState = true;
-    this.checkIfAllReady();
-  }
-
   /*
    * PERSISTENT CLIENT DATA
    * Loading the dynamic translations data for the app.
    */
-  processLocalStorage(data) {
-
+  processAppData(data : AppData) {
+    // TODO: based on app state set/refresh API tokens
+    console.log(data.i18nLocale);
+    this.readyAppState = true;
+    this.checkIfAllReady();
   }
 
   checkIfAllReady() {
@@ -191,12 +195,11 @@ export class MyApp implements OnInit{
     // set language to app user setting or detect default
     // TODO: set like in local storage or match closet to browser lang
     // TODO: set RTL or LTR
-    this.translate.setDefaultLang(this.appState.getAppDataCache().i18nLocale);
+    this.translate.setDefaultLang(this.appPersistence.getAppDataCache().i18nLocale);
 
     // check state of app and jump to intro or to main page
-
+    this.nav.setRoot(MainPage);
   };
-
 
   ngOnInit(): void {
 
@@ -208,6 +211,5 @@ export class MyApp implements OnInit{
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
-
 
 }

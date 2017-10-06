@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Events } from 'ionic-angular';
+import {AppStateProvider, LanguageInfo} from "../../providers/app-state/app-state";
+import {AppPersistenceProvider} from "../../providers/app-persistence/app-persistence";
 
 /**
  * Generated class for the MainPage page.
@@ -15,11 +18,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MainPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  availableLanguages: Array<LanguageInfo>;
+  actualLanguage: string;
+
+  constructor(
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private appState: AppStateProvider,
+    private appPersistence: AppPersistenceProvider,
+    private events: Events
+  ) {
+
+    this.availableLanguages = appState.getAllAvailableLanguages();
+    this.actualLanguage = appPersistence.getAppDataCache().i18nLocale;
+
+  }
+
+  changeLanguage(locale: string) : void {
+
+    // TODO: make sure the RTL and LTR gets also set
+
+    this.appPersistence.setLocale(locale);
+  }
+
+  buttonProfile() {
+    this.events.publish('init:goProfile');
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MainPage');
   }
 
 }

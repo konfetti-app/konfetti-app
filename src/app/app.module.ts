@@ -22,6 +22,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NativeStorage } from '@ionic-native/native-storage';
 
 import { AppStateProvider } from '../providers/app-state/app-state';
+import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
 
 
 
@@ -44,7 +45,8 @@ import { AppStateProvider } from '../providers/app-state/app-state';
   entryComponents: [
     MyApp,
     InitPage,
-    MainPage
+    MainPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,
@@ -52,6 +54,7 @@ import { AppStateProvider } from '../providers/app-state/app-state';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider,
     NativeStorage,
+    AppPersistenceProvider,
     AppStateProvider
   ]
 })
