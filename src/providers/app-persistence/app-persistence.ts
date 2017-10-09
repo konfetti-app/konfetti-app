@@ -8,7 +8,6 @@
  * Uses for persistence: http://ionicframework.com/docs/native/native-storage/
  */
 
-import { TranslateService } from "@ngx-translate/core";
 import { Injectable } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { Observable } from "rxjs/Observable";
@@ -47,8 +46,7 @@ export class AppPersistenceProvider {
   private useLocalStorage : boolean = false;
 
   constructor(
-    private nativeStorage: NativeStorage,
-    private translateService : TranslateService
+    private nativeStorage: NativeStorage
   ) {}
 
   /**
@@ -135,12 +133,10 @@ export class AppPersistenceProvider {
 
   /**
    * Set and store the App wide locale used for language shown in the app.
-   * It will automatically change the language in the app and remember on the next start.
    * @param {string} locale
    */
   setLocale(locale : string) : void {
     this.appDataCache.i18nLocale = locale;
-    this.translateService.setDefaultLang(locale);
     this.persistAppData();
   }
 

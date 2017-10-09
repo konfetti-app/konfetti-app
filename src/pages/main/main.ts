@@ -30,14 +30,13 @@ export class MainPage {
   ) {
 
     this.availableLanguages = appState.getAllAvailableLanguages();
-    this.actualLanguage = appPersistence.getAppDataCache().i18nLocale;
+    this.actualLanguage = appState.getActualAppLanguageInfo().locale;
 
   }
 
   changeLanguage(locale: string) : void {
 
-    // TODO: make sure the RTL and LTR gets also set
-
+    this.appState.updateActualAppLanguage(locale)
     this.appPersistence.setLocale(locale);
   }
 

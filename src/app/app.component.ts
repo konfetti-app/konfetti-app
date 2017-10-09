@@ -194,8 +194,7 @@ export class MyApp implements OnInit{
 
     // set language to app user setting or detect default
     // TODO: set like in local storage or match closet to browser lang
-    // TODO: set RTL or LTR
-    this.translate.setDefaultLang(this.appPersistence.getAppDataCache().i18nLocale);
+    this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
 
     // check state of app and jump to intro or to main page
     this.nav.setRoot(MainPage);
