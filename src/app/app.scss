@@ -14,3 +14,45 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+p {
+  text-align: center;
+}
+
+.alert-button-group {
+  padding: 8px !important;
+}
+
+.alert-button {
+  width: 100% !important;
+}
+
+.button-inner {
+  justify-content: center !important;
+}
+
+
+.navheader-end-buttons {
+  -webkit-padding-end: 6px;
+}
+
+.navheader-button {
+  font-size: 150%;
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.toolbar-background {
+  background-color: color($colors, primary);
+}
+.bar-button-default {
+  color: white;
+}
+
+.toolbar-title {
+  color: white;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #222;
+}

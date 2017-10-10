@@ -46,6 +46,7 @@ import { AppPersistenceProvider } from '../providers/app-persistence/app-persist
     MyApp,
     InitPage,
     MainPage,
+    IntroPage,
     ProfilePage
   ],
   providers: [

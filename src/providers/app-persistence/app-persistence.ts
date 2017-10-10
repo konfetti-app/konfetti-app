@@ -25,7 +25,7 @@ const STORAGE_KEY_V1 : string = 'AppData';
 export class AppData {
 
   // the language locale the user has set the app to
-  i18nLocale : string = 'en';
+  i18nLocale : string = null;
 
   // user credentials
   username : string = null;

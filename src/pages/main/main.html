@@ -1,7 +1,13 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{'WELCOME_PARTY' | translate}}</ion-title>
+    <button ion-button menuToggle icon-only><ion-icon name="menu"></ion-icon></button>
+    <ion-title></ion-title>
+    <ion-buttons end class="navheader-end-buttons" >
+      <button ion-button icon-only (click)="buttonQRCodeScan()">
+        <i class="fa fa-qrcode navheader-button" aria-hidden="true"></i>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -9,22 +15,7 @@
 
 <ion-content padding>
 
-  <ion-list>
-    <ion-item>
-      <ion-label>{{'SELECT_LANG' | translate}}</ion-label>
-      <ion-select [(ngModel)]="actualLanguage" interface="action-sheet">
-        <ion-option *ngFor="let lang of availableLanguages" value="{{lang.locale}}" (ionSelect)="changeLanguage($event)">
-          {{lang.displayname}}
-        </ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-
   <button (click)="buttonProfile()" ion-button>{{'TAB_MORE' | translate}}</button>
-
-
-  <p>Why is the Sidemenu not showing?</p>
-
 
 </ion-content>
 

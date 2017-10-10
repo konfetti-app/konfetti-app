@@ -4,7 +4,7 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header *ngIf="showHeader">
 
   <ion-navbar>
     <ion-title>Intro</ion-title>
@@ -14,5 +14,63 @@
 
 
 <ion-content padding>
+
+    <table style="width: 90%; max-width: 600px; margin-top: 24px; margin-right: auto; margin-left: auto;">
+      <tr>
+        <td style="width:60%; text-align: center;">
+          <img src="assets/imgs/logo_text.png" style="
+            width: 100%;
+            max-width: 300px;
+            margin-left:auto;
+            margin-right:auto;
+          ">
+        </td>
+        <td style="width:40%; text-align: center; vertical-align: middle;">
+          <button ion-button clear (click)="buttonChangeLanguage()" style="color:darkgrey;" >
+            <ion-icon name="ios-globe-outline"></ion-icon>
+            <span style="padding-left: 4px; padding-right: 4px;">{{actualLanguage.displayname}}</span>
+            <ion-icon name="ios-arrow-down-outline"></ion-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+
+  <!-- TODO: the ion-slides seem to have a bug with 'rtl' slide direction - check again with ionic v4 -->
+  <ion-slides dir="ltr" pager style="height: 60%; margin-top: 20px;" [style.max-height.px]="slidesMaxHeight">
+
+    <ion-slide style="">
+      <img src="assets/imgs/intro_slide1.png" style="
+            margin-left:auto;
+            margin-right:auto;
+          ">
+    </ion-slide>
+
+    <ion-slide style="">
+      <img src="assets/imgs/intro_slide2.png" style="
+            margin-left:auto;
+            margin-right:auto;
+          ">
+    </ion-slide>
+
+    <ion-slide style="">
+      <img src="assets/imgs/intro_slide3.png" style="
+            margin-left:auto;
+            margin-right:auto;
+          ">
+    </ion-slide>
+
+  </ion-slides>
+
+  <div style="position: absolute; bottom: 0px; left: 0px; width: 100%;">
+
+    <p>
+      <button ion-button large style="max-width: 95%;">{{ 'INTRO_REDEEMCOUPON' | translate }}</button>
+    </p>
+
+    <p>
+      <button ion-button clear>Ich bin bereits bei Konfetti angemeldet</button>
+    </p>
+
+  </div>
 
 </ion-content>

@@ -6,7 +6,7 @@
 
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { DOCUMENT } from '@angular/common';
+import { Platform } from 'ionic-angular';
 
 @Injectable()
 export class AppStateProvider {
@@ -15,7 +15,8 @@ export class AppStateProvider {
   private lastSetLocale : string;
 
   constructor(
-      private translateService : TranslateService
+      private translateService : TranslateService,
+      private platform: Platform
     ) {
   }
 
@@ -42,6 +43,16 @@ export class AppStateProvider {
    */
   public updateActualAppLanguage(locale: string) : void {
 
+    // check if the language is defined
+    if ((typeof locale === "undefined") || (locale===null)) {
+
+      // get locale from browser
+      locale = this.translateService.getBrowserLang();
+
+      // if browser locale is not supported - fallback to english
+      if (this.getLangInfoByLocale(locale)===null) locale = "en";
+    }
+
     // check if the language is really changing
     locale = locale.toLowerCase();
     if (locale===this.lastSetLocale) return;
@@ -55,6 +66,7 @@ export class AppStateProvider {
 
     // set the left-to-right and right-to-left direction directly on HTML element
     if (typeof document != 'undefined') {
+      // alternative way maybe platform.setDir('rtl', true) -> http://ionicframework.com/docs/theming/rtl-support/
       document.getElementById( 'rootHTML' ).dir = langInfo.direction;
     }
 
@@ -63,12 +75,37 @@ export class AppStateProvider {
   }
 
   /**
-   * Get the locale of the
-   * @returns {string}
+   * Get the actual set Language info of app.
+   * @returns {LanguageInfo}
    */
   getActualAppLanguageInfo() : LanguageInfo {
     if (this.lastSetLocale === null) return null;
     return this.getLangInfoByLocale(this.lastSetLocale);
+  }
+
+  /**
+   * The height in pixel of app display.
+   * @returns {number}
+   */
+  getDisplayHeight() : number {
+    return this.platform.height();
+  }
+
+  /**
+   * The width in pixel of app display,
+   * @returns {number}
+   */
+  getDisplayWidth() : number {
+    return this.platform.width();
+  }
+
+  /**
+   * Detects if the app is running on a real or full simulated Android or iOS device.
+   * This means that cordova plugins are available.
+   * @returns {boolean}
+   */
+  isRunningOnRealDevice() : boolean {
+    return this.platform.is('cordova');
   }
 
   /***************************************

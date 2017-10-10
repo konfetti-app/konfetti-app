@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Events } from 'ionic-angular';
-import {AppStateProvider, LanguageInfo} from "../../providers/app-state/app-state";
-import {AppPersistenceProvider} from "../../providers/app-persistence/app-persistence";
-
-/**
- * Generated class for the MainPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
+import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
+import { MenuController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -26,7 +20,8 @@ export class MainPage {
     private navParams: NavParams,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    private events: Events
+    private events: Events,
+    private menuController : MenuController
   ) {
 
     this.availableLanguages = appState.getAllAvailableLanguages();
@@ -34,14 +29,12 @@ export class MainPage {
 
   }
 
-  changeLanguage(locale: string) : void {
-
-    this.appState.updateActualAppLanguage(locale)
-    this.appPersistence.setLocale(locale);
-  }
-
   buttonProfile() {
     this.events.publish('init:goProfile');
+  }
+
+  buttonQRCodeScan() {
+    alert('TODO');
   }
 
   ionViewDidLoad() {

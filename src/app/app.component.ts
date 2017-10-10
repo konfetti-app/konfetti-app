@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Events } from 'ionic-angular';
+import { Events, MenuController } from 'ionic-angular';
 import { HttpClient} from '@angular/common/http';
 import { LoadingController, Loading } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { InitPage } from '../pages/init/init';
 import { MainPage } from '../pages/main/main';
 import { ProfilePage } from '../pages/profile/profile';
+import { IntroPage } from '../pages/intro/intro';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
 import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
@@ -26,11 +27,6 @@ export class MyApp implements OnInit{
   @ViewChild(Nav) nav: Nav;
   rootPage: any = InitPage;
   pages: Array<{title: string, component: any}>;
-
-  /*
-   * Side Menu
-   */
-  showSideMenu : Boolean = true;
 
   /*
    * Init State
@@ -52,8 +48,12 @@ export class MyApp implements OnInit{
     private loadingCtrl: LoadingController,
     private translate: TranslateService,
     private appPersistence: AppPersistenceProvider,
-    private appState: AppStateProvider
+    private appState: AppStateProvider,
+    private menuController: MenuController
   ) {
+
+    // on beginning disable side menu
+    this.menuController.enable(false);
 
     // used for an example of ngFor and navigation in side menu
     this.pages = [
@@ -61,19 +61,36 @@ export class MyApp implements OnInit{
       { title: 'Main', component: MainPage }
     ];
 
-    /*
+    /**
      * Event Bus
      * https://ionicframework.com/docs/api/util/Events/
      */
 
     // init signals to go to main page
     events.subscribe('init:goProfile', () => {
-      this.showSideMenu = false;
-      this.nav.setRoot(ProfilePage);
+      this.menuController.enable(true);
+      this.nav.setRoot(ProfilePage).then();
     });
 
     // async app init processes
     this.initializeAppAsync();
+
+    /**
+     * App System Events
+     */
+
+    // app is put into background
+    this.platform.pause.subscribe(event => {
+      // PLACEHOLDER
+    });
+
+    // app is resuming from background
+    this.platform.resume.subscribe( event => {
+      // PLACEHOLDER
+    });
+
+    // TODO: Remove DEBUG INFO
+    console.log('Native Device:'+this.appState.isRunningOnRealDevice());
 
   }
 
@@ -82,7 +99,7 @@ export class MyApp implements OnInit{
     this.loadingSpinner = this.loadingCtrl.create({
       content: ''
     });
-    this.loadingSpinner.present();
+    this.loadingSpinner.present().then();
 
     // async --> platform is ready
     this.platform.ready().then(() => {
@@ -189,7 +206,7 @@ export class MyApp implements OnInit{
 
     // remove native splash screen
     this.readyAll = true;
-    this.loadingSpinner.dismiss();
+    this.loadingSpinner.dismiss().then();
     this.splashScreen.hide();
 
     // set language to app user setting or detect default
@@ -197,7 +214,7 @@ export class MyApp implements OnInit{
     this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
 
     // check state of app and jump to intro or to main page
-    this.nav.setRoot(MainPage);
+    this.nav.setRoot(IntroPage).then();
   };
 
   ngOnInit(): void {
@@ -208,7 +225,7 @@ export class MyApp implements OnInit{
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.nav.setRoot(page.component).then();
   }
 
 }
