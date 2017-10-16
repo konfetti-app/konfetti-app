@@ -23,6 +23,7 @@ import { NativeStorage } from '@ionic-native/native-storage';
 
 import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AppPersistenceProvider } from '../providers/app-persistence/app-persist
     HttpClientModule,
     TranslateModule.forRoot(),
     IonicModule.forRoot(MyApp),
+    BrowserAnimationsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

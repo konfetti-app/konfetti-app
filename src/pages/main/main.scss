@@ -17,15 +17,19 @@ page-main {
 
 .module-button {
   position: absolute;
-  top: -40px;
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+  top: -30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
   text-align: center;
   padding-top: 16px;
   z-index: 100;
   color: white;
-  font-size:40px;
+  font-size:30px;
+}
+
+#content-overlay {
+  top: 33%;
 }
 
 .content-overlay-show-map {

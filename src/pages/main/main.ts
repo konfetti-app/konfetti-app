@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import leaflet from 'leaflet';
 
 /**
@@ -15,15 +16,40 @@ import leaflet from 'leaflet';
 @Component({
   selector: 'page-main',
   templateUrl: 'main.html',
+  animations: [
+    trigger('animateModulePanel',[
+      state('showMap', style({
+        top: 'calc(100% - 56px)'
+      })),
+      state('showModules', style({
+        top: '33%'
+      })),
+      transition('showMap => showModules', animate('500ms ease-out')),
+      transition('showModules => showMap', animate('500ms ease-out'))
+    ]),
+    trigger( 'animateFade', [
+      state( 'show', style({
+        opacity: 1
+      }) ),
+      state( 'hide', style({
+        opacity: 0
+      })),
+      transition( 'show => hide', animate('1500ms ease-out')),
+      transition( 'hide => show', animate('100ms ease-out')),
+    ])
+  ]
+
 })
 export class MainPage {
 
   @ViewChild('map') mapContainer: ElementRef;
   map: any;
 
-  showMap: boolean = false;
-  showModuleFocus : string = "";
-  showComment : boolean = true;
+  showModuleFocus : string = null;
+
+  stateModulePanel : string = "showMap";
+  stateKonfettiNotice : string = "hideNotice";
+  showKonfettiNotice : boolean = false;
 
   lon : number = 13.408277;
   lat : number = 52.520476;
@@ -32,9 +58,8 @@ export class MainPage {
   eventMarkers : any;
   zoomControl : any;
 
-
   constructor() {
-    this.showModuleFocus = "module-a";
+    this.showModuleFocus = "";
 
     this.eventMarkers = leaflet.featureGroup();
     let marker: any = leaflet.marker([this.lat, this.lon]).on('click', () => {
@@ -47,45 +72,90 @@ export class MainPage {
     });
   }
 
+  setStateKonfettiNotice(show: boolean) : void{
+    if (!this.showKonfettiNotice) this.showKonfettiNotice=true;
+    this.stateKonfettiNotice = show ? 'show' : 'hide';
+    setTimeout(() => {
+      this.showKonfettiNotice = this.getStateKonfettiNotice();
+    },1500);
+  }
+
+  getStateKonfettiNotice() : boolean {
+    return this.stateKonfettiNotice === 'show';
+  }
+
+  setStateModulePanel(show: boolean) : void {
+    this.stateModulePanel = show ? 'showModules' : 'showMap';
+  }
+
+  getStateModulePanel() :boolean {
+    return this.stateModulePanel === 'showModules';
+  }
 
   buttonModule(moduleName: string) {
 
-    if (this.showMap) this.transformShowModules();
+    if (moduleName===this.showModuleFocus) {
 
-    // TODO: Switch Modules Animation
-    console.log("TODO: Animation Switch Modules");
+      // if user hits active button - deactivate and show map
+      this.transformShowMap();
 
-    this.showModuleFocus = moduleName;
+    } else {
+
+      if (this.showModuleFocus!="") {
+        // fresh - just fade in
+        this.showModuleFocus = moduleName;
+      } else {
+        // TODO: Switch Modules Animation
+        console.log("TODO: Animation Switch Modules");
+        this.showModuleFocus = moduleName;
+      }
+
+      if (!this.getStateModulePanel()) this.transformShowModules();
+
+    }
+
+
+
+
   }
 
   buttonMap() {
-    if (!this.showMap) this.transformShowMap();
+    if (this.getStateModulePanel()) this.transformShowMap();
   }
 
   buttonQRCodeScan() {
     alert('TODO');
   }
 
-  buttonComment() {
-    this.showComment = false;
+  buttonKonfettiNotice() {
+
+    this.setStateKonfettiNotice(false);
+
     setTimeout(() => {
       this.transformShowModules();
-    },300);
+    },2000);
   }
 
   transformShowMap() {
 
-    this.showMap = true;
+    this.setStateModulePanel(false);
+
     this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
     this.map.addLayer(this.eventMarkers);
 
     this.zoomControl.addTo(this.map);
 
+    setTimeout(() => {
+      this.showModuleFocus="";
+    }, 500);
+
   }
 
   transformShowModules() {
 
-    this.showMap = false;
+    if (this.showModuleFocus==="") this.showModuleFocus = "module-c";
+    this.setStateModulePanel(true);
+
     this.map.flyTo({lon: this.lon, lat: this.lat-0.0025}, this.zoom);
     this.map.removeLayer(this.eventMarkers);
 
@@ -93,14 +163,7 @@ export class MainPage {
 
   }
 
-  ionViewDidLoad() {
-  }
-
-  ionViewDidEnter() {
-    this.loadmap();
-  }
-
-  loadmap() {
+  initMap() {
 
     this.map = leaflet.map("map",{zoomControl: false}).fitWorld();
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -109,8 +172,18 @@ export class MainPage {
       minZoom: 10
     }).addTo(this.map);
 
+    this.map.panTo({lon: this.lon, lat: this.lat-0.0025}, this.zoom);
+
     this.transformShowMap();
 
+  }
+
+  ionViewDidLoad() {
+  }
+
+  ionViewDidEnter() {
+    this.initMap();
+    this.setStateKonfettiNotice(true);
   }
 
 }
