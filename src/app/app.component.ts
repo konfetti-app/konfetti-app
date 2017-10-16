@@ -215,6 +215,7 @@ export class MyApp implements OnInit{
 
     // check state of app and jump to intro or to main page
     this.nav.setRoot(IntroPage).then();
+
   };
 
   ngOnInit(): void {

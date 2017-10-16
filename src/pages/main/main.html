@@ -12,10 +12,85 @@
 
 </ion-header>
 
+<!-- Maps Overlay -->
 
-<ion-content padding>
+<ion-content>
 
-  <button (click)="buttonProfile()" ion-button>{{'TAB_MORE' | translate}}</button>
+  <div (click)="buttonMap()" id="map" style="width:100%; height:100%;"></div>
 
 </ion-content>
+
+<!-- Info Overlay -->
+<div *ngIf="showComment" class="info-overlay">
+  <div class="info-overlay-konfetti">
+    <div class="info-overlay-konfetti-text">
+      <!-- TODO: vertical center in div-->
+      <div style="margin: auto;">
+        Willkommen in der Nachbarschaft
+      </div>
+    </div>
+    <div style="width: 160px;margin-left: auto;margin-right: auto;">
+      <button ion-button round (click)="buttonComment()">
+        <span>Hier geht's los</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Module Overlay -->
+
+<div id="content-overlay" [ngClass]="{'content-overlay-show-map': (showMap), 'content-overlay-show-modules': (!showMap)}" style="
+    position: absolute;
+    margin: 0px;
+    height: 67%;
+    width:100%;
+    background-color: white;
+    min-width: 100px;
+    min-height: 100px;
+    z-index: 1000;">
+
+  <!-- Module Buttons -->
+
+  <button ion-button round (click)="buttonModule('module-a')" class="module-button" style="
+    right: 20px;
+    background-color: red;
+  ">
+    <i class="fa fa-comments" aria-hidden="true"></i>
+  </button>
+
+  <button ion-button round (click)="buttonModule('module-b')" class="module-button" style="
+    right: 120px;
+    background-color: blue;
+  ">
+    <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+  </button>
+
+  <button ion-button round (click)="buttonModule('module-c')" class="module-button" style="
+    right: 220px;
+    background-color: green;
+  ">
+    <i class="fa fa-home" aria-hidden="true"></i>
+  </button>
+
+  <!-- Panel Module Contents -->
+
+  <ion-content>
+
+    <div *ngIf="showModuleFocus=='module-a'" class="module-panel-wrapper">
+      <h2>TODO: Forum Module</h2>
+    </div>
+
+    <div *ngIf="showModuleFocus=='module-b'" class="module-panel-wrapper">
+      <h2>TODO: Idea Module</h2>
+    </div>
+
+    <div *ngIf="showModuleFocus=='module-c'" class="module-panel-wrapper">
+      <h2>TODO: Newsfeed Module</h2>
+    </div>
+
+  </ion-content>
+
+</div>
+
+
 

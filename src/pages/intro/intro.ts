@@ -5,6 +5,7 @@ import { AppPersistenceProvider } from "../../providers/app-persistence/app-pers
 import { MenuController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
+import { MainPage } from '../../pages/main/main';
 
 /**
  * Generated class for the IntroPage page.
@@ -65,6 +66,10 @@ export class IntroPage {
     });
 
     selectionDialog.present().then();
+  }
+
+  buttonRedeemCode() : void {
+    this.navCtrl.setRoot(MainPage).then();
   }
 
   changeLanguage(locale: string) : void {

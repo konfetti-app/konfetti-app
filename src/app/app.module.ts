@@ -24,8 +24,6 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
 
-
-
 @NgModule({
   declarations: [
     MyApp,

@@ -1,3 +1,69 @@
 page-main {
 
 }
+
+#content-overlay .fixed-content {
+  margin-top: 0px;
+}
+
+#content-overlay .scroll-content {
+  margin-top: 0px;
+}
+
+.module-panel-wrapper {
+  padding-top: 56px;
+  text-align: center;
+}
+
+.module-button {
+  position: absolute;
+  top: -40px;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  text-align: center;
+  padding-top: 16px;
+  z-index: 100;
+  color: white;
+  font-size:40px;
+}
+
+.content-overlay-show-map {
+  top: calc(100% - 56px);
+}
+
+.content-overlay-show-modules {
+  top: 33%;
+}
+
+.info-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  right: 0px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.59);
+  z-index: 1010;
+}
+
+.info-overlay-konfetti {
+  background-color: rgba(255, 255, 0, 0.71);
+  width: 320px;
+  height: 320px;
+  margin: auto;
+  margin-top: 33%;
+  border-radius: 300px;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.info-overlay-konfetti-text {
+  width: 250px;
+  height: 140px;
+  margin: auto;
+  text-align: center;
+  font-size: 28px;
+  vertical-align: middle;
+  padding-top: 42px;
+}
