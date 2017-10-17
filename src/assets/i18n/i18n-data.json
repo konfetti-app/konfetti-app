@@ -388,7 +388,7 @@
         "EMAIL": "eMail",
         "PASSWORD": "Passwort",
         "RECOVER_TITLE": "Passwort Vergessen",
-        "RECOVER_EXPLAIN": "Bitte eMail eingeben, welche bei er Registrierung verwendet wurde. Es wird dann ein neues Passwort versandt.",
+        "RECOVER_EXPLAIN": "Bitte eMail eingeben, welche bei der Registrierung verwendet wurde. Es wird dann ein neues Passwort versandt.",
         "RECOVER_BUTTON": "Neues Passwort anfordern",
         "RECOVER_WIN": "OK. Es wurde dir ein neues Passwort zugesandt.",
         "RECOVER_FAIL": "Zurücksetzen des Passworts war nicht möglich. Entweder ist eMail Adresse nicht registriert oder Internetverbindung war nicht möglich.",

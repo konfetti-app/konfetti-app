@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button class="modal-close" (click)="dismiss()">
+        <ion-icon name="ios-close-circle-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding style="text-align: center;">
+
+  <div style="text-align: center; font-size: 24px;">
+    Zahlencode eingeben<br>oder QR-Code scannen
+  </div>
+
+  <div style="
+    width: 250px;
+    margin-right: auto;
+    margin-left: auto;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #b1b1b1;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 16px;">
+
+    <ion-item style="
+    padding: 0px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 170px;
+    display: inline-grid;">
+      <ion-input [(ngModel)]="code" type="number" maxlength="16" style="
+      width: 60%;
+      min-width: 200px;
+      max-width: 300px;">
+      </ion-input>
+    </ion-item>
+
+    <button ion-button color="light" (click)="buttonScanCode()" style="
+      font-size: 22px;
+      padding-left: 8px;
+      padding-right: 8px;">
+      <i class="fa fa-camera" aria-hidden="true"></i>
+    </button>
+
+  </div>
+
+  <button ion-button large (click)="buttonRedeemCode()" style="max-width: 95%; margin-top: 24px;"
+          [innerHTML]="'CODE_ABSCHICKEN' | translate"></button>
+
+  <p>
+    <button ion-button clear (click)="buttonNoCode()">Wo finde ich den Code?</button>
+  </p>
+
+</ion-content>

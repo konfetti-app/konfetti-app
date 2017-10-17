@@ -1,18 +1,117 @@
-<!--
-  Generated template for the LoginPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Login</ion-title>
-  </ion-navbar>
-
+  <ion-toolbar>
+    <ion-title>
+    </ion-title>
+    <ion-buttons start>
+      <button  *ngIf="modus!='register'" ion-button class="modal-close" (click)="dismiss()">
+        <ion-icon name="ios-close-circle-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 
-<ion-content padding>
+
+<ion-content padding style="text-align: center;">
+
+  <!------------ LOGIN ------------>
+
+  <div  *ngIf="modus=='login'">
+
+    <div style="text-align: center; font-size: 24px;">
+      {{'LOGIN_INFO' | translate}}
+    </div>
+
+    <ion-list style="
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;">
+
+      <ion-item>
+        <ion-label color="primary" floating>{{ 'EMAIL' | translate}}</ion-label>
+        <ion-input type="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>{{ 'PASSWORD' | translate}}</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+
+    <button ion-button large style="max-width: 95%; margin-top: 16px;"
+            (click)="buttonLogin()"
+            [innerHTML]="'LOGINBUTTON_LOGIN' | translate"></button>
+
+    <p>
+      <button ion-button clear (click)="buttonGoRecover()">{{'LOGINBUTTON_LOGINFORGOT' | translate}}</button>
+    </p>
+
+  </div>
+
+  <!------------ REGISTER ------------>
+
+  <div  *ngIf="modus=='register'">
+    <div style="text-align: center; font-size: 24px;">
+      {{'REGISTER_INFO' | translate}}
+    </div>
+
+    <ion-list style="
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;">
+
+      <ion-item>
+        <ion-label color="primary" floating>{{ 'EMAIL' | translate}}</ion-label>
+        <ion-input type="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>{{ 'PASSWORD' | translate}}</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+
+    <button ion-button large style="max-width: 95%; margin-top: 16px;"
+            (click)="buttonRegister()"
+            [innerHTML]="'LOGINBUTTON_REGISTER' | translate"></button>
+
+    <p>
+      <button ion-button clear (click)="buttonGoLogin()">{{'LOGINBUTTON_LOGINLOGIN' | translate}}</button>
+    </p>
+  </div>
+
+  <!------------ RECOVER PASSWORD ------------>
+
+  <div  *ngIf="modus=='recover'">
+    <div style="text-align: center; font-size: 24px;">
+      {{'RECOVER_EXPLAIN' | translate}}
+    </div>
+
+    <ion-list style="
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;">
+
+      <ion-item>
+        <ion-label color="primary" floating>{{ 'EMAIL' | translate}}</ion-label>
+        <ion-input type="email"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+
+    <button ion-button large style="max-width: 95%; margin-top: 16px;"
+            (click)="buttonRecover()"
+            [innerHTML]="'RECOVER_BUTTON' | translate"></button>
+
+    <p>
+      <button ion-button clear (click)="buttonGoLogin()">{{'LOGINBUTTON_LOGIN' | translate}}</button>
+    </p>
+  </div>
 
 </ion-content>
+

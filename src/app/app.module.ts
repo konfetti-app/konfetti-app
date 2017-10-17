@@ -8,6 +8,8 @@ import { InitPage } from '../pages/init/init';
 import { IntroPage } from '../pages/intro/intro';
 import { ProfilePage } from '../pages/profile/profile';
 import { LoginPage } from '../pages/login/login';
+import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
+import { LengthBreakPipe } from "../pipes/length-break/length-break";
 
 import { ApiProvider } from '../providers/api/api';
 
@@ -25,6 +27,9 @@ import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { QRScanner } from '@ionic-native/qr-scanner';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -32,7 +37,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     IntroPage,
     LoginPage,
     ProfilePage,
-    MainPage
+    MainPage,
+    CodeRedeemPage,
+    LengthBreakPipe
   ],
   imports: [
     BrowserModule,
@@ -47,7 +54,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     InitPage,
     MainPage,
     IntroPage,
-    ProfilePage
+    ProfilePage,
+    CodeRedeemPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
@@ -56,7 +65,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ApiProvider,
     NativeStorage,
     AppPersistenceProvider,
-    AppStateProvider
+    AppStateProvider,
+    QRScanner
   ]
 })
 export class AppModule {}

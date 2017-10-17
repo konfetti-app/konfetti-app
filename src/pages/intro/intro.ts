@@ -1,18 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Modal, ViewController} from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 import { MenuController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
-import { MainPage } from '../../pages/main/main';
 
-/**
- * Generated class for the IntroPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { CodeRedeemPage } from "../code-redeem/code-redeem";
+import { LoginPage } from "../login/login";
+import { MainPage } from "../main/main";
 
 @IonicPage()
 @Component({
@@ -34,7 +30,8 @@ export class IntroPage {
     private appPersistence: AppPersistenceProvider,
     private menuController : MenuController,
     private alertCtrl: AlertController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private modalCtrl: ModalController
   ) {
 
     this.availableLanguages = appState.getAllAvailableLanguages();
@@ -44,7 +41,7 @@ export class IntroPage {
 
   }
 
-  buttonChangeLanguage() : void {
+  buttonChangeLanguage(callback : any = null) : void {
 
     let selectionDialog = this.alertCtrl.create();
     selectionDialog.setTitle(this.translateService.instant('SELECT_LANG'));
@@ -65,11 +62,32 @@ export class IntroPage {
       }
     });
 
-    selectionDialog.present().then();
+    selectionDialog.onDidDismiss(() => {
+      if (callback!=null) callback();
+    });
+
+    selectionDialog.present().then(  );
   }
 
   buttonRedeemCode() : void {
-    this.navCtrl.setRoot(MainPage).then();
+    let modal : Modal = this.modalCtrl.create(CodeRedeemPage, {});
+    modal.onDidDismiss(data => {
+      if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
+        this.navCtrl.setRoot(MainPage, {showIntro:true}).then();
+      }
+    });
+    modal.present().then();
+  }
+
+  buttonLogin() : void {
+    let modal : Modal = this.modalCtrl.create(LoginPage, { modus: 'login' });
+    modal.onDidDismiss(data => {
+      console.log('Data',data);
+      if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
+        this.navCtrl.setRoot(MainPage, {showIntro:false}).then();
+      }
+    });
+    modal.present().then();
   }
 
   changeLanguage(locale: string) : void {
@@ -78,8 +96,27 @@ export class IntroPage {
     this.actualLanguage = this.appState.getActualAppLanguageInfo();
   }
 
+  sendUserToGetRegistered() : void {
+    let modal : Modal = this.modalCtrl.create(LoginPage, { modus: 'register' });
+    modal.onDidDismiss(data => {
+      if ((data == null) || (typeof data.success == 'undefined') || (!data.success)) {
+        this.sendUserToGetRegistered();
+      }
+    });
+    modal.present().then();
+  }
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad IntroPage');
+    // TODO turn back on on release
+    // on Browser users need to register first
+    /*
+    if (!this.appState.isRunningOnRealDevice()) {
+      this.buttonChangeLanguage( () => {
+        this.sendUserToGetRegistered();
+      });
+    }
+    */
+
   }
 
 }

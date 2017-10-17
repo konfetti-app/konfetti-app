@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import leaflet from 'leaflet';
 
@@ -58,7 +58,9 @@ export class MainPage {
   eventMarkers : any;
   zoomControl : any;
 
-  constructor() {
+  constructor(
+    private params: NavParams = null
+  ) {
     this.showModuleFocus = "";
 
     this.eventMarkers = leaflet.featureGroup();
@@ -113,9 +115,6 @@ export class MainPage {
       if (!this.getStateModulePanel()) this.transformShowModules();
 
     }
-
-
-
 
   }
 
@@ -182,8 +181,22 @@ export class MainPage {
   }
 
   ionViewDidEnter() {
+
     this.initMap();
-    this.setStateKonfettiNotice(true);
+
+    let showIntro : boolean = true;
+    if ((this.params!=null) && (this.params.data!=null)) {
+      if ((typeof this.params.data.showIntro != 'undefined') && (this.params.data.showIntro != null)) {
+        showIntro = this.params.data.showIntro;
+      }
+    }
+
+    this.setStateKonfettiNotice(showIntro);
+    if (!showIntro) {
+      setTimeout(() => {
+        this.transformShowModules();
+      },100);
+    }
   }
 
 }
