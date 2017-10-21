@@ -61,3 +61,42 @@ p {
   font-size: 24px;
   font-weight: 600;
 }
+
+
+#sideMenu .toolbar-background {
+  background-color: #777;
+  color: #eee;
+}
+
+#sideMenu .scroll-content {
+  background-color: #777;
+  color: #eee;
+}
+
+[dir="ltr"] .side-menu-button {
+  font-size: 130%;
+  padding-left: 0px;
+  color: white;
+}
+
+[dir="ltr"] .side-menu-button-icon {
+  display: table-cell;
+  padding: 4px;
+  padding-top: 9px;
+}
+
+[dir="ltr"] .side-menu-button-text {
+  display: table-cell;
+  padding: 4px;
+  padding-top: 14px;
+}
+
+.side-menu-footer {
+  position: absolute;
+  bottom: 0px;
+  background-color: #333;
+  padding:16px;
+  padding-top: 8px;
+  width: 100%;
+  z-index: 100;
+}

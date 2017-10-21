@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { InitPage } from '../pages/init/init';
 import { MainPage } from '../pages/main/main';
 import { ProfilePage } from '../pages/profile/profile';
+import { SettingsPage } from '../pages/settings/settings';
 import { IntroPage } from '../pages/intro/intro';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
@@ -214,12 +215,30 @@ export class MyApp implements OnInit{
     this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
 
     // check state of app and jump to intro or to main page
-    this.nav.setRoot(IntroPage).then();
+    // this.nav.setRoot(IntroPage).then();
+    this.nav.setRoot(MainPage, {showIntro:false}).then();
 
   };
 
   ngOnInit(): void {
 
+  }
+
+  buttonKonfetti() : void {
+    console.log("Placeholder for later .. should give more info abot konfetti points");
+  }
+
+  buttonProfile() : void {
+    this.nav.setRoot(ProfilePage).then();
+  }
+
+  // TODO implement
+  buttonGroup(id : string) : void {
+      alert('TODO');
+  }
+
+  buttonSettings() : void {
+    this.nav.setRoot(SettingsPage).then();
   }
 
   // gets called from side menu

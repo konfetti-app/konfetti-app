@@ -8,6 +8,7 @@ import { InitPage } from '../pages/init/init';
 import { IntroPage } from '../pages/intro/intro';
 import { ProfilePage } from '../pages/profile/profile';
 import { LoginPage } from '../pages/login/login';
+import { SettingsPage } from '../pages/settings/settings';
 import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
 import { LengthBreakPipe } from "../pipes/length-break/length-break";
 
@@ -38,6 +39,7 @@ import { QRScanner } from '@ionic-native/qr-scanner';
     LoginPage,
     ProfilePage,
     MainPage,
+    SettingsPage,
     CodeRedeemPage,
     LengthBreakPipe
   ],
@@ -56,7 +58,8 @@ import { QRScanner } from '@ionic-native/qr-scanner';
     IntroPage,
     ProfilePage,
     CodeRedeemPage,
-    LoginPage
+    LoginPage,
+    SettingsPage
   ],
   providers: [
     StatusBar,
