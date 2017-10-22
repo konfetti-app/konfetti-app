@@ -1,4 +1,8 @@
-<ion-menu id="sideMenu" [content]="content">
+<!-- TODO
+ If i18n direction is 'rtl' then side menu should toggle from right side.
+ Ionic seems not to support 'start' value as side to automatic switch as needed.
+ -->
+<ion-menu id="sideMenu" side="start" [content]="content">
 
   <ion-header>
     <ion-toolbar style="background-color: #777777; color: #eee;">
@@ -17,18 +21,7 @@
       <table>
         <tr>
           <td style="width:95px;">
-            <div style="
-              width: 80px;
-              height: 80px;
-              border-radius: 40px;
-              border-width: 1px;
-              border-color: lightgray;
-              border-style: solid;
-              background-color: #666666;
-              font-size: 50px;
-              padding: 8px;
-              padding-left: 18px;
-            ">
+            <div class="side-menu-user-icon">
               <i class="fa fa-user-o" aria-hidden="true"></i>
             </div>
           </td>
@@ -39,11 +32,13 @@
             font-weight: 500;">
               Unbekannt
             </div>
-            <button ion-button clear (click)="buttonKonfetti()" style="font-size: 110%; padding-left: 0px;" >
-              <img src="assets/imgs/icon.png" style="
-                width: 28px;
-                margin-right: 6px;
-              " />0 Konfetti
+            <button ion-button clear (click)="buttonKonfetti()" style="
+              font-size: 110%;
+              padding-left: 0px;
+              padding-right: 0px;
+              margin-right: 0px;
+             " >
+              <img src="assets/imgs/icon.png" class="side-menu-konfetti-img"/>0 Konfetti
             </button>
           </td>
         </tr>
@@ -93,6 +88,18 @@
 
   </ion-content>
 
+  <ion-footer class="side-menu-footer">
+      <button ion-button clear menuClose (click)="buttonSettings()" class="side-menu-button">
+        <div class="side-menu-button-icon">
+          <i class="mdi mdi-settings" style="font-size:180%;"></i>
+        </div>
+        <div class="side-menu-button-text">
+          Einstellungen
+        </div>
+      </button>
+  </ion-footer>
+
+  <!--
   <div class="side-menu-footer">
 
     <button ion-button clear menuClose (click)="buttonSettings()" class="side-menu-button">
@@ -105,6 +112,7 @@
     </button>
 
   </div>
+  -->
 
 </ion-menu>
 
