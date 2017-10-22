@@ -71,3 +71,13 @@ page-main {
   vertical-align: middle;
   padding-top: 42px;
 }
+
+.module-notification {
+  position: absolute;
+  top: -21px;
+  width: 14px;
+  height: 14px;
+  border-radius: 20px;
+  z-index: 100;
+  color: white;
+}

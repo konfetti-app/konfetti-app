@@ -216,7 +216,7 @@ export class MyApp implements OnInit{
 
     // check state of app and jump to intro or to main page
     // this.nav.setRoot(IntroPage).then();
-    this.nav.setRoot(SettingsPage, {showIntro:false}).then();
+    this.nav.setRoot(MainPage, {showIntro:false}).then();
 
   };
 
@@ -239,6 +239,14 @@ export class MyApp implements OnInit{
 
   buttonSettings() : void {
     this.nav.setRoot(SettingsPage).then();
+  }
+
+  buttonNewGroup() : void {
+    // TODO
+    alert(`TODO Optionen:
+    a) Weiteren Code eingeben/scannen.
+    b) Wie finde ich eine Nachbarschaft? 
+    c) Eigene Nachbarschaft/Haus gründen.`);
   }
 
   // gets called from side menu

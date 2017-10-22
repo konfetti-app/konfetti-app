@@ -1,11 +1,14 @@
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle icon-only><ion-icon name="menu"></ion-icon></button>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name="menu"></ion-icon>
+      <div class="header-notification"></div>
+    </button>
     <ion-title></ion-title>
     <ion-buttons end class="navheader-end-buttons" >
       <button ion-button icon-only (click)="buttonQRCodeScan()">
-        <i class="fa fa-qrcode navheader-button" aria-hidden="true"></i>
+        <i class="mdi mdi-camera-enhance navheader-button" style="font-size: 160%;"></i>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -63,6 +66,8 @@
   " [style.background-color]="(showModuleFocus==='module-a') ? '#78bce9' : 'grey'">
     <i class="fa fa-comments" aria-hidden="true"></i>
   </button>
+
+  <div *ngIf="notificationModuleA" class="module-notification" style="right: 11px; background-color: #78bce9">&nbsp;</div>
 
   <button ion-button round (click)="buttonModule('module-b')" class="module-button" style="
     right: 90px;

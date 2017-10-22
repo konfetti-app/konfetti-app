@@ -58,6 +58,8 @@ export class MainPage {
   eventMarkers : any;
   zoomControl : any;
 
+  notificationModuleA : boolean = true;
+
   constructor(
     private params: NavParams = null
   ) {
@@ -103,7 +105,10 @@ export class MainPage {
 
     } else {
 
-      if (this.showModuleFocus!="") {
+      console.log(moduleName);
+      if (moduleName==='module-a') this.notificationModuleA = false;
+
+      if (this.showModuleFocus!='') {
         // fresh - just fade in
         this.showModuleFocus = moduleName;
       } else {
@@ -123,7 +128,8 @@ export class MainPage {
   }
 
   buttonQRCodeScan() {
-    alert('TODO');
+    // TODO
+    alert('TODO: direkt zu neuen Code eingeben/scannen');
   }
 
   buttonKonfettiNotice() {

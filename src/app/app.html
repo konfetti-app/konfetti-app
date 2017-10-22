@@ -82,7 +82,17 @@
       <div class="side-menu-button-text">
           Vinetakiez
       </div>
+      <div class="side-menu-notification">2</div>
     </button>
+
+      <button ion-button clear menuClose (click)="buttonNewGroup()" class="side-menu-button">
+        <div class="side-menu-button-icon">
+          <i class="mdi mdi-plus-circle" style="font-size:180%;"></i>
+        </div>
+        <div class="side-menu-button-text" style="padding-top: 9px;">
+          NEU
+        </div>
+      </button>
 
     </div>
 
@@ -98,21 +108,6 @@
         </div>
       </button>
   </ion-footer>
-
-  <!--
-  <div class="side-menu-footer">
-
-    <button ion-button clear menuClose (click)="buttonSettings()" class="side-menu-button">
-      <div class="side-menu-button-icon">
-        <i class="mdi mdi-settings" style="font-size:180%;"></i>
-      </div>
-      <div class="side-menu-button-text">
-        Einstellungen
-      </div>
-    </button>
-
-  </div>
-  -->
 
 </ion-menu>
 
