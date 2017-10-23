@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, LoadingController } from 'ionic-angular';
+import { IonicPage, ViewController, LoadingController, ToastController } from 'ionic-angular';
 import { AppStateProvider } from '../../providers/app-state/app-state';
 
 // https://ionicframework.com/docs/native/barcode-scanner/
@@ -18,7 +18,8 @@ export class CodeRedeemPage {
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
     private barcodeScanner: BarcodeScanner,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController
   ) {
     // if (this.params!=null) console.log("Got Params: ",this.params);
     //this.params.get('charNum')
@@ -32,7 +33,10 @@ export class CodeRedeemPage {
     loading.present().then();
 
     if (!this.appState.isRunningOnRealDevice()) {
-      console.log('SIMULATE Code');
+      this.toastCtrl.create({
+        message: 'simulated',
+        duration: 1500
+      }).present().then();
       this.code = "1234455";
       loading.dismiss().then();
       return;
@@ -52,7 +56,21 @@ export class CodeRedeemPage {
 
           // TODO: Check scan result - if not a number, something is wrong
           this.code = barcodeData.text;
-          this.buttonRedeemCode();
+
+          this.toastCtrl.create({
+            message: 'OK',
+            duration: 3000
+          }).present().then();
+
+          setTimeout(()=>{
+            this.buttonRedeemCode();
+          },1500);
+
+        } else {
+          this.toastCtrl.create({
+            message: 'canceled',
+            duration: 1500
+          }).present().then();
         }
 
       }, (err) => {

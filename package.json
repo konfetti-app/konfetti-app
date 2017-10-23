@@ -61,7 +61,7 @@
             "ionic-plugin-keyboard": {},
             "cordova-plugin-nativestorage": {},
             "phonegap-plugin-barcodescanner": {
-                "CAMERA_USAGE_DESCRIPTION": " "
+                "CAMERA_USAGE_DESCRIPTION": "scan QR codes"
             }
         },
         "platforms": [
