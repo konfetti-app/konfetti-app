@@ -105,7 +105,7 @@ export class MainPage {
 
     } else {
 
-      console.log(moduleName);
+      // deactivate notification bubble on module
       if (moduleName==='module-a') this.notificationModuleA = false;
 
       if (this.showModuleFocus!='') {

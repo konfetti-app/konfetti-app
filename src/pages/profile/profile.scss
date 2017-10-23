@@ -1,3 +1,20 @@
 page-profile {
 
 }
+
+.change-profile-picture {
+  position: relative;
+  top: -30px;
+  left: 63px;
+  background-color: color($colors, primary);
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  color: white;
+  font-size: 17px;
+  padding-top: 5px;
+}
+
+#lbl-1 {
+  font-size: 16px;
+}

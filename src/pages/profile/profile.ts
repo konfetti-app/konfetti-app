@@ -16,6 +16,10 @@ export class ProfilePage {
     console.log('ionViewDidLoad ProfilePage');
   }
 
+  buttonChangeProfilePicture() : void {
+    alert("TODO: take picture from cam or file");
+  }
+
   buttonHome() : void {
     this.navCtrl.setRoot(MainPage, {showIntro:false}).then();
   }

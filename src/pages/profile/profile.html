@@ -23,4 +23,78 @@
 
 <ion-content padding>
 
+  <table style="width: 100%;">
+    <tr>
+      <td style="text-align: center;" (click)="buttonChangeProfilePicture()">
+        <div class="side-menu-user-icon" style="
+          padding-left: 8px;
+          background-color: transparent;
+          border-width: 2px;
+          color: #666;
+          ">
+          <i class="fa fa-user-o" aria-hidden="true"></i>
+        </div>
+        <div class="change-profile-picture">
+          <i class="fa fa-camera" aria-hidden="true"></i>
+        </div>
+      </td>
+      <td style="padding-top: 11px;">
+
+        <ion-list style="-webkit-margin-start: 20px;">
+
+          <ion-item style="width:95%; top: -10px;">
+            <ion-label color="primary" floating>Vorname</ion-label>
+            <ion-input type="email"></ion-input>
+          </ion-item>
+
+        </ion-list>
+
+      </td>
+    </tr>
+  </table>
+
+  <ion-list style="">
+
+    <ion-item>
+      <ion-label color="primary" stacked>Über mich</ion-label>
+      <ion-input type="text" placeholder="Ein kurzer Satz"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+
+  <div style="padding-top: 12px;">
+
+    <div class="label label-md label-md-primary" style="-webkit-padding-start: 16px; font-size: 16px;">
+        Ich spreche folgende Sprachen
+    </div>
+
+    <div style="padding-left: 12px; padding-right: 12px;">
+
+      <ion-chip>
+        <ion-label>Deutsch</ion-label>
+      </ion-chip>
+
+      <button ion-button small style="margin-top: -6px;">ändern</button>
+
+    </div>
+
+  </div>
+
+
+
 </ion-content>
+
+<ion-footer padding style="text-align: center;">
+  <button ion-button full>Profil Speichern</button>
+
+  <button ion-button clear style="">
+    <i class="fa fa-key" aria-hidden="true"></i>&nbsp;
+    Passwort & Account bearbeiten
+  </button>
+
+</ion-footer>
+
+
+
+
