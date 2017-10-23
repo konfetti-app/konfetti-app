@@ -15,6 +15,10 @@ page-profile {
   padding-top: 5px;
 }
 
-#lbl-1 {
+[dir="rtl"] .change-profile-picture {
+  left: -60px;
+}
+
+#profile-aboutme-lable {
   font-size: 16px;
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Events, MenuController } from 'ionic-angular';
@@ -50,7 +50,8 @@ export class MyApp implements OnInit{
     private translate: TranslateService,
     private appPersistence: AppPersistenceProvider,
     private appState: AppStateProvider,
-    private menuController: MenuController
+    private menuController: MenuController,
+    private modalCtrl: ModalController
   ) {
 
     // on beginning disable side menu
@@ -216,7 +217,7 @@ export class MyApp implements OnInit{
 
     // check state of app and jump to intro or to main page
     // this.nav.setRoot(IntroPage).then();
-    this.nav.setRoot(ProfilePage, {showIntro:false}).then();
+    this.nav.setRoot(MainPage, {showIntro:false}).then();
 
   };
 
@@ -229,7 +230,18 @@ export class MyApp implements OnInit{
   }
 
   buttonProfile() : void {
-    this.nav.setRoot(ProfilePage).then();
+
+    let modal : Modal = this.modalCtrl.create(ProfilePage, { showAccountLink: true});
+    modal.onDidDismiss(data => {
+
+      if ((typeof data.command != null) && (data.command=='goAccount')) {
+        alert("TODO: Open Password/Account Dialog");
+      }
+
+    });
+    modal.present().then();
+
+    //this.nav.setRoot(ProfilePage).then();
   }
 
   // TODO implement

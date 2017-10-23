@@ -1,25 +1,17 @@
-<!--
-  Generated template for the ProfilePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle icon-only><ion-icon name="menu"></ion-icon></button>
     <ion-title>
-      Profil
+      Dein Profil
     </ion-title>
     <ion-buttons end class="navheader-end-buttons" >
-      <button ion-button icon-only (click)="buttonHome()">
-        <i class="fa fa-home navheader-button" aria-hidden="true"></i>
+      <button ion-button icon-only (click)="buttonClose()">
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 
@@ -28,6 +20,7 @@
       <td style="text-align: center;" (click)="buttonChangeProfilePicture()">
         <div class="side-menu-user-icon" style="
           padding-left: 8px;
+          padding-right: 8px;
           background-color: transparent;
           border-width: 2px;
           color: #666;
@@ -56,7 +49,7 @@
   <ion-list style="">
 
     <ion-item>
-      <ion-label color="primary" stacked>Über mich</ion-label>
+      <ion-label color="primary" id="profile-aboutme-lable" stacked>Über mich</ion-label>
       <ion-input type="text" placeholder="Ein kurzer Satz"></ion-input>
     </ion-item>
 
@@ -75,20 +68,20 @@
         <ion-label>Deutsch</ion-label>
       </ion-chip>
 
-      <button ion-button small style="margin-top: -6px;">ändern</button>
+      <button ion-button small (click)="buttonEditSpokenLangs()" style="margin-top: -6px;">ändern</button>
 
     </div>
 
   </div>
 
 
-
 </ion-content>
 
 <ion-footer padding style="text-align: center;">
-  <button ion-button full>Profil Speichern</button>
 
-  <button ion-button clear style="">
+  <button ion-button full (click)="buttonSaveProfile()">Profil Speichern</button>
+
+  <button *ngIf="showAccountLink" (click)="buttonPasswordAndAccount()" ion-button clear style="">
     <i class="fa fa-key" aria-hidden="true"></i>&nbsp;
     Passwort & Account bearbeiten
   </button>
