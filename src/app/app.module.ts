@@ -28,7 +28,7 @@ import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { QRScanner } from '@ionic-native/qr-scanner';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 
 @NgModule({
@@ -69,7 +69,7 @@ import { QRScanner } from '@ionic-native/qr-scanner';
     NativeStorage,
     AppPersistenceProvider,
     AppStateProvider,
-    QRScanner
+    BarcodeScanner
   ]
 })
 export class AppModule {}

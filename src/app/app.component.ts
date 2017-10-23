@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Nav, Platform, ModalController } from 'ionic-angular';
+import { Nav, Platform, ModalController, Modal } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Events, MenuController } from 'ionic-angular';
@@ -217,7 +217,7 @@ export class MyApp implements OnInit{
 
     // check state of app and jump to intro or to main page
     // this.nav.setRoot(IntroPage).then();
-    this.nav.setRoot(MainPage, {showIntro:false}).then();
+    this.nav.setRoot(IntroPage, {showIntro:false}).then();
 
   };
 

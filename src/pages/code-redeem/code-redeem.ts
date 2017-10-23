@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController } from 'ionic-angular';
+import { IonicPage, ViewController, LoadingController } from 'ionic-angular';
 import { AppStateProvider } from '../../providers/app-state/app-state';
 
-// https://ionicframework.com/docs/native/qr-scanner/
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+// https://ionicframework.com/docs/native/barcode-scanner/
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 @IonicPage()
 @Component({
@@ -17,7 +17,8 @@ export class CodeRedeemPage {
   constructor(
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
-    private qrScanner: QRScanner
+    private barcodeScanner: BarcodeScanner,
+    private loadingCtrl: LoadingController
   ) {
     // if (this.params!=null) console.log("Got Params: ",this.params);
     //this.params.get('charNum')
@@ -25,46 +26,40 @@ export class CodeRedeemPage {
 
   buttonScanCode() :void {
 
+    const loading = this.loadingCtrl.create({
+      showBackdrop: true
+    });
+    loading.present().then();
+
     if (!this.appState.isRunningOnRealDevice()) {
+      console.log('SIMULATE Code');
       this.code = "1234455";
+      loading.dismiss().then();
       return;
     }
 
-    // Optionally request the permission early
-    this.qrScanner.prepare()
-      .then((status: QRScannerStatus) => {
-        if (status.authorized) {
-          // camera permission was granted
+    /*
+    * BARCODE SCANNER
+    * https://ionicframework.com/docs/native/barcode-scanner/
+    */
+    setTimeout(() => {
+      this.barcodeScanner.scan().then((barcodeData) => {
 
-          // start scanning
-          let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-            console.log('Scanned something', text);
+        loading.dismiss().then();
 
-            this.qrScanner.hide(); // hide camera preview
-            scanSub.unsubscribe(); // stop scanning
-          });
+        // Success! Barcode data is here
+        if (!barcodeData.cancelled) {
 
-          // show camera preview
-          this.qrScanner.show().then(() => {
-            console.log("qrScanner.show DONE");
-          });
-
-          // wait for user to scan something, then the observable callback will be called
-          console.log("Waiting for scan.");
-
-          // TODO: QR Scanner on Android not working
-
-        } else if (status.denied) {
-          // camera permission was permanently denied
-          // you must use QRScanner.openSettings() method to guide the user to the settings page
-          // then they can grant the permission from there
-          console.log('permission was denied - permanent');
-        } else {
-          // permission was denied, but not permanently. You can ask for permission again at a later time.
-          console.log('permission was denied - once');
+          // TODO: Check scan result - if not a number, something is wrong
+          this.code = barcodeData.text;
+          this.buttonRedeemCode();
         }
-      })
-      .catch((e: any) => console.log('Error is', e));
+
+      }, (err) => {
+        // An error occurred
+        loading.dismiss().then();
+      });
+    }, 500);
 
   }
 
