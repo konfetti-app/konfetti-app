@@ -61,31 +61,45 @@
     min-height: 100px;
     z-index: 1000;">
 
-  <!-- Module Buttons -->
+  <!-- Dynamic Module Buttons -->
 
-  <button ion-button round (click)="buttonModule('module-a')" class="module-button" style="
-    right: 10px;
-  " [style.background-color]="(showModuleFocus==='module-a') ? '#78bce9' : 'grey'">
-    <i class="fa fa-comments" aria-hidden="true"></i>
-  </button>
-
-  <div *ngIf="notificationModuleA" class="module-notification" style="right: 11px; background-color: #78bce9">&nbsp;</div>
-
-  <button ion-button round (click)="buttonModule('module-b')" class="module-button" style="
-    right: 90px;
-  " [style.background-color]="(showModuleFocus==='module-b') ? '#92bc81' : 'grey'">
-    <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
-  </button>
-
-  <button ion-button round (click)="buttonModule('module-c')" class="module-button" style="
+  <div *ngFor="let id of moduleConfig; index as i">
+    <button ion-button round  (click)="buttonModule(id)" class="module-button" [style.right.px]="(10+(i*80))" style="
     right: 170px;
-  " [style.background-color]="(showModuleFocus==='module-c') ? '#d1736f' : 'grey'">
-    <i class="fa fa-home" aria-hidden="true"></i>
-  </button>
+  " [style.background-color]="(showModuleFocus===id) ? getModuleButtonColor(id) : 'grey'">
+      <i [ngClass]="getModuleIcon(id)" aria-hidden="true"></i>
+    </button>
+    <div *ngIf="getModuleHasNotification(id)" class="module-notification" [style.right.px]="(11+(i*80))" [style.background-color]="getModuleButtonColor(id)">&nbsp;</div>
+  </div>
 
-  <!-- Panel Module Contents-->
 
   <ion-content>
+
+    <!-- Dynamic Module Content Panels-->
+
+    <div *ngFor="let id of moduleConfig"  [ngSwitch]="id" style="text-align: center; font-size: 16px;">
+
+        <div *ngSwitchCase="'news'">
+          <div *ngIf="showModuleFocus==='news'" style="padding-top: 48px;">
+            <module-newsfeed [config]="getModuleConfig(id)"></module-newsfeed>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'ideas'">
+          <div *ngIf="showModuleFocus==='ideas'" style="padding-top: 48px;">ideas</div>
+        </div>
+
+        <div *ngSwitchCase="'forum'">
+          <div *ngIf="showModuleFocus==='forum'" style="padding-top: 48px;">forum</div>
+        </div>
+
+        <div *ngSwitchDefault style="padding-top: 48px;">
+          FAIL: Unknown module '{{id}}' - please update app.
+        </div>
+
+    </div>
+
+    <!--
 
     <div *ngIf="showModuleFocus==='module-a'" class="module-panel-wrapper">
       <h2>TODO: Forum Module</h2>
@@ -95,9 +109,9 @@
       <h2>TODO: Idea Module</h2>
     </div>
 
-    <div *ngIf="showModuleFocus==='module-c'" class="module-panel-wrapper">
-      <h2>TODO: Newsfeed Module</h2>
-    </div>
+    <div *ngIf="showModuleFocus==='module-c'" class="module-panel-wrapper" [innerHTML]="getModule(2)"></div>
+
+    -->
 
   </ion-content>
 

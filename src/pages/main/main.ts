@@ -60,6 +60,9 @@ export class MainPage {
   eventMarkers : any;
   zoomControl : any;
 
+  moduleConfig : Array<string>;
+
+  // this one just for dummy testing
   notificationModuleA : boolean = true;
 
   constructor(
@@ -77,6 +80,12 @@ export class MainPage {
     this.zoomControl = leaflet.control.zoom({
       position:'topleft'
     });
+
+    // ordering is important
+    this.moduleConfig = new Array<string>();
+    this.moduleConfig.push('forum');
+    this.moduleConfig.push('ideas');
+    this.moduleConfig.push('news');
   }
 
   setStateKonfettiNotice(show: boolean) : void{
@@ -109,7 +118,7 @@ export class MainPage {
     } else {
 
       // deactivate notification bubble on module
-      if (moduleName==='module-a') this.notificationModuleA = false;
+      if (moduleName==='forum') this.notificationModuleA = false;
 
       if (this.showModuleFocus!='') {
         // fresh - just fade in
@@ -212,6 +221,33 @@ export class MainPage {
         this.transformShowModules();
       },100);
     }
+  }
+
+  // returns the icon css classes depending of module id
+  getModuleIcon(id: string) : string {
+    if (id==='news') return 'fa fa-home';
+    if (id==='ideas') return 'fa fa-lightbulb-o';
+    if (id==='forum') return 'fa fa-comments';
+    return 'mdi mdi-help'; // fallback
+  }
+
+  // returns the color depending of module id
+  getModuleButtonColor(id : string) {
+    if (id==='news') return '#d1736f';
+    if (id==='ideas') return '#92bc81';
+    if (id==='forum') return '#78bce9';
+    return 'red'; // fallback
+  }
+
+  getModuleConfig(id : string) : any {
+    return {
+      test: 'test'
+    };
+  }
+
+  getModuleHasNotification(id: string) {
+    if (id==='forum') return this.notificationModuleA;
+    return false; // fallback
   }
 
 }

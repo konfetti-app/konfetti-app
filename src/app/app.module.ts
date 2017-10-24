@@ -30,6 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
+import { MainPageModule } from '../pages/main/main.module'
 
 @NgModule({
   declarations: [
@@ -38,7 +39,6 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
     IntroPage,
     LoginPage,
     ProfilePage,
-    MainPage,
     SettingsPage,
     CodeRedeemPage,
     LengthBreakPipe
@@ -48,7 +48,9 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
     HttpClientModule,
     TranslateModule.forRoot(),
     IonicModule.forRoot(MyApp),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MainPageModule
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
