@@ -1,7 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController, Modal } from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import leaflet from 'leaflet';
+
+import { CodeRedeemPage } from "../code-redeem/code-redeem";
 
 /**
  *
@@ -61,7 +63,8 @@ export class MainPage {
   notificationModuleA : boolean = true;
 
   constructor(
-    private params: NavParams = null
+    private params: NavParams = null,
+    private modalCtrl: ModalController
   ) {
     this.showModuleFocus = "";
 
@@ -128,8 +131,14 @@ export class MainPage {
   }
 
   buttonQRCodeScan() {
-    // TODO
-    alert('TODO: direkt zu neuen Code eingeben/scannen');
+    let modal : Modal = this.modalCtrl.create(CodeRedeemPage, { modus: 'main'});
+    modal.onDidDismiss(data => {
+      if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
+        // TODO
+        alert("TODO: Neuen Code verarbeiteten");
+      }
+    });
+    modal.present().then();
   }
 
   buttonKonfettiNotice() {
@@ -186,7 +195,7 @@ export class MainPage {
   ionViewDidLoad() {
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
 
     this.initMap();
 

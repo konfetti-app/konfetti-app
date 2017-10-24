@@ -41,7 +41,7 @@ export class ProfilePage {
   }
 
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
 
     // parse parameters when profile is opened
     if ((this.params!=null) && (this.params.data!=null)) {

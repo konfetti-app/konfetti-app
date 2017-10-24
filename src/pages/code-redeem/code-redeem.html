@@ -52,8 +52,12 @@
   <button ion-button large (click)="buttonRedeemCode()" style="max-width: 95%; margin-top: 24px;"
           [innerHTML]="'CODE_ABSCHICKEN' | translate"></button>
 
-  <p>
+  <p *ngIf="modus=='intro'">
     <button ion-button clear (click)="buttonNoCode()">Wo finde ich den Code?</button>
+  </p>
+
+  <p *ngIf="modus=='main'">
+    TODO: more info about the magic of codes
   </p>
 
 </ion-content>

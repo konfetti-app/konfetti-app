@@ -26,7 +26,7 @@ export class SettingsPage {
     console.log('ionViewDidLoad SettingsPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.availableLanguages = this.appState.getAllAvailableLanguages();
     this.actualLanguage = this.appState.getActualAppLanguageInfo();
   }
