@@ -47,10 +47,10 @@
 
 
 </head>
-<body>
+<body style="text-align: center; background-color: grey;">
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
+  <ion-app style="max-width: 400px; max-height: 600px;"></ion-app>
 
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>
@@ -61,6 +61,20 @@
 
   <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
+
+  <div style="
+    position: absolute;
+    top: 10px;
+    left: 410px;
+    background-color: lightyellow;
+    border-color: darkgray;
+    border-width: 1px;
+    padding:16px;
+    font-family: sans-serif;
+  ">
+    Hinweis: Dies ist die Browser-Test-Ansicht.<br>
+    Am den Chrome-Browser nutzen. Später mehr.
+  </div>
 
 </body>
 </html>
