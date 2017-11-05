@@ -217,7 +217,7 @@ export class MyApp implements OnInit{
 
     // check state of app and jump to intro or to main page
     // this.nav.setRoot(IntroPage).then();
-    this.nav.setRoot(IntroPage, {showIntro:false}).then();
+    this.nav.setRoot(IntroPage, {showIntro:true}).then();
 
   };
 

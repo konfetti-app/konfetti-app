@@ -49,6 +49,20 @@
   </div>
 </div>
 
+<!-- Konfetti Tour Overlay -->
+
+<div *ngIf="showKonfettiTour" class="konfetti-tour-focus-overlay" [ngClass]="classKonfettiTourFocus" [@animateSpotPosition]="stateKonfettiTourFocus">
+</div>
+
+<div *ngIf="konfettiTourText.length>0" class="konfetti-tour-infotext-area">
+  <div class="konfetti-tour-infotext">
+    {{konfettiTourText}}
+  </div>
+  <button ion-button round (click)="buttonKonfettiTourNext()" style="margin-bottom: 16px;">
+    <span>Weiter</span>
+  </button>
+</div>
+
 <!-- Module Overlay -->
 
 <div id="content-overlay" [@animateModulePanel]="stateModulePanel" style="
@@ -77,20 +91,24 @@
 
     <!-- Dynamic Module Content Panels-->
 
-    <div *ngFor="let id of moduleConfig"  [ngSwitch]="id" style="text-align: center; font-size: 16px;">
+    <div *ngFor="let id of moduleConfig"  [ngSwitch]="id" style="text-align: center; font-size: 16px; position: relative;" [@animateModuleSwitch]="stateModuleSwitch">
 
         <div *ngSwitchCase="'news'">
-          <div *ngIf="showModuleFocus==='news'" style="padding-top: 48px;">
+          <div *ngIf="showModuleFocus==='news'" style="padding: 8px; padding-top: 48px;">
             <module-newsfeed [config]="getModuleConfig(id)"></module-newsfeed>
           </div>
         </div>
 
         <div *ngSwitchCase="'ideas'">
-          <div *ngIf="showModuleFocus==='ideas'" style="padding-top: 48px;">ideas</div>
+          <div *ngIf="showModuleFocus==='ideas'" style="padding: 8px; padding-top: 48px;">
+            <img src="./assets/imgs/mockup-ideas.png" />
+          </div>
         </div>
 
         <div *ngSwitchCase="'forum'">
-          <div *ngIf="showModuleFocus==='forum'" style="padding-top: 48px;">forum</div>
+          <div *ngIf="showModuleFocus==='forum'" style="padding: 8px; padding-top: 48px;">
+            <img src="./assets/imgs/mockup-forum.png" />
+          </div>
         </div>
 
         <div *ngSwitchDefault style="padding-top: 48px;">
@@ -98,20 +116,6 @@
         </div>
 
     </div>
-
-    <!--
-
-    <div *ngIf="showModuleFocus==='module-a'" class="module-panel-wrapper">
-      <h2>TODO: Forum Module</h2>
-    </div>
-
-    <div *ngIf="showModuleFocus==='module-b'" class="module-panel-wrapper">
-      <h2>TODO: Idea Module</h2>
-    </div>
-
-    <div *ngIf="showModuleFocus==='module-c'" class="module-panel-wrapper" [innerHTML]="getModule(2)"></div>
-
-    -->
 
   </ion-content>
 

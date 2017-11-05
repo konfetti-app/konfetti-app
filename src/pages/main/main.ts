@@ -19,6 +19,8 @@ import { CodeRedeemPage } from "../code-redeem/code-redeem";
   selector: 'page-main',
   templateUrl: 'main.html',
   animations: [
+
+    // --- Module/ Map Switch ---
     trigger('animateModulePanel',[
       state('showMap', style({
         top: 'calc(100% - 56px)'
@@ -29,6 +31,8 @@ import { CodeRedeemPage } from "../code-redeem/code-redeem";
       transition('showMap => showModules', animate('500ms ease-out')),
       transition('showModules => showMap', animate('500ms ease-out'))
     ]),
+
+    // --- Center Notice ---
     trigger( 'animateFade', [
       state( 'show', style({
         opacity: 1
@@ -37,7 +41,38 @@ import { CodeRedeemPage } from "../code-redeem/code-redeem";
         opacity: 0
       })),
       transition( 'show => hide', animate('1500ms ease-out')),
-      transition( 'hide => show', animate('100ms ease-out')),
+      transition( 'hide => show', animate('100ms ease-out'))
+    ]),
+
+    // --- Intro Tour ---
+    trigger( 'animateSpotPosition', [
+      state( 'hidden', style({
+        boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.0)',
+        borderColor: 'rgba(0, 0, 0, 0.0)'
+      }) ),
+      state( 'show', style({
+        boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.4)',
+        borderColor: 'rgba(0, 0, 0, 0.4)'
+      })),
+      transition( 'hidden => show', animate('1500ms ease-out')),
+      transition( 'show => hidden', animate('1000ms ease-out'))
+    ]),
+
+    // --- Switch Modules ---
+    trigger( 'animateModuleSwitch', [
+      state( 'normal', style({
+        left: '0%'
+      }) ),
+      state( 'left', style({
+        left: '-100%'
+      })),
+      state( 'right', style({
+        left: '100%'
+      })),
+      transition( 'normal => left', animate('100ms ease-in')),
+      transition( 'left => normal', animate('100ms ease-out')),
+      transition( 'normal => right', animate('100ms ease-in')),
+      transition( 'right => normal', animate('100ms ease-out'))
     ])
   ]
 
@@ -50,8 +85,16 @@ export class MainPage {
   showModuleFocus : string = null;
 
   stateModulePanel : string = "showMap";
+  stateModuleSwitch : string = "normal";
+
   stateKonfettiNotice : string = "hideNotice";
   showKonfettiNotice : boolean = false;
+
+  stateKonfettiTourFocus : string = "hidden";
+  classKonfettiTourFocus : string = "konfetti-tour-focus-map";
+  showKonfettiTour : boolean = false;
+  konfettiTourText : string = "";
+  konfettiTourStep : number = 0;
 
   lon : number = 13.408277;
   lat : number = 52.520476;
@@ -120,19 +163,58 @@ export class MainPage {
       // deactivate notification bubble on module
       if (moduleName==='forum') this.notificationModuleA = false;
 
-      if (this.showModuleFocus!='') {
+      if (this.showModuleFocus==='') {
         // fresh - just fade in
         this.showModuleFocus = moduleName;
       } else {
-        // TODO: Switch Modules Animation
-        console.log("TODO: Animation Switch Modules");
-        this.showModuleFocus = moduleName;
+
+        // decide if which direction for switch animation
+        let moduleIndexActual = this.getIndexOfModule(this.showModuleFocus);
+        let moduleIndexNext = this.getIndexOfModule(moduleName);
+        if (moduleIndexActual>moduleIndexNext) {
+          // Animation L -> R
+          this.stateModuleSwitch = 'left';
+          setTimeout(()=>{
+            this.showModuleFocus = moduleName;
+            this.stateModuleSwitch = 'right';
+            setTimeout(()=>{
+              this.stateModuleSwitch = 'normal';
+            },100);
+          },100);
+        } else {
+          // Animation R -> L
+          this.stateModuleSwitch = 'right';
+          setTimeout(()=>{
+            this.showModuleFocus = moduleName;
+            this.stateModuleSwitch = 'left';
+            setTimeout(()=>{
+              this.stateModuleSwitch = 'normal';
+            },100);
+          },100);
+        }
+
       }
 
       if (!this.getStateModulePanel()) this.transformShowModules();
 
     }
 
+  }
+
+  /**
+   * Returns the index order number of a given module id.
+   * @param {string} id
+   * @returns {number}
+   */
+  getIndexOfModule(id : string) : number {
+    let index : number = 0;
+    let result : number = -1;
+    this.moduleConfig.forEach( (config) => {
+      if (config==id) {result = index;};
+      index++;
+      }
+    );
+    return result;
   }
 
   buttonMap() {
@@ -150,16 +232,80 @@ export class MainPage {
     modal.present().then();
   }
 
-  buttonKonfettiNotice() {
+  buttonKonfettiNotice() : void {
 
     this.setStateKonfettiNotice(false);
 
+    this.konfettiTourStep = 0;
+    this.showKonfettiTour = true;
+    this.stateKonfettiTourFocus = 'hidden';
     setTimeout(() => {
-      this.transformShowModules();
-    },2000);
+      this.stateKonfettiTourFocus = 'show';
+      setTimeout(() => {
+        this.konfettiTourText = 'Entdecke Deine Umgebung auf der Karte';
+      }, 1250);
+    },1500);
+
+  }
+
+  buttonKonfettiTourNext() : void {
+
+    this.konfettiTourText = '';
+    this.stateKonfettiTourFocus = 'hidden';
+
+    setTimeout(()=>{
+
+      // next tour step
+      this.konfettiTourStep++;
+
+      if (this.konfettiTourStep===1) {
+        this.classKonfettiTourFocus = 'konfetti-tour-focus-module3';
+        this.transformShowModules();
+        setTimeout(()=>{
+          this.stateKonfettiTourFocus = 'show';
+          setTimeout(()=>{
+            this.konfettiTourText = 'Alle Neuigkeiten und Nachrichten';
+          },1300);
+        },800);
+      }
+
+      if (this.konfettiTourStep===2) {
+        this.classKonfettiTourFocus = 'konfetti-tour-focus-module2';
+        setTimeout(()=>{
+          this.stateKonfettiTourFocus = 'show';
+          this.buttonModule('ideas');
+          setTimeout(()=>{
+            this.konfettiTourText = 'Über neue Ideen abstimmen und mitmachen';
+          },1300);
+        },100);
+      }
+
+      if (this.konfettiTourStep===3) {
+        this.classKonfettiTourFocus = 'konfetti-tour-focus-module1';
+        setTimeout(()=>{
+          this.stateKonfettiTourFocus = 'show';
+          this.buttonModule('forum');
+          setTimeout(()=>{
+            this.konfettiTourText = 'Pinnwand und Chatgruppen';
+          },1300);
+        },100);
+      }
+
+      if (this.konfettiTourStep===4) {
+        this.showKonfettiTour = false;
+        this.buttonModule('news');
+      }
+
+      },1500);
+
   }
 
   transformShowMap() {
+
+    if (this.showKonfettiTour) {
+      console.log("dont go to map during intro tour");
+      return;
+    }
 
     this.setStateModulePanel(false);
 
@@ -169,15 +315,17 @@ export class MainPage {
     this.zoomControl.addTo(this.map);
 
     setTimeout(() => {
-      this.showModuleFocus="";
+      if (this.stateModulePanel==='showMap') {
+        this.showModuleFocus="";
+      }
     }, 500);
 
   }
 
   transformShowModules() {
 
-    if (this.showModuleFocus==="") this.showModuleFocus = "module-c";
     this.setStateModulePanel(true);
+    if (this.showModuleFocus.length<1) this.showModuleFocus='news';
 
     this.map.flyTo({lon: this.lon, lat: this.lat-0.0025}, this.zoom);
     this.map.removeLayer(this.eventMarkers);

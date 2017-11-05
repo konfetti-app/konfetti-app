@@ -55,6 +55,74 @@ page-main {
   top: 33%;
 }
 
+.konfetti-tour-focus-overlay {
+  position: absolute;
+  z-index: 1010;
+  border-style: solid;
+}
+
+.konfetti-tour-focus-map {
+  border-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  left: calc(50% - 1000px);
+  top: calc(50% - 1015px);
+  width: 2000px;
+  height: 2000px;
+  border-radius: 1000px;
+}
+
+.konfetti-tour-focus-module1 {
+  border-width: 961px;
+  border-radius: 1000px;
+  right: -957px;
+  top: calc(33% - 996px);
+  width: 2000px;
+  height: 2000px;
+}
+
+.konfetti-tour-focus-module2 {
+  border-width: 961px;
+  border-radius: 1000px;
+  right: -878px;
+  top: calc(33% - 996px);
+  width: 2000px;
+  height: 2000px;
+}
+
+.konfetti-tour-focus-module3 {
+  border-width: 961px;
+  border-radius: 1000px;
+  right: -798px;
+  top: calc(33% - 996px);
+  width: 2000px;
+  height: 2000px;
+}
+
+.konfetti-tour-infotext-area {
+  z-index: 1011;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  text-align: center;
+  border-radius: 21px;
+  margin: 10px;
+  background-color: rgba(255, 255, 0, 1);
+}
+
+.konfetti-tour-infotext {
+  color: black;
+  font-size: 28px;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
 .info-overlay {
   position: absolute;
   width: 100%;
@@ -71,7 +139,7 @@ page-main {
   width: 320px;
   height: 320px;
   margin: auto;
-  margin-top: 45%;
+  margin-top: 40%;
   border-radius: 300px;
   text-align: center;
   padding-top: 80px;
