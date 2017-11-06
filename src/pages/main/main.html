@@ -37,13 +37,12 @@
   <div class="info-overlay-konfetti">
     <div class="info-overlay-konfetti-text">
       <!-- TODO: vertical center in div -->
-      <div style="margin: auto;">
-        Willkommen in der Nachbarschaft
+      <div style="margin: auto;" [innerHTML]="'TOUR_WELCOME' | translate">
       </div>
     </div>
     <div style="width: 160px; margin-left: auto; margin-right: auto;">
       <button ion-button round (click)="buttonKonfettiNotice()">
-        <span>Starte Tour</span>
+        <span [innerHTML]="'TOUR_START' | translate"></span>
       </button>
     </div>
   </div>
@@ -59,7 +58,7 @@
     {{konfettiTourText}}
   </div>
   <button ion-button round (click)="buttonKonfettiTourNext()" style="margin-bottom: 16px;">
-    <span>Weiter</span>
+    <span [innerHTML]="langKeyTourNext | translate"></span>
   </button>
 </div>
 

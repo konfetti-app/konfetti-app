@@ -2,19 +2,13 @@
 
   <ion-navbar>
 
-    <ion-buttons left>
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-
     <ion-title>
-      Einstellungen
+      {{ 'MENU_SETTINGS' | translate }}
     </ion-title>
 
-    <ion-buttons right>
-      <button ion-button (click)="buttonHome()">
-        <i class="fa fa-home navheader-button" aria-hidden="true"></i>
+    <ion-buttons end class="navheader-end-buttons" >
+      <button ion-button icon-only (click)="buttonClose()">
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
 
@@ -27,13 +21,13 @@
   <ion-list>
 
     <ion-item>
-      <ion-label>Sprache</ion-label>
+      <ion-label>{{ 'SETTINGS_LANGUAGE' | translate }}</ion-label>
       <ion-select
         [(ngModel)]="actualLanguage"
         [compareWith]="compareLangs"
         (ngModelChange)="changeLanguage()"
-        okText="Ok"
-        cancelText="Cancel"
+        okText="{{ 'OK' | translate }}"
+        cancelText="{{ 'CANCEL' | translate }}"
         multiple="false">
         <ion-option *ngFor="let lang of availableLanguages" [value]="lang">{{lang.displayname}}</ion-option>
       </ion-select>

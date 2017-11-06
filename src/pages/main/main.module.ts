@@ -4,12 +4,16 @@ import { MainPage } from './main';
 
 import { ComponentsModule } from "../../components/components.module";
 
+// http://ionicframework.com/docs/developer-resources/ng2-translate/
+import { TranslateModule } from '@ngx-translate/core';
+
 @NgModule({
   declarations: [
     MainPage
   ],
   imports: [
     IonicPageModule.forChild(MainPage),
+    TranslateModule.forRoot(),
     ComponentsModule
   ]
 })

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
-import { MainPage } from "../main/main";
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 import { TranslateService } from "@ngx-translate/core";

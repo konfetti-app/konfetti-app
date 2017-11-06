@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title>
-      Dein Profil
+      {{ 'PROFILE_TITLE' | translate }}
     </ion-title>
     <ion-buttons end class="navheader-end-buttons" >
       <button ion-button icon-only (click)="buttonClose()">
@@ -36,7 +36,7 @@
         <ion-list style="-webkit-margin-start: 20px;">
 
           <ion-item style="width:95%; top: -10px;">
-            <ion-label color="primary" floating>Vorname</ion-label>
+            <ion-label color="primary" floating>{{ 'PROFILE_FIRSTNAME' | translate }}</ion-label>
             <ion-input type="email"></ion-input>
           </ion-item>
 
@@ -49,8 +49,8 @@
   <ion-list style="">
 
     <ion-item>
-      <ion-label color="primary" id="profile-aboutme-lable" stacked>Über mich</ion-label>
-      <ion-input type="text" placeholder="Ein kurzer Satz"></ion-input>
+      <ion-label color="primary" id="profile-aboutme-lable" stacked>{{ 'PROFILE_ABOUTME' | translate }}</ion-label>
+      <ion-input type="text" placeholder="{{ 'PROFILE_ABOUTME_DEFAULT' | translate }}"></ion-input>
     </ion-item>
 
   </ion-list>
@@ -59,7 +59,7 @@
   <div style="padding-top: 12px;">
 
     <div class="label label-md label-md-primary" style="-webkit-padding-start: 16px; font-size: 16px;">
-        Ich spreche folgende Sprachen
+      {{ 'PROFILE_LANGUAGES_LABLE' | translate }}
     </div>
 
     <div style="padding-left: 12px; padding-right: 12px;">
@@ -68,7 +68,9 @@
         <ion-label>Deutsch</ion-label>
       </ion-chip>
 
-      <button ion-button small (click)="buttonEditSpokenLangs()" style="margin-top: -6px;">ändern</button>
+      <button ion-button small (click)="buttonEditSpokenLangs()" style="margin-top: -6px;">
+        {{ 'PROFILE_LANGUAGES_CHANGE' | translate }}
+      </button>
 
     </div>
 
@@ -79,11 +81,11 @@
 
 <ion-footer padding style="text-align: center;">
 
-  <button ion-button full (click)="buttonSaveProfile()">Profil Speichern</button>
+  <button ion-button full (click)="buttonSaveProfile()">{{ 'PROFILE_SAVE' | translate }}</button>
 
   <button *ngIf="showAccountLink" (click)="buttonPasswordAndAccount()" ion-button clear style="">
     <i class="fa fa-key" aria-hidden="true"></i>&nbsp;
-    Passwort & Account bearbeiten
+    {{ 'PROFILE_CHANGEACCOUNT' | translate }}
   </button>
 
 </ion-footer>

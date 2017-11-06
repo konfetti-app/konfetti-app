@@ -217,7 +217,7 @@ export class MyApp implements OnInit{
 
     // check state of app and jump to intro or to main page
     // this.nav.setRoot(IntroPage).then();
-    this.nav.setRoot(IntroPage, {showIntro:true}).then();
+    this.nav.setRoot(IntroPage, {showIntro:false}).then();
 
   };
 
@@ -230,18 +230,13 @@ export class MyApp implements OnInit{
   }
 
   buttonProfile() : void {
-
     let modal : Modal = this.modalCtrl.create(ProfilePage, { showAccountLink: true});
     modal.onDidDismiss(data => {
-
       if ((typeof data.command != null) && (data.command=='goAccount')) {
         alert("TODO: Open Password/Account Dialog");
       }
-
     });
     modal.present().then();
-
-    //this.nav.setRoot(ProfilePage).then();
   }
 
   // TODO implement
@@ -250,7 +245,10 @@ export class MyApp implements OnInit{
   }
 
   buttonSettings() : void {
-    this.nav.setRoot(SettingsPage).then();
+    let modal : Modal = this.modalCtrl.create(SettingsPage, { });
+    modal.onDidDismiss(data => {});
+    modal.present().then();
+    //this.nav.setRoot(SettingsPage).then();
   }
 
   buttonNewGroup() : void {

@@ -6,7 +6,7 @@
 
   <ion-header>
     <ion-toolbar style="background-color: #777777; color: #eee;">
-      <ion-title style="text-align: center;">MENÜ</ion-title>
+      <ion-title style="text-align: center;">{{'MENU_TITLE' | translate}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -16,6 +16,7 @@
       background-color: #333333;
       min-height: 163px;
       padding: 16px;
+      text-align: start;
       ">
 
       <table>
@@ -30,7 +31,7 @@
             font-size: 130%;
             margin-left: 8px;
             font-weight: 500;">
-              Unbekannt
+              {{'MENU_USERNAME_UNKNOWN' | translate}}
             </div>
             <button ion-button clear (click)="buttonKonfetti()" style="
               font-size: 110%;
@@ -53,7 +54,7 @@
           <i class="mdi mdi-account-edit" style="font-size:180%;"></i>
         </div>
         <div class="side-menu-button-text">
-          Profil bearbeiten
+          {{'MENU_EDIT_PROFILE' | translate}}
         </div>
       </button>
 
@@ -63,7 +64,7 @@
     <div style="padding:16px;text-align: start;">
 
       <div style="font-size: 19px; padding-left: 6px; margin-bottom: 3px;">
-        Deine Nachbarschaften
+        {{'MENU_GROUPS' | translate}}
       </div>
 
       <button ion-button clear menuClose (click)="buttonGroup('id1')" class="side-menu-button">
@@ -90,7 +91,7 @@
           <i class="mdi mdi-plus-circle" style="font-size:180%;"></i>
         </div>
         <div class="side-menu-button-text" style="padding-top: 9px;">
-          NEU
+          {{'MENU_NEW_GROUP' | translate}}
         </div>
       </button>
 
@@ -104,7 +105,7 @@
           <i class="mdi mdi-settings" style="font-size:180%;"></i>
         </div>
         <div class="side-menu-button-text">
-          Einstellungen
+          {{'MENU_SETTINGS' | translate}}
         </div>
       </button>
   </ion-footer>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController, LoadingController, ToastController } from 'ionic-angular';
 import { AppStateProvider } from '../../providers/app-state/app-state';
+import { TranslateService } from "@ngx-translate/core";
 
 // https://ionicframework.com/docs/native/barcode-scanner/
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -28,7 +29,8 @@ export class CodeRedeemPage {
     private appState: AppStateProvider,
     private barcodeScanner: BarcodeScanner,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private translateService: TranslateService
   ) {
   }
 
@@ -75,7 +77,7 @@ export class CodeRedeemPage {
 
         } else {
           this.toastCtrl.create({
-            message: 'canceled',
+            message: this.translateService.instant('CANCELED'),
             duration: 1500
           }).present().then();
         }
@@ -94,7 +96,7 @@ export class CodeRedeemPage {
     this.code = text;
 
     this.toastCtrl.create({
-      message: 'OK',
+      message: this.translateService.instant('OK'),
       duration: 3000
     }).present().then();
 

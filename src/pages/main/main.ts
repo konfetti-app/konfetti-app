@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavParams, ModalController, Modal } from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
 import { CodeRedeemPage } from "../code-redeem/code-redeem";
@@ -96,6 +97,8 @@ export class MainPage {
   konfettiTourText : string = "";
   konfettiTourStep : number = 0;
 
+  langKeyTourNext : string;
+
   lon : number = 13.408277;
   lat : number = 52.520476;
   zoom : number = 16;
@@ -110,7 +113,8 @@ export class MainPage {
 
   constructor(
     private params: NavParams = null,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private translateService: TranslateService,
   ) {
     this.showModuleFocus = "";
 
@@ -242,7 +246,8 @@ export class MainPage {
     setTimeout(() => {
       this.stateKonfettiTourFocus = 'show';
       setTimeout(() => {
-        this.konfettiTourText = 'Entdecke Deine Umgebung auf der Karte';
+        this.konfettiTourText = this.translateService.instant('TOUR_TEXT_MAP');
+        this.langKeyTourNext = 'TOUR_CONTINUE';
       }, 1250);
     },1500);
 
@@ -264,7 +269,7 @@ export class MainPage {
         setTimeout(()=>{
           this.stateKonfettiTourFocus = 'show';
           setTimeout(()=>{
-            this.konfettiTourText = 'Alle Neuigkeiten und Nachrichten';
+            this.konfettiTourText = this.translateService.instant('TOUR_TEXT_NEWS');
           },1300);
         },800);
       }
@@ -275,7 +280,7 @@ export class MainPage {
           this.stateKonfettiTourFocus = 'show';
           this.buttonModule('ideas');
           setTimeout(()=>{
-            this.konfettiTourText = 'Über neue Ideen abstimmen und mitmachen';
+            this.konfettiTourText = this.translateService.instant('TOUR_TEXT_IDEAS');
           },1300);
         },100);
       }
@@ -286,7 +291,8 @@ export class MainPage {
           this.stateKonfettiTourFocus = 'show';
           this.buttonModule('forum');
           setTimeout(()=>{
-            this.konfettiTourText = 'Pinnwand und Chatgruppen';
+            this.langKeyTourNext = 'TOUR_READY';
+            this.konfettiTourText = this.translateService.instant('TOUR_TEXT_FORUM');
           },1300);
         },100);
       }

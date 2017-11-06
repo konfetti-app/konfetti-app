@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { MainPage } from "../main/main";
+import { IonicPage, ViewController } from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
@@ -15,10 +14,9 @@ export class SettingsPage {
   actualLanguage: LanguageInfo;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
+    private viewCtrl: ViewController,
     private appState: AppStateProvider,
-    private appPersistence: AppPersistenceProvider,) {
+    private appPersistence: AppPersistenceProvider) {
       this.actualLanguage = this.appState.getActualAppLanguageInfo();
   }
 
@@ -36,8 +34,8 @@ export class SettingsPage {
     this.appPersistence.setLocale(this.actualLanguage.locale);
   }
 
-  buttonHome() : void {
-    this.navCtrl.setRoot(MainPage, {showIntro:false}).then();
+  buttonClose(): void {
+    this.viewCtrl.dismiss({ success: false } ).then();
   }
 
   compareLangs(lang1:LanguageInfo, lang2:LanguageInfo) : boolean {

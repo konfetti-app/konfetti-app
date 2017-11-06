@@ -11,8 +11,7 @@
 </ion-header>
 <ion-content padding style="text-align: center;">
 
-  <div style="text-align: center; font-size: 24px;">
-    Zahlencode eingeben<br>oder QR-Code scannen
+  <div style="text-align: center; font-size: 24px;" [innerHTML]="'CODEREDEEM_ASK' | translate | lengthBreak:17">
   </div>
 
 
@@ -50,10 +49,10 @@
   </div>
 
   <button ion-button large (click)="buttonRedeemCode()" style="max-width: 95%; margin-top: 24px;"
-          [innerHTML]="'CODE_ABSCHICKEN' | translate"></button>
+          [innerHTML]="'CODEREDEEM_SEND' | translate"></button>
 
   <p *ngIf="modus=='intro'">
-    <button ion-button clear (click)="buttonNoCode()">Wo finde ich den Code?</button>
+    <button ion-button clear (click)="buttonNoCode()" [innerHTML]="'CODEREDEEM_WHERE_TO_FIND' | translate"></button>
   </p>
 
   <p *ngIf="modus=='main'">
