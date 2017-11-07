@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>
       {{ 'PROFILE_TITLE' | translate }}
@@ -37,7 +36,7 @@
 
           <ion-item style="width:95%; top: -10px;">
             <ion-label color="primary" floating>{{ 'PROFILE_FIRSTNAME' | translate }}</ion-label>
-            <ion-input type="email"></ion-input>
+            <ion-input type="text"  (blur)="storeFirstname()" [(ngModel)]="firstname" ></ion-input>
           </ion-item>
 
         </ion-list>
@@ -50,7 +49,7 @@
 
     <ion-item>
       <ion-label color="primary" id="profile-aboutme-lable" stacked>{{ 'PROFILE_ABOUTME' | translate }}</ion-label>
-      <ion-input type="text" placeholder="{{ 'PROFILE_ABOUTME_DEFAULT' | translate }}"></ion-input>
+      <ion-input type="text" (blur)="storeAboutMe()" [(ngModel)]="aboutme" placeholder="{{ 'PROFILE_ABOUTME_DEFAULT' | translate }}"></ion-input>
     </ion-item>
 
   </ion-list>
@@ -64,8 +63,8 @@
 
     <div style="padding-left: 12px; padding-right: 12px;">
 
-      <ion-chip>
-        <ion-label>Deutsch</ion-label>
+      <ion-chip *ngFor="let langInfo of spokenLangs" style="margin: 3px;">
+        <ion-label>{{langInfo.displayname}}</ion-label>
       </ion-chip>
 
       <button ion-button small (click)="buttonEditSpokenLangs()" style="margin-top: -6px;">
@@ -74,21 +73,15 @@
 
     </div>
 
+    <button *ngIf="showAccountLink" (click)="buttonPasswordAndAccount()" ion-button clear style="margin-top: 24px;">
+      <i class="fa fa-key" aria-hidden="true"></i>&nbsp;
+      {{ 'PROFILE_CHANGEACCOUNT' | translate }}
+    </button>
+
   </div>
 
 
 </ion-content>
-
-<ion-footer padding style="text-align: center;">
-
-  <button ion-button full (click)="buttonSaveProfile()">{{ 'PROFILE_SAVE' | translate }}</button>
-
-  <button *ngIf="showAccountLink" (click)="buttonPasswordAndAccount()" ion-button clear style="">
-    <i class="fa fa-key" aria-hidden="true"></i>&nbsp;
-    {{ 'PROFILE_CHANGEACCOUNT' | translate }}
-  </button>
-
-</ion-footer>
 
 
 

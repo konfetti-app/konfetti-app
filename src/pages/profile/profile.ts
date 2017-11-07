@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
-import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
+import {AppData, AppPersistenceProvider} from "../../providers/app-persistence/app-persistence";
 import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
@@ -23,6 +23,11 @@ export class ProfilePage {
    */
 
   spokenLangs : Array<LanguageInfo>;
+  firstname : string = "";
+  aboutme : string = "";
+
+  persistedData : AppData;
+
 
   constructor(
     private navCtrl: NavController,
@@ -31,7 +36,8 @@ export class ProfilePage {
     private alertCtrl: AlertController,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastCtrl: ToastController
   ) {
   }
 
@@ -51,9 +57,25 @@ export class ProfilePage {
 
     }
 
-    // update profile data
-    // Todo
+    // get profile data form persistence
+    this.persistedData = this.appPersistence.getAppDataCache();
+    if (this.persistedData.spokenLanguages.length==0) this.persistedData.spokenLanguages.push(this.appState.getActualAppLanguageInfo().locale);
 
+    // init form data from profile
+    this.firstname = this.persistedData.firstname;
+    this.aboutme = this.persistedData.aboutme;
+    this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(this.persistedData.spokenLanguages);
+
+  }
+
+  storeFirstname() : void {
+    if ( this.firstname === this.persistedData.firstname ) return;
+    this.storeToBackendApi();
+  }
+
+  storeAboutMe() : void {
+    if ( this.aboutme === this.persistedData.aboutme ) return;
+    this.storeToBackendApi();
   }
 
   buttonChangeProfilePicture() : void {
@@ -66,11 +88,12 @@ export class ProfilePage {
     selectionDialog.setTitle(this.translateService.instant('SELECT_LANG'));
 
     this.appState.getAllAvailableLanguages().forEach( lang => {
+
       selectionDialog.addInput({
         type: 'checkbox',
         label: lang.displayname,
         value: lang.locale,
-        checked: false //( lang.locale === this.actualLanguage.locale )
+        checked: (this.persistedData.spokenLanguages.indexOf(lang.locale)>=0)
       });
     });
 
@@ -78,10 +101,20 @@ export class ProfilePage {
       text: this.translateService.instant('OK'),
       handler: (data: string) => {
 
-        // data is an array of locales
+        // if user selected no language, then  ignore
+        if (data.length==0) return;
 
-        console.log('Dialog Result', data);
-        alert("Persist");
+        // convert string[] to Array<string> of locales
+        let localeArray : Array<string> = new Array<string>();
+        for (let i=0; i < data.length; i++) localeArray.push(data[i]);
+
+        // update form data
+        this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(localeArray);
+        this.persistedData.spokenLanguages = localeArray;
+
+        // persist
+        this.storeToBackendApi();
+
       }
     });
 
@@ -92,10 +125,20 @@ export class ProfilePage {
 
   }
 
-  buttonSaveProfile() : void {
-    // TODO
-    alert("TODO: Persist Profile");
-    this.viewCtrl.dismiss({ success: true } ).then();
+  storeToBackendApi() : void {
+
+    // TODO: store to backend API
+
+    // persist locally
+    this.appPersistence.setUserProfile(this.firstname, this.aboutme, this.persistedData.spokenLanguages);
+    this.persistedData = this.appPersistence.getAppDataCache();
+    /*
+    this.toastCtrl.create({
+      message: this.translateService.instant('Changes Saved'),
+      duration: 1000
+    }).present().then();
+    */
+
   }
 
   buttonPasswordAndAccount(): void {

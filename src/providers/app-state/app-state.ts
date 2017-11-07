@@ -37,6 +37,21 @@ export class AppStateProvider {
   }
 
   /**
+   * Takes an array of locale strings and returns a array of matching LanguageInfos.
+   * @param {Array<string>} locales
+   * @returns {Array<LanguageInfo>}
+   */
+  public fromLocaleArrayToLanguageInfos(locales:Array<string>) : Array<LanguageInfo> {
+    let result : Array<LanguageInfo> = new Array<LanguageInfo>();
+    locales.forEach( (locale) => {
+      this.availableLanguages.forEach((info) => {
+        if (info.locale===locale) result.push(info);
+      })
+    });
+    return result;
+  }
+
+  /**
    * Changes the language displayed in the app.
    * (Dont forget to persist latest locale in an extra step.)
    * @param {string} locale

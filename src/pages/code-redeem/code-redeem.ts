@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController, LoadingController, Loading, ToastController } from 'ionic-angular';
 import { AppStateProvider } from '../../providers/app-state/app-state';
 import { TranslateService } from "@ngx-translate/core";
 
@@ -9,7 +9,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 @IonicPage()
 @Component({
   selector: 'page-code-redeem',
-  templateUrl: 'code-redeem.html',
+  templateUrl: 'code-redeem.html'
 })
 export class CodeRedeemPage {
 
@@ -22,6 +22,8 @@ export class CodeRedeemPage {
    * internal fields
    */
   code : string = '';
+
+  loadingSpinner : Loading = null;
 
   constructor(
     private viewCtrl: ViewController,
@@ -42,18 +44,15 @@ export class CodeRedeemPage {
     }
   }
 
-  buttonScanCode() :void {
+  ionViewDidLeave(){
+    if (this.loadingSpinner!=null) this.loadingSpinner.dismissAll();
+  }
 
-    // TODO
-    // check if user entered a code and then maybe just
-    // by confusion hit scan instead of send button
-    if (this.code.trim().length>3) {
-      if (!confirm('TODO: test entered code "'+this.code+'" first before try to scan')) return;
-    }
+  buttonScanCode() :void {
 
     // simulate on browser for now
     if (!this.appState.isRunningOnRealDevice()) {
-      this.processScannedCode("12345");
+      this.processScannedCode("234758");
       return;
     }
 
@@ -94,20 +93,45 @@ export class CodeRedeemPage {
 
     // TODO: Check scan result - if not a number, something is wrong
     this.code = text;
-
-    this.toastCtrl.create({
-      message: this.translateService.instant('OK'),
-      duration: 3000
-    }).present().then();
-
-    setTimeout(()=>{
-      this.buttonRedeemCode();
-    },1500);
+    this.buttonRedeemCode();
   }
 
   buttonRedeemCode() : void {
     // TODO real redeem code against API
-    this.viewCtrl.dismiss({ success: true } ).then();
+
+    // show loading spinner
+    this.loadingSpinner = this.loadingCtrl.create({
+      content: ''
+    });
+    this.loadingSpinner.present().then();
+
+    if (this.code.trim().toLowerCase()==="234758") {
+
+      this.toastCtrl.create({
+        message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
+        duration: 1500
+      }).present().then(()=>{
+
+        setTimeout(()=>{
+          this.viewCtrl.dismiss({ success: true } ).then();
+        },1300);
+
+      });
+
+    } else {
+
+      this.toastCtrl.create({
+        message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
+        duration: 3000
+      }).present().then();
+
+      setTimeout(()=>{
+        this.loadingSpinner.dismiss().then();
+        this.loadingSpinner=null;
+      },2000)
+
+    }
+
   }
 
   buttonNoCode() : void {
@@ -116,6 +140,7 @@ export class CodeRedeemPage {
   }
 
   dismiss() {
+    // close dialog and send back the cancel flag
     this.viewCtrl.dismiss({ success: false, reason: 'cancel' } ).then();
   }
 

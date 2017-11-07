@@ -174,3 +174,11 @@ p {
 [dir="rtl"] .header-notification {
   left: 10px;
 }
+
+.input-cover {
+  border-top-color: transparent !important;
+}
+
+.list-ios > .item-block:first-child {
+  border-top-width: 0px !important;
+}

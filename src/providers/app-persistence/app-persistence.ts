@@ -34,6 +34,11 @@ export class AppData {
   // store the session with the server
   jsonWebtoken : JsonWebToken = null;
 
+  // user profile
+  firstname : string = "";
+  aboutme : string = "";
+  spokenLanguages : Array<string> = new Array<string>();
+
 }
 
 @Injectable()
@@ -157,6 +162,19 @@ export class AppPersistenceProvider {
    */
   setJsonWebToken(token: JsonWebToken) : void {
     this.appDataCache.jsonWebtoken = token;
+    this.persistAppData();
+  }
+
+  /**
+   * Set all user profile relevant information.
+   * @param {string} firstname
+   * @param {string} aboutme
+   * @param {Array<string>} spokenLangs
+   */
+  setUserProfile(firstname: string, aboutme: string, spokenLangs: Array<string>) : void {
+    this.appDataCache.firstname = firstname;
+    this.appDataCache.aboutme = aboutme;
+    this.appDataCache.spokenLanguages = spokenLangs;
     this.persistAppData();
   }
 
