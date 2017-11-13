@@ -12,7 +12,7 @@ export class LoginPage {
 
   modus : string = null;
   allowRegister: boolean = false;
-  versionString: string = "1.0.1";
+  versionString: string = "";
 
   constructor(
     private params: NavParams = null,
@@ -29,6 +29,7 @@ export class LoginPage {
           this.versionString = number;
         });
       } catch (e) {
+        this.versionString = this.appState.getAppBuildTime();
         console.log("App-Version not Available");
       }
     } else {

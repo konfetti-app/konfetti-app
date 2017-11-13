@@ -30,6 +30,7 @@ export class SettingsPage {
             this.versionString = number;
           });
         } catch (e) {
+          this.versionString = this.appState.getAppBuildTime();
           console.log("App-Version not Available");
         }
      } else {
