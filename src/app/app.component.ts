@@ -38,6 +38,7 @@ export class MyApp implements OnInit{
   readyI18N : Boolean = false;
   readyAll : Boolean = false;
   readyAppState : Boolean = false;
+  versionString : string = "";
 
 
   constructor(
@@ -52,7 +53,7 @@ export class MyApp implements OnInit{
     private appState: AppStateProvider,
     private menuController: MenuController,
     private modalCtrl: ModalController,
-    private toastCtrl: ToastController,
+    private toastCtrl: ToastController
   ) {
 
     // on beginning disable side menu
@@ -217,7 +218,6 @@ export class MyApp implements OnInit{
     this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
 
     // check state of app and jump to intro or to main page
-    // this.nav.setRoot(IntroPage).then();
     this.nav.setRoot(IntroPage, {showIntro:false}).then();
 
   };

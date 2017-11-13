@@ -109,6 +109,7 @@ export class CodeRedeemPage {
 
       this.toastCtrl.create({
         message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
+        cssClass: 'toast-valid',
         duration: 1500
       }).present().then(()=>{
 
@@ -122,7 +123,8 @@ export class CodeRedeemPage {
 
       this.toastCtrl.create({
         message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
-        duration: 3000
+        cssClass: 'toast-invalid',
+        duration: 20000
       }).present().then();
 
       setTimeout(()=>{

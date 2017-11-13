@@ -178,6 +178,26 @@ export class AppPersistenceProvider {
     this.persistAppData();
   }
 
+  /**
+   * Deletes all persisted data.
+   * @returns {Observable<void>}
+   */
+  resetAll() : Observable<void> {
+    return new Observable<void>( (observer) => {
+
+      if (!this.useLocalStorage) {
+        this.nativeStorage.clear().then((none) => {
+          observer.next();
+          observer.complete();
+        });
+      } else {
+        localStorage.clear();
+        observer.next();
+        observer.complete();
+      }
+    });
+  }
+
   /*
    * PRIVATE METHODS
    */

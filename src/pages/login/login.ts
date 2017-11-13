@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import {IonicPage, ViewController, NavParams, ToastController} from 'ionic-angular';
+import { IonicPage, ViewController, NavParams, ToastController} from 'ionic-angular';
+import { AppStateProvider } from "../../providers/app-state/app-state";
+import { AppVersion } from "@ionic-native/app-version";
+import {AppPersistenceProvider} from "../../providers/app-persistence/app-persistence";
 
 @IonicPage()
 @Component({
@@ -10,12 +13,27 @@ export class LoginPage {
 
   modus : string = null;
   allowRegister: boolean = false;
+  versionString: string = "1.0.1";
 
   constructor(
     private params: NavParams = null,
     private viewCtrl: ViewController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private appState: AppStateProvider,
+    private appPersistence: AppPersistenceProvider,
+    private appVersion: AppVersion
   ) {
+
+    // get version strings
+    if (this.appState.isRunningOnRealDevice()) {
+      try {
+        this.appVersion.getVersionNumber().then((number) => {
+          this.versionString = number;
+        });
+      } catch (e) {
+        console.log("App-Version not Available");
+      }
+    }
 
     // get mode to start with as parameter
     this.modus = "login";

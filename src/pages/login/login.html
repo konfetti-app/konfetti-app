@@ -48,6 +48,11 @@
       <button ion-button clear (click)="buttonGoRecover()">{{'LOGINBUTTON_LOGINFORGOT' | translate}}</button>
     </p>
 
+
+    <div *ngIf="versionString!=''" style="color: #b1b1b1;">
+      {{ 'SETTINGS_VERSION' | translate }} {{versionString}}
+    </div>
+
   </div>
 
   <!------------ REGISTER ------------>

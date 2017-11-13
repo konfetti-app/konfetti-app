@@ -14,6 +14,7 @@ import { LengthBreakPipe } from "../pipes/length-break/length-break";
 
 import { ApiProvider } from '../providers/api/api';
 
+import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpClientModule } from '@angular/common/http';
@@ -64,6 +65,7 @@ import { MainPageModule } from '../pages/main/main.module'
     SettingsPage
   ],
   providers: [
+    AppVersion,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

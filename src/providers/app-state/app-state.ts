@@ -13,6 +13,7 @@ export class AppStateProvider {
 
   private availableLanguages: Array<LanguageInfo> = new Array();
   private lastSetLocale : string;
+  private versionString : string = null;
 
   constructor(
       private translateService : TranslateService,
@@ -136,7 +137,6 @@ export class AppStateProvider {
     });
     return result;
   }
-
 
 }
 

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController } from 'ionic-angular';
+import {IonicPage, ToastController, ViewController} from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
+import {AppVersion} from "@ionic-native/app-version";
 
 @IonicPage()
 @Component({
@@ -12,12 +13,29 @@ export class SettingsPage {
 
   availableLanguages: Array<LanguageInfo>;
   actualLanguage: LanguageInfo;
+  versionString: string = "Browser";
 
   constructor(
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
-    private appPersistence: AppPersistenceProvider) {
-      this.actualLanguage = this.appState.getActualAppLanguageInfo();
+    private appPersistence: AppPersistenceProvider,
+    private appVersion: AppVersion,
+    private toastCtrl: ToastController
+    ) {
+
+      // get version strings
+      if (this.appState.isRunningOnRealDevice()) {
+        try {
+          this.appVersion.getVersionNumber().then((number) => {
+            this.versionString = number;
+          });
+        } catch (e) {
+          console.log("App-Version not Available");
+        }
+     }
+
+    this.actualLanguage = this.appState.getActualAppLanguageInfo();
+
   }
 
   ionViewDidLoad() {
@@ -32,6 +50,18 @@ export class SettingsPage {
   changeLanguage() : void {
     this.appState.updateActualAppLanguage(this.actualLanguage.locale);
     this.appPersistence.setLocale(this.actualLanguage.locale);
+  }
+
+  buttonResetApp() : void {
+    this.appPersistence.resetAll().subscribe( (none) => {
+      try {
+        navigator['app'].exitApp();
+      } catch (e) {}
+      this.toastCtrl.create({
+        message: 'CLOSE and RESTART APP',
+        duration: 5000
+      }).present().then();
+    });
   }
 
   buttonClose(): void {

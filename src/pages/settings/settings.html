@@ -21,6 +21,11 @@
   <ion-list>
 
     <ion-item>
+      {{ 'SETTINGS_VERSION' | translate }}
+      <span item-end>{{versionString}}</span>
+    </ion-item>
+
+    <ion-item>
       <ion-label>{{ 'SETTINGS_LANGUAGE' | translate }}</ion-label>
       <ion-select
         [(ngModel)]="actualLanguage"
@@ -34,5 +39,7 @@
     </ion-item>
 
   </ion-list>
+
+  <button ion-button block color="danger" (click)="buttonResetApp()">RESET APP</button>
 
 </ion-content>
