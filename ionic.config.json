@@ -1,6 +1,6 @@
 {
   "name": "konfetti-app",
-  "app_id": "de.konfettiapp.konfetti-app",
+  "app_id": "db5effdf",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

@@ -136,7 +136,7 @@ export class CodeRedeemPage {
 
   buttonNoCode() : void {
     // TODO give user more info how to get a code
-    alert('TODO');
+    alert('Testcode: 234758');
   }
 
   dismiss() {
