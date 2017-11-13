@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavParams, ModalController, Modal } from 'ionic-angular';
+import {IonicPage, NavParams, ModalController, Modal, ToastController} from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
@@ -115,12 +115,16 @@ export class MainPage {
     private params: NavParams = null,
     private modalCtrl: ModalController,
     private translateService: TranslateService,
+    private toastCtrl: ToastController
   ) {
     this.showModuleFocus = "";
 
     this.eventMarkers = leaflet.featureGroup();
     let marker: any = leaflet.marker([this.lat, this.lon]).on('click', () => {
-      alert('Marker clicked');
+      this.toastCtrl.create({
+        message: 'TODO: What should happen?',
+        duration: 5000
+      }).present().then();
     });
     this.eventMarkers.addLayer(marker);
 
@@ -230,7 +234,10 @@ export class MainPage {
     modal.onDidDismiss(data => {
       if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
         // TODO
-        alert("TODO: Neuen Code verarbeiteten");
+        this.toastCtrl.create({
+          message: 'TODO: Neuen Code verarbeiteten',
+          duration: 5000
+        }).present().then();
       }
     });
     modal.present().then();

@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Nav, Platform, ModalController, Modal } from 'ionic-angular';
+import { Nav, Platform, ModalController, Modal, ToastController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Events, MenuController } from 'ionic-angular';
+import { MenuController, Events } from 'ionic-angular';
 import { HttpClient} from '@angular/common/http';
 import { LoadingController, Loading } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -51,7 +51,8 @@ export class MyApp implements OnInit{
     private appPersistence: AppPersistenceProvider,
     private appState: AppStateProvider,
     private menuController: MenuController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private toastCtrl: ToastController,
   ) {
 
     // on beginning disable side menu
@@ -69,7 +70,7 @@ export class MyApp implements OnInit{
      */
 
     // init signals to go to main page
-    events.subscribe('init:goProfile', () => {
+    this.events.subscribe('init:goProfile', () => {
       this.menuController.enable(true);
       this.nav.setRoot(ProfilePage).then();
     });
@@ -134,7 +135,7 @@ export class MyApp implements OnInit{
    * Do all the stuff needed once cordova/ionic platform is ready.
    */
   processPlatformIsReady() {
-    this.statusBar.styleDefault();
+    this.statusBar.overlaysWebView(false);
     this.readyPlatform = true;
     this.checkIfAllReady();
   }
@@ -233,15 +234,23 @@ export class MyApp implements OnInit{
     let modal : Modal = this.modalCtrl.create(ProfilePage, { showAccountLink: true});
     modal.onDidDismiss(data => {
       if ((typeof data.command != null) && (data.command=='goAccount')) {
-        alert("TODO: Open Password/Account Dialog");
+
+        this.toastCtrl.create({
+          message: 'TODO: Open Password/Account Dialog',
+          duration: 5000
+        }).present().then();
+
       }
     });
     modal.present().then();
   }
 
-  // TODO implement
   buttonGroup(id : string) : void {
-      alert('TODO');
+
+    this.toastCtrl.create({
+      message: 'TODO',
+      duration: 5000
+    }).present().then();
   }
 
   buttonSettings() : void {
@@ -253,10 +262,14 @@ export class MyApp implements OnInit{
 
   buttonNewGroup() : void {
     // TODO
-    alert(`TODO Optionen:
+    this.toastCtrl.create({
+      message: `TODO Optionen:
     a) Weiteren Code eingeben/scannen.
     b) Wie finde ich eine Nachbarschaft? 
-    c) Eigene Nachbarschaft/Haus gründen.`);
+    c) Eigene Nachbarschaft/Haus gründen.`,
+      duration: 5000
+    }).present().then();
+
   }
 
   // gets called from side menu

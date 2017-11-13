@@ -59,7 +59,9 @@ After a short while you should see the Welcome/Intro screen of the Konfetti app 
 
 The local repo needs to be connected to the Ionic Pro Dashboard: https://dashboard.ionicjs.com 
 If not already use `ionic link --pro-id db5effdf` (access to account is needed).
+
 To push a new version to the Ionic View app Testers  `git push ionic master`.
-Go to the Ionic Pro Dashboard. Under 'Code/Builds' the new commit should show up and offer after some time the 'deploy' option.
+
+The next step should be automatically ... but just in case: Go to the Ionic Pro Dashboard. Under 'Code/Builds' the new commit should show up and offer after some time the 'deploy' option.
 When deployed the tag 'Master' should be visible on that commit and it should ne be available to Testers with the Ionic View App.
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+import {IonicPage, ViewController, NavParams, ToastController} from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -13,7 +13,8 @@ export class LoginPage {
 
   constructor(
     private params: NavParams = null,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private toastCtrl: ToastController
   ) {
 
     // get mode to start with as parameter
@@ -41,12 +42,18 @@ export class LoginPage {
 
   buttonRegister() : void {
     // TODO register against API (with email and password)
-    alert('TODO');
+    this.toastCtrl.create({
+      message: 'TODO',
+      duration: 5000
+    }).present().then();
   }
 
   buttonRecover() : void {
     // TODO recover password for given email
-    alert('TODO');
+    this.toastCtrl.create({
+      message: 'TODO',
+      duration: 5000
+    }).present().then();
   }
 
   dismiss() {
