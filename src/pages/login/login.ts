@@ -12,7 +12,7 @@ export class LoginPage {
 
   modus : string = null;
   allowRegister: boolean = false;
-  versionString: string = "";
+  versionString: string = "A";
 
   constructor(
     private params: NavParams = null,
@@ -23,8 +23,10 @@ export class LoginPage {
   ) {
 
     // get version strings
+    this.versionString = "B";
     if (this.appState.isRunningOnRealDevice()) {
       try {
+        this.versionString = "C";
         this.appVersion.getVersionNumber().then((number) => {
           this.versionString = number;
         });
