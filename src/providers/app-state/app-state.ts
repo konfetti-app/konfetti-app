@@ -8,12 +8,20 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform } from 'ionic-angular';
 
+
+function getWindow (): any {
+  return window;
+}
+
 @Injectable()
 export class AppStateProvider {
 
+  get nativeWindow (): any {
+    return getWindow();
+  }
+
   private availableLanguages: Array<LanguageInfo> = new Array();
   private lastSetLocale : string;
-  private versionString : string = null;
 
   constructor(
       private translateService : TranslateService,
@@ -122,6 +130,10 @@ export class AppStateProvider {
    */
   isRunningOnRealDevice() : boolean {
     return this.platform.is('cordova');
+  }
+
+  getAppBuildTime() : string {
+    return this.nativeWindow.appBuildTime;
   }
 
   /***************************************

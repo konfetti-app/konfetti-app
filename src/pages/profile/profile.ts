@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import {AppData, AppPersistenceProvider} from "../../providers/app-persistence/app-persistence";
 import { TranslateService } from "@ngx-translate/core";
@@ -30,14 +30,13 @@ export class ProfilePage {
 
 
   constructor(
-    private navCtrl: NavController,
+    //private navCtrl: NavController,
     private params: NavParams,
     private viewCtrl: ViewController,
     private alertCtrl: AlertController,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    private translateService: TranslateService,
-    private toastCtrl: ToastController
+    private translateService: TranslateService
   ) {
   }
 

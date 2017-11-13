@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Modal } from 'ionic-angular';
+import { IonicPage, NavController, ModalController, Modal } from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
-import { MenuController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 
@@ -25,10 +24,10 @@ export class IntroPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
+    //private navParams: NavParams,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    private menuController : MenuController,
+    //private menuController : MenuController,
     private alertCtrl: AlertController,
     private translateService: TranslateService,
     private modalCtrl: ModalController

@@ -32,6 +32,8 @@ export class SettingsPage {
         } catch (e) {
           console.log("App-Version not Available");
         }
+     } else {
+        this.versionString = this.appState.getAppBuildTime();
      }
 
     this.actualLanguage = this.appState.getActualAppLanguageInfo();
