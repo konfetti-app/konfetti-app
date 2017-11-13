@@ -136,7 +136,10 @@ export class CodeRedeemPage {
 
   buttonNoCode() : void {
     // TODO give user more info how to get a code
-    alert('Testcode: 234758');
+    this.toastCtrl.create({
+      message: 'Testcode: 234758',
+      duration: 5000
+    }).present().then();
   }
 
   dismiss() {
