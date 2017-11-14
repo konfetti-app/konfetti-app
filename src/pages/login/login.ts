@@ -12,7 +12,7 @@ export class LoginPage {
 
   modus : string = null;
   allowRegister: boolean = false;
-  versionString: string = "A";
+  versionString: string = "";
 
   constructor(
     private params: NavParams = null,
@@ -23,19 +23,15 @@ export class LoginPage {
   ) {
 
     // get version strings
-    this.versionString = "B";
+    this.versionString = this.appState.getAppBuildTime();
     if (this.appState.isRunningOnRealDevice()) {
       try {
-        this.versionString = "C";
         this.appVersion.getVersionNumber().then((number) => {
           this.versionString = number;
         });
       } catch (e) {
-        this.versionString = this.appState.getAppBuildTime();
         console.log("App-Version not Available");
       }
-    } else {
-      this.versionString = this.appState.getAppBuildTime();
     }
 
     // get mode to start with as parameter

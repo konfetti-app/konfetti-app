@@ -24,17 +24,15 @@ export class SettingsPage {
     ) {
 
       // get version strings
+      this.versionString = this.appState.getAppBuildTime();
       if (this.appState.isRunningOnRealDevice()) {
         try {
           this.appVersion.getVersionNumber().then((number) => {
             this.versionString = number;
           });
         } catch (e) {
-          this.versionString = this.appState.getAppBuildTime();
           console.log("App-Version not Available");
         }
-     } else {
-        this.versionString = this.appState.getAppBuildTime();
      }
 
     this.actualLanguage = this.appState.getActualAppLanguageInfo();
