@@ -15,6 +15,7 @@ import { IntroPage } from '../pages/intro/intro';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
 import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
+import { ApiProvider } from "../providers/api/api";
 
 @Component({
   templateUrl: 'app.html'
@@ -53,7 +54,8 @@ export class MyApp implements OnInit{
     private appState: AppStateProvider,
     private menuController: MenuController,
     private modalCtrl: ModalController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private api: ApiProvider
   ) {
 
     // on beginning disable side menu
@@ -114,6 +116,12 @@ export class MyApp implements OnInit{
         this.processAppData(data);
       });
 
+      this.api.refreshAccessToken('patrick','test').subscribe( () => {
+        //alert('OK');
+      }, error => {
+        alert('FAIL: '+error);
+      });
+
     });
 
     // async --> load i18n data
@@ -122,14 +130,6 @@ export class MyApp implements OnInit{
     });
 
   }
-
-  /*
-      this.api.refreshAccessToken('patrick','tests').subscribe( () => {
-      alert('OK');
-    }, error => {
-      alert('FAIL: '+error);
-    });
-   */
 
   /*
    * PLATFORM & PLUGINGS

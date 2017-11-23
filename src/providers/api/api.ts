@@ -1,8 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
+
 import { Observable } from 'rxjs/Observable';
-import './JsonWebToken';
+
+
+class JsonWebToken {
+
+  // the base64 JWT
+  token : string;
+
+  // timestamp when token expires (in milliseconds, already corrected to client time)
+  deadline : number;
+
+}
+
+interface JsonWebTokenResponse {
+  code : number;
+  data : JsonWebTokenData;
+  status : string;
+}
+
+interface JsonWebTokenData {
+  token : string;
+}
 
 /*
  * Interface to the Konfetti Backend API
@@ -13,7 +34,6 @@ export class ApiProvider {
 
   private apiUrlBase : string = 'http://localhost:3000/';
 
-  private serverTokenDuration : number = 15 * 60 * 1000; // 15min TODO: sync with server
   private jsonWebToken : JsonWebToken;
 
   constructor(private http: HttpClient) {
@@ -48,8 +68,17 @@ export class ApiProvider {
          */
 
         // remember token
+        this.jsonWebToken = new JsonWebToken();
         this.jsonWebToken.token = data.data.token;
-        this.jsonWebToken.deadline = Date.now() + this.serverTokenDuration;
+
+        // decode JWT
+        let base64Url = data.data.token.split('.')[1];
+        let base64 = base64Url.replace('-', '+').replace('_', '/');
+        let tokenObject = JSON.parse(window.atob(base64));
+
+        // calculate token timeout timestamp ba
+        let secondsUntilTokenExpires = tokenObject.exp - tokenObject.iat;
+        this.jsonWebToken.deadline = Date.now() + (secondsUntilTokenExpires * 1000);
 
         // return success
         observer.next(this.jsonWebToken);
