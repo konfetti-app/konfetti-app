@@ -11,6 +11,7 @@
 import { Injectable } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { Observable } from "rxjs/Observable";
+import { JsonWebToken } from './../api/api';
 
 const STORAGE_KEY_V1 : string = 'AppData';
 

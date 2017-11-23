@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Nav, Platform, ModalController, Modal, ToastController} from 'ionic-angular';
+import { Nav, Platform, ModalController, Modal, ToastController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MenuController, Events } from 'ionic-angular';
@@ -15,7 +15,7 @@ import { IntroPage } from '../pages/intro/intro';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
 import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
-import { ApiProvider } from "../providers/api/api";
+import {ApiProvider, JsonWebToken, NetworkProblem} from "../providers/api/api";
 
 @Component({
   templateUrl: 'app.html'
@@ -55,7 +55,8 @@ export class MyApp implements OnInit{
     private menuController: MenuController,
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
-    private api: ApiProvider
+    private api: ApiProvider,
+    private alertCtrl: AlertController
   ) {
 
     // on beginning disable side menu
@@ -116,10 +117,9 @@ export class MyApp implements OnInit{
         this.processAppData(data);
       });
 
-      this.api.refreshAccessToken('patrick','test').subscribe( () => {
-        //alert('OK');
-      }, error => {
-        alert('FAIL: '+error);
+      this.api.setListenerOnNewAccessToken().subscribe((webToken: JsonWebToken) => {
+        console.log("AccessTokenListener - Got informed about a new token -> persiting", webToken);
+        this.appPersistence.setJsonWebToken(webToken);
       });
 
     });
@@ -184,6 +184,10 @@ export class MyApp implements OnInit{
   processAppData(data : AppData) {
     // TODO: based on app state set/refresh API tokens
     console.log(data.i18nLocale);
+
+    console.log("JWT");
+    console.dir(data.jsonWebtoken);
+
     this.readyAppState = true;
     this.checkIfAllReady();
   }
@@ -208,14 +212,71 @@ export class MyApp implements OnInit{
       return;
     }
 
+    // set language to app user setting or detect default
+    // TODO: set like in local storage or match closet to browser lang
+    this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
+
+    // init API data
+
+    // register Network Problem listener
+    this.api.setListenerOnNetworkProblems().subscribe((errorReport : NetworkProblem) => {
+
+      if (errorReport.id==="OFFLINE") {
+
+        // TODO i18n
+        this.alertCtrl.create({
+          title: 'Offline',
+          message: 'Kein Internet. Nochmal probieren?',
+          buttons: [
+            {
+              text: 'App Schließen',
+              role: 'cancel',
+              handler: () => {
+                // TODO exit app
+                alert('TODO: Exit App');
+              }
+            },
+            {
+              text: 'Nochmal',
+              handler: () => {
+                errorReport.retryCallback();
+              }
+            }
+          ]
+        }).present().then();
+
+      } else
+      if (errorReport.id==="AUTHFAIL") {
+
+        this.alertCtrl.create({
+          title: 'Fehler',
+          subTitle: 'Es besteht ein Fehler. Bitte probieren sie es später nocheinmal.',
+          buttons: ['App Schließen']
+        }).present().then(() => {
+          // TODO i18n & exit app
+          alert("TODO APP");
+        });
+
+      } else {
+
+        // TODO i18n & exit app
+        this.alertCtrl.create({
+          title: 'Fehler',
+          subTitle: 'Unbekannter Fehler: ' + errorReport.id,
+          buttons: ['App Schließen']
+        }).present().then(() => {
+          // TODO i18n & exit app
+          alert("TODO APP");
+        });
+
+      }
+
+    });
+
     // remove native splash screen
     this.readyAll = true;
     this.loadingSpinner.dismiss().then();
     this.splashScreen.hide();
-
-    // set language to app user setting or detect default
-    // TODO: set like in local storage or match closet to browser lang
-    this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
 
     // check state of app and jump to intro or to main page
     this.nav.setRoot(IntroPage, {showIntro:false}).then();

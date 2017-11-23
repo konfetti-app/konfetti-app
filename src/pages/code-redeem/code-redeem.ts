@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController, LoadingController, Loading, ToastController } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController, LoadingController, Loading, ToastController} from 'ionic-angular';
 import { AppStateProvider } from '../../providers/app-state/app-state';
 import { TranslateService } from "@ngx-translate/core";
+
+import { ApiProvider, RedeemCodeRepsonse } from "../../providers/api/api";
 
 // https://ionicframework.com/docs/native/barcode-scanner/
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -32,7 +34,8 @@ export class CodeRedeemPage {
     private barcodeScanner: BarcodeScanner,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private api: ApiProvider
   ) {
   }
 
@@ -44,7 +47,7 @@ export class CodeRedeemPage {
     }
   }
 
-  ionViewDidLeave(){
+  ionViewDidLeave() {
     if (this.loadingSpinner!=null) this.loadingSpinner.dismissAll();
   }
 
@@ -105,34 +108,75 @@ export class CodeRedeemPage {
     });
     this.loadingSpinner.present().then();
 
-    if (this.code.trim().toLowerCase()==="234758") {
+
+    this.api.redeemCodeAnonymous(this.code).subscribe( (data : any) => {
+
+      /*
+       * WIN
+       */
+
+      // hide spinner
+      this.loadingSpinner.dismiss().then();
+      this.loadingSpinner = null;
+
+      console.log("OK", data);
+
+      // TODO persist data !!!!!
+      // TODO check why toast is not showing
 
       this.toastCtrl.create({
         message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
         cssClass: 'toast-valid',
         duration: 1500
       }).present().then(()=>{
-
         setTimeout(()=>{
           this.viewCtrl.dismiss({ success: true } ).then();
         },1300);
-
       });
+
+    }, (error) => {
+
+      /*
+       * FAIL
+       */
+
+      // hide spinner
+      this.loadingSpinner.dismiss().then();
+      this.loadingSpinner=null;
+
+      // TODO: toast message should let user know that code was already redeemed
+      if (error==="REDEEMED") {
+        this.toastCtrl.create({
+          message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
+          cssClass: 'toast-invalid',
+          duration: 2000
+        }).present().then();
+        return;
+      }
+
+      if (error==="INVALID") {
+        this.toastCtrl.create({
+          message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
+          cssClass: 'toast-invalid',
+          duration: 2000
+        }).present().then();
+        return;
+      }
+
+      // TODO: on every other error - show a ups message
+      console.log("FAIL", error);
+
+    });
+
+    /*
+    if (this.code.trim().toLowerCase()==="234758") {
+
+
 
     } else {
 
-      this.toastCtrl.create({
-        message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
-        cssClass: 'toast-invalid',
-        duration: 20000
-      }).present().then();
-
-      setTimeout(()=>{
-        this.loadingSpinner.dismiss().then();
-        this.loadingSpinner=null;
-      },2000)
-
     }
+    */
 
   }
 
