@@ -1,10 +1,13 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import {IonicPage, NavParams, ModalController, Modal, ToastController} from 'ionic-angular';
+import {IonicPage, NavParams, ModalController, Modal, ToastController, LoadingController} from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
-import { CodeRedeemPage } from "../code-redeem/code-redeem";
+import { CodeRedeemPage } from '../code-redeem/code-redeem';
+import { ApiProvider, User} from '../../providers/api/api';
+import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
+import { AppStateProvider } from "../../providers/app-state/app-state";
 
 /**
  *
@@ -83,6 +86,7 @@ export class MainPage {
   @ViewChild('map') mapContainer: ElementRef;
   map: any;
 
+  showModuleOverlay: boolean = false;
   showModuleFocus : string = null;
 
   stateModulePanel : string = "showMap";
@@ -99,9 +103,14 @@ export class MainPage {
 
   langKeyTourNext : string;
 
-  lon : number = 13.408277;
-  lat : number = 52.520476;
-  zoom : number = 16;
+  // start map setting:
+  // Center of Germany
+  lon : number = 9.799805;
+  lat : number = 50.719939;
+  zoom : number = 5;
+
+  // headline of group
+  title = "";
 
   eventMarkers : any;
   zoomControl : any;
@@ -115,7 +124,11 @@ export class MainPage {
     private params: NavParams = null,
     private modalCtrl: ModalController,
     private translateService: TranslateService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private api: ApiProvider,
+    private persistence: AppPersistenceProvider,
+    private state: AppStateProvider
   ) {
     this.showModuleFocus = "";
 
@@ -353,12 +366,75 @@ export class MainPage {
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'konfettiapp.de',
       maxZoom: 18,
-      minZoom: 10
+      minZoom: 5
     }).addTo(this.map);
 
     this.map.panTo({lon: this.lon, lat: this.lat-0.0025}, this.zoom);
 
     this.transformShowMap();
+
+  }
+
+  /*
+   * refresh user and load the group that is set in app state
+   */
+  updateData() {
+
+    // hide title & module overlay
+    this.title = "";
+    this.showModuleOverlay = false;
+
+    // show loading module
+    let loadingModal = this.loadingCtrl.create({});
+    loadingModal.present().then();
+
+    // update user data including all groups
+    this.api.getUser(this.persistence.getAppDataCache().userid).subscribe( (user: User) => {
+
+      // remember user in app state
+      this.state.userInfo = user;
+
+      // decide which group to focus
+      let focusGroupId = this.persistence.getAppDataCache().lastFocusGroupId;
+      if (focusGroupId==null) {
+        // take the first (and most likely only group) in list of user
+        focusGroupId = user.neighbourhoods[0].id;
+        this.persistence.setLastFocusGroupId(focusGroupId);
+      }
+
+      console.log("Group to Focus:" + focusGroupId);
+
+      // set GUI with data of given group
+      let group = this.state.getNeighbourhoodById(focusGroupId);
+      // TODO: what to do if id not found - return is null? --> exception
+      this.title = group.name;
+      alert("TODO: MORE");
+      // TODO: later Newsfeed?
+      // TODO: later Mapevents?
+
+      // decide if to show the onboarding intro
+      // TODO: maybe decide this not by parameter - use flags in app persistence
+      this.showModuleOverlay = true;
+      let showIntro : boolean = true;
+      if ((this.params!=null) && (this.params.data!=null)) {
+        if ((typeof this.params.data.showIntro != 'undefined') && (this.params.data.showIntro != null)) {
+          showIntro = this.params.data.showIntro;
+        }
+      }
+      this.setStateKonfettiNotice(showIntro);
+      if (!showIntro) {
+        setTimeout(() => {
+          this.transformShowModules();
+        },100);
+      }
+
+      loadingModal.dismiss().then();
+
+    }, error => {
+      loadingModal.dismiss().then();
+      // TODO forward later to a exception handling
+      console.error(error);
+    });
 
   }
 
@@ -369,19 +445,8 @@ export class MainPage {
 
     this.initMap();
 
-    let showIntro : boolean = true;
-    if ((this.params!=null) && (this.params.data!=null)) {
-      if ((typeof this.params.data.showIntro != 'undefined') && (this.params.data.showIntro != null)) {
-        showIntro = this.params.data.showIntro;
-      }
-    }
+    this.updateData();
 
-    this.setStateKonfettiNotice(showIntro);
-    if (!showIntro) {
-      setTimeout(() => {
-        this.transformShowModules();
-      },100);
-    }
   }
 
   // returns the icon css classes depending of module id

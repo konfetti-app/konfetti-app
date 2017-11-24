@@ -29,16 +29,15 @@ export class AppData {
   i18nLocale : string = null;
 
   // user credentials
+  userid : string = null;
   username : string = null;
   password : string = null;
 
   // store the session with the server
   jsonWebtoken : JsonWebToken = null;
 
-  // user profile
-  firstname : string = "";
-  aboutme : string = "";
-  spokenLanguages : Array<string> = new Array<string>();
+  // group info
+  lastFocusGroupId: string = null;
 
 }
 
@@ -148,10 +147,12 @@ export class AppPersistenceProvider {
 
   /**
    * Store the user account and password.
+   * @param {string} id
    * @param {string} user
    * @param {string} pass
    */
-  setUsercredentials(user: string, pass: string) : void {
+  setUserCredentials(id: string, user: string, pass: string) : void {
+    this.appDataCache.userid = id;
     this.appDataCache.username = user;
     this.appDataCache.password = pass;
     this.persistAppData();
@@ -167,15 +168,11 @@ export class AppPersistenceProvider {
   }
 
   /**
-   * Set all user profile relevant information.
-   * @param {string} firstname
-   * @param {string} aboutme
-   * @param {Array<string>} spokenLangs
+   * Remember which group the user has worked in.
+   * @param {string} id
    */
-  setUserProfile(firstname: string, aboutme: string, spokenLangs: Array<string>) : void {
-    this.appDataCache.firstname = firstname;
-    this.appDataCache.aboutme = aboutme;
-    this.appDataCache.spokenLanguages = spokenLangs;
+  setLastFocusGroupId(id: string) : void {
+    this.appDataCache.lastFocusGroupId = id;
     this.persistAppData();
   }
 

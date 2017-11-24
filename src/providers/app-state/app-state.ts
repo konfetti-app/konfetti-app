@@ -7,7 +7,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform } from 'ionic-angular';
-
+import {Group, User} from './../../providers/api/api';
 
 function getWindow (): any {
   return window;
@@ -20,13 +20,26 @@ export class AppStateProvider {
     return getWindow();
   }
 
+  // i18n info
   private availableLanguages: Array<LanguageInfo> = new Array();
   private lastSetLocale : string;
+
+  // public state data
+  public userInfo : User = null;
 
   constructor(
       private translateService : TranslateService,
       private platform: Platform
     ) {
+  }
+
+  public getNeighbourhoodById(id : string) : Group {
+    if (this.userInfo==null) return null;
+    if (this.userInfo.neighbourhoods==null) return null;
+    this.userInfo.neighbourhoods.forEach(hood => {
+      if (hood.id==id) return hood;
+    });
+    return null;
   }
 
   /**

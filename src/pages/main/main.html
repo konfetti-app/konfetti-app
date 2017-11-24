@@ -27,7 +27,7 @@
     background-size: 100%;
   "></div>
 
-  <span class="main-group-title">Alexanderplatz</span>
+  <span *ngIf="title.length>0" class="main-group-title">{{title}}</span>
 
 </ion-content>
 
@@ -64,7 +64,7 @@
 
 <!-- Module Overlay -->
 
-<div id="content-overlay" [@animateModulePanel]="stateModulePanel" style="
+<div *ngIf="showModuleOverlay" id="content-overlay" [@animateModulePanel]="stateModulePanel" style="
     position: absolute;
     margin: 0px;
     height: 67%;

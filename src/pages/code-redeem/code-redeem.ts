@@ -1,9 +1,11 @@
+///<reference path="../../providers/app-persistence/app-persistence.ts"/>
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController, LoadingController, Loading, ToastController} from 'ionic-angular';
-import { AppStateProvider } from '../../providers/app-state/app-state';
 import { TranslateService } from "@ngx-translate/core";
 
-import { ApiProvider, RedeemCodeRepsonse } from "../../providers/api/api";
+import { ApiProvider, UserCredentials } from "../../providers/api/api";
+import { AppStateProvider } from '../../providers/app-state/app-state';
+import { AppPersistenceProvider } from '../../providers/app-persistence/app-persistence';
 
 // https://ionicframework.com/docs/native/barcode-scanner/
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -31,6 +33,7 @@ export class CodeRedeemPage {
     private viewCtrl: ViewController,
     private params: NavParams,
     private appState: AppStateProvider,
+    private appPersistence: AppPersistenceProvider,
     private barcodeScanner: BarcodeScanner,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
@@ -100,7 +103,6 @@ export class CodeRedeemPage {
   }
 
   buttonRedeemCode() : void {
-    // TODO real redeem code against API
 
     // show loading spinner
     this.loadingSpinner = this.loadingCtrl.create({
@@ -109,21 +111,20 @@ export class CodeRedeemPage {
     this.loadingSpinner.present().then();
 
 
-    this.api.redeemCodeAnonymous(this.code).subscribe( (data : any) => {
+    this.api.redeemCodeAnonymous(this.code, this.appState.getActualAppLanguageInfo().locale).subscribe( (user : UserCredentials) => {
 
       /*
        * WIN
        */
 
+      // persist user data
+      this.appPersistence.setUserCredentials(user.id, user.user, user.pass);
+
       // hide spinner
       this.loadingSpinner.dismiss().then();
       this.loadingSpinner = null;
 
-      console.log("OK", data);
-
-      // TODO persist data !!!!!
-      // TODO check why toast is not showing
-
+      // show user positive response
       this.toastCtrl.create({
         message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
         cssClass: 'toast-valid',

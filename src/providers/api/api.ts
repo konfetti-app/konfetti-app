@@ -16,7 +16,7 @@ export class ApiProvider {
   private apiUrlBase : string = 'http://localhost:3000/';
 
   // temp storage of credentials
-  private jsonWebToken : JsonWebToken = null;
+  private jsonWebToken : JsonWebToken;
   private user: string = null;
   private pass: string = null;
 
@@ -25,6 +25,12 @@ export class ApiProvider {
   private observeNetworkProblem : any = null;
 
   constructor(private http: HttpClient) {
+
+    // init JWT with outdated value
+    this.jsonWebToken = new JsonWebToken();
+    this.jsonWebToken.token = '';
+    this.jsonWebToken.deadline = 0;
+
   }
 
   /**
@@ -73,7 +79,7 @@ export class ApiProvider {
 
       // get new JWT token
       this.http.post<JsonWebTokenResponse>(this.apiUrlBase+'api/authenticate','', {
-        headers: headers,
+        headers: headers
       }).subscribe( data => {
 
         /*
@@ -141,16 +147,33 @@ export class ApiProvider {
    * @param {string} code number code
    * @returns {Observable<RedeemCodeRepsonse>}
    */
-  redeemCodeAnonymous(code: string) : Observable<RedeemCodeRepsonse> {
+  redeemCodeAnonymous(code: string, locale: string) : Observable<UserCredentials> {
     return Observable.create((observer) => {
 
-      this.http.post<RedeemCodeRepsonse>(this.apiUrlBase + 'api/codes/'+code+'/anonymous','').subscribe( (resp) => {
+      // Basic Auth with username and password
+      let headers =  new HttpHeaders();
+      headers = headers.append('Content-Type', 'application/json');
+
+      let body = `{"locale": "${locale}"}`;
+      this.http.post<any>(this.apiUrlBase + 'api/codes/'+code+'/anonymous',body, { headers: headers}).subscribe( (resp) => {
 
         /*
          * WIN
          */
-        console.log("WIN REDEEM CODE");
-        console.dir(resp);
+
+        // remember user/pass and make instant JWT auth
+        this.user = resp.data.user.username;
+        this.pass = resp.data.clearPassword;
+
+        // prepare result data
+        let result : UserCredentials = new UserCredentials();
+        result.id = resp.data.user._id;
+        result.user = this.user;
+        result.pass = this.pass;
+
+        // return data
+        observer.next(result);
+        observer.complete();
 
       }, (error) => {
 
@@ -178,8 +201,7 @@ export class ApiProvider {
 
         // default error handling
         this.defaultHttpErrorHandling(error, observer, "redeemCodeAnonymous", () => {
-          console.log("RETRY");
-          this.redeemCodeAnonymous(code).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
+          this.redeemCodeAnonymous(code, locale).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
             observer.error(error);
           });
         });
@@ -188,6 +210,47 @@ export class ApiProvider {
 
     });
   }
+
+  getUser(id: string) : Observable<any> {
+
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        this.http.get<any>(this.apiUrlBase + 'api/users/'+id, {
+          headers: headers
+        }).subscribe((resp) => {
+
+          /*
+           * WIN
+           */
+
+          observer.next(resp.data as User);
+          observer.complete();
+
+        }, error => {
+
+          // user not found
+          try {
+            if (JSON.parse(error.error).errors[0].message === 'user not found') {
+              observer.error('NOTFOUND');
+              return;
+            }
+          } catch (e) {}
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "getUser", () => {
+            this.getUser(id).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
+              observer.error(error);
+            });
+          });
+
+        });
+
+      }, error => observer.error(error));
+
+    });
+   }
 
   private defaultHttpErrorHandling(error, errorObserver, debugTag:string, retryCallback) : void {
 
@@ -243,12 +306,6 @@ export class ApiProvider {
   private getJWTAuthHeaders() : Observable<HttpHeaders> {
     return Observable.create((observer) => {
 
-      // check if JWT is available
-      if (this.jsonWebToken==null) {
-        observer.error('JWT not initialized');
-        return;
-      }
-
       // initial header setting
       let headers =  new HttpHeaders();
 
@@ -263,7 +320,7 @@ export class ApiProvider {
 
           // build header with new token
           headers = headers.append("Authorization", "Bearer " + jwt.token);
-          observer.next(this.jsonWebToken);
+          observer.next(headers);
           observer.complete();
 
         }, (error) => {
@@ -302,8 +359,30 @@ export class ApiProvider {
  * PUBLIC Data Classes/Interfaces
  **************************************/
 
-export interface RedeemCodeRepsonse {
+export class UserCredentials {
 
+  id: string;
+  user: string;
+  pass: string;
+
+}
+
+export interface Group {
+  id: string;
+  name: string;
+  threads: Array<any>;
+  activeModules: Array<any>;
+}
+
+export class User {
+  created: number;
+  disabled: boolean;
+  isAdmin: boolean;
+  lastSeen: number;
+  nickname: string;
+  description: string;
+  neighbourhoods: Array<Group>;
+  spokenLanguages: Array<string>;
 }
 
 export class JsonWebToken {
