@@ -391,14 +391,17 @@ export class MainPage {
     // update user data including all groups
     this.api.getUser(this.persistence.getAppDataCache().userid).subscribe( (user: User) => {
 
+      console.log("OK User");
+      console.dir(user);
+
       // remember user in app state
-      this.state.userInfo = user;
+      this.state.setUserInfo(user);
 
       // decide which group to focus
       let focusGroupId = this.persistence.getAppDataCache().lastFocusGroupId;
       if (focusGroupId==null) {
         // take the first (and most likely only group) in list of user
-        focusGroupId = user.neighbourhoods[0].id;
+        focusGroupId = user.neighbourhoods[0]._id;
         this.persistence.setLastFocusGroupId(focusGroupId);
       }
 
@@ -408,9 +411,13 @@ export class MainPage {
       let group = this.state.getNeighbourhoodById(focusGroupId);
       // TODO: what to do if id not found - return is null? --> exception
       this.title = group.name;
-      alert("TODO: MORE");
+
+      console.log("GROUP");
+      console.dir(group);
+
       // TODO: later Newsfeed?
       // TODO: later Mapevents?
+      // TODO: setup Modules?
 
       // decide if to show the onboarding intro
       // TODO: maybe decide this not by parameter - use flags in app persistence

@@ -27,11 +27,17 @@
             </div>
           </td>
           <td style="padding-top: 11px;">
-            <div style="
-            font-size: 130%;
-            margin-left: 8px;
-            font-weight: 500;">
+            <div *ngIf="(!userInfo.name)" style="
+  font-size: 130%;
+  margin-left: 8px;
+  font-weight: 500;">
               {{'MENU_USERNAME_UNKNOWN' | translate}}
+            </div>
+            <div *ngIf="(userInfo.name)" style="
+  font-size: 130%;
+  margin-left: 8px;
+  font-weight: 500;">
+              {{userInfo.name}}
             </div>
             <button ion-button clear (click)="buttonKonfetti()" style="
               font-size: 110%;
@@ -67,15 +73,16 @@
         {{'MENU_GROUPS' | translate}}
       </div>
 
-      <button ion-button clear menuClose (click)="buttonGroup('id1')" class="side-menu-button">
+      <button *ngFor="let hood of userInfo.neighbourhoods" ion-button clear menuClose (click)="buttonGroup(hood._id)" class="side-menu-button">
       <div class="side-menu-button-icon">
         <i class="mdi mdi-domain" style="font-size:180%;"></i>
       </div>
       <div class="side-menu-button-text">
-        TU Berlin
+        {{hood.name}}
       </div>
     </button>
 
+    <!--
     <button ion-button clear menuClose (click)="buttonGroup('id2')" class="side-menu-button">
       <div class="side-menu-button-icon">
         <i class="mdi mdi-domain" style="font-size:180%;"></i>
@@ -85,15 +92,16 @@
       </div>
       <div class="side-menu-notification">2</div>
     </button>
+    -->
 
-      <button ion-button clear menuClose (click)="buttonNewGroup()" class="side-menu-button">
-        <div class="side-menu-button-icon">
+     <button ion-button clear menuClose (click)="buttonNewGroup()" class="side-menu-button">
+      <div class="side-menu-button-icon">
           <i class="mdi mdi-plus-circle" style="font-size:180%;"></i>
-        </div>
-        <div class="side-menu-button-text" style="padding-top: 9px;">
+      </div>
+      <div class="side-menu-button-text" style="padding-top: 9px;">
           {{'MENU_NEW_GROUP' | translate}}
-        </div>
-      </button>
+      </div>
+     </button>
 
     </div>
 

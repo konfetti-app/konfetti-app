@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform } from 'ionic-angular';
 import {Group, User} from './../../providers/api/api';
+import {Observable} from "rxjs/Observable";
 
 function getWindow (): any {
   return window;
@@ -24,8 +25,9 @@ export class AppStateProvider {
   private availableLanguages: Array<LanguageInfo> = new Array();
   private lastSetLocale : string;
 
-  // public state data
-  public userInfo : User = null;
+  // user info
+  private userInfo : User = null;
+  private observerNewUserInfo : any = null;
 
   constructor(
       private translateService : TranslateService,
@@ -33,13 +35,47 @@ export class AppStateProvider {
     ) {
   }
 
+  /**
+   * Get neighborhood data by id
+   * @param {string} id
+   * @returns {Group}
+   */
   public getNeighbourhoodById(id : string) : Group {
     if (this.userInfo==null) return null;
     if (this.userInfo.neighbourhoods==null) return null;
+    let result = null;
     this.userInfo.neighbourhoods.forEach(hood => {
-      if (hood.id==id) return hood;
+      if (hood._id==id) result = hood;
     });
-    return null;
+    return result;
+  }
+
+  /**
+   * Setter for User Info
+   * @param {User} user
+   */
+  setUserInfo(user: User) : void {
+    console.log("NAME",user.name);
+    this.userInfo = user;
+    if (this.observerNewUserInfo!=null) this.observerNewUserInfo.next(user);
+  }
+
+  /**
+   * Getter for User Info
+   * @returns {User}
+   */
+  getUserInfo() : User {
+    return  this.userInfo;
+  }
+
+  /**
+   * Listen on updates on the user info object
+   * @returns {Observable<User>}
+   */
+  listenOnNewUserInfo() : Observable<User> {
+    return Observable.create((observer ) => {
+      this.observerNewUserInfo = observer;
+    });
   }
 
   /**
@@ -68,7 +104,7 @@ export class AppStateProvider {
     locales.forEach( (locale) => {
       this.availableLanguages.forEach((info) => {
         if (info.locale===locale) result.push(info);
-      })
+      });
     });
     return result;
   }

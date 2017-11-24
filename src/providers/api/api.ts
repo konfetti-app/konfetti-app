@@ -225,7 +225,7 @@ export class ApiProvider {
            * WIN
            */
 
-          observer.next(resp.data as User);
+          observer.next(resp.data.user as User);
           observer.complete();
 
         }, error => {
@@ -368,7 +368,7 @@ export class UserCredentials {
 }
 
 export interface Group {
-  id: string;
+  _id: string;
   name: string;
   threads: Array<any>;
   activeModules: Array<any>;
@@ -379,7 +379,7 @@ export class User {
   disabled: boolean;
   isAdmin: boolean;
   lastSeen: number;
-  nickname: string;
+  name: string;
   description: string;
   neighbourhoods: Array<Group>;
   spokenLanguages: Array<string>;

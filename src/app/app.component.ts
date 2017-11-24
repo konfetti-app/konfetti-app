@@ -15,7 +15,7 @@ import { IntroPage } from '../pages/intro/intro';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
 import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
-import {ApiProvider, JsonWebToken, NetworkProblem} from "../providers/api/api";
+import {ApiProvider, JsonWebToken, NetworkProblem, User} from "../providers/api/api";
 
 @Component({
   templateUrl: 'app.html'
@@ -40,6 +40,11 @@ export class MyApp implements OnInit{
   readyAll : Boolean = false;
   readyAppState : Boolean = false;
   versionString : string = "";
+
+  /*
+   * Data for Sidemenu
+   */
+  userInfo : User = new User();
 
 
   constructor(
@@ -94,6 +99,74 @@ export class MyApp implements OnInit{
     // app is resuming from background
     this.platform.resume.subscribe( event => {
       // PLACEHOLDER
+    });
+
+    /**
+     * App State Events
+     */
+
+    // register on User Info change
+    this.appState.listenOnNewUserInfo().subscribe( user => {
+      this.userInfo = user;
+    });
+
+    /**
+     * Api Events
+     */
+
+    // register Network Problem listener
+    this.api.setListenerOnNetworkProblems().subscribe((errorReport : NetworkProblem) => {
+
+      if (errorReport.id==="OFFLINE") {
+
+        // TODO i18n
+        this.alertCtrl.create({
+          title: 'Offline',
+          message: 'Kein Internet. Nochmal probieren?',
+          buttons: [
+            {
+              text: 'App Schließen',
+              role: 'cancel',
+              handler: () => {
+                // TODO exit app
+                alert('TODO: Exit App');
+              }
+            },
+            {
+              text: 'Nochmal',
+              handler: () => {
+                errorReport.retryCallback();
+              }
+            }
+          ]
+        }).present().then();
+
+      } else
+      if (errorReport.id==="AUTHFAIL") {
+
+        this.alertCtrl.create({
+          title: 'Fehler',
+          subTitle: 'Es besteht ein Fehler. Bitte probieren sie es später nocheinmal.',
+          buttons: ['App Schließen']
+        }).present().then(() => {
+          // TODO i18n & exit app
+          alert("TODO APP");
+        });
+
+      } else {
+
+        // TODO i18n & exit app
+        this.alertCtrl.create({
+          title: 'Fehler',
+          subTitle: 'Unbekannter Fehler: ' + errorReport.id,
+          buttons: ['App Schließen']
+        }).present().then(() => {
+          // TODO i18n & exit app
+          alert("TODO APP");
+        });
+
+      }
+
     });
 
     // TODO: Remove DEBUG INFO
@@ -216,62 +289,7 @@ export class MyApp implements OnInit{
     // TODO: set like in local storage or match closet to browser lang
     this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
 
-    // init API data
-
-    // register Network Problem listener
-    this.api.setListenerOnNetworkProblems().subscribe((errorReport : NetworkProblem) => {
-
-      if (errorReport.id==="OFFLINE") {
-
-        // TODO i18n
-        this.alertCtrl.create({
-          title: 'Offline',
-          message: 'Kein Internet. Nochmal probieren?',
-          buttons: [
-            {
-              text: 'App Schließen',
-              role: 'cancel',
-              handler: () => {
-                // TODO exit app
-                alert('TODO: Exit App');
-              }
-            },
-            {
-              text: 'Nochmal',
-              handler: () => {
-                errorReport.retryCallback();
-              }
-            }
-          ]
-        }).present().then();
-
-      } else
-      if (errorReport.id==="AUTHFAIL") {
-
-        this.alertCtrl.create({
-          title: 'Fehler',
-          subTitle: 'Es besteht ein Fehler. Bitte probieren sie es später nocheinmal.',
-          buttons: ['App Schließen']
-        }).present().then(() => {
-          // TODO i18n & exit app
-          alert("TODO APP");
-        });
-
-      } else {
-
-        // TODO i18n & exit app
-        this.alertCtrl.create({
-          title: 'Fehler',
-          subTitle: 'Unbekannter Fehler: ' + errorReport.id,
-          buttons: ['App Schließen']
-        }).present().then(() => {
-          // TODO i18n & exit app
-          alert("TODO APP");
-        });
-
-      }
-
-    });
+    // TODO init API data
 
     // remove native splash screen
     this.readyAll = true;
