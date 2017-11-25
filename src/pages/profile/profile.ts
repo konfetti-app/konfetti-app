@@ -61,19 +61,19 @@ export class ProfilePage {
     if (this.persistedData.spokenLanguages.length==0) this.persistedData.spokenLanguages.push(this.appState.getActualAppLanguageInfo().locale);
 
     // init form data from profile
-    this.firstname = this.persistedData.firstname;
-    this.aboutme = this.persistedData.aboutme;
+    this.firstname = this.persistedData.name;
+    this.aboutme = this.persistedData.description;
     this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(this.persistedData.spokenLanguages);
 
   }
 
   storeFirstname() : void {
-    if ( this.firstname === this.persistedData.firstname ) return;
+    if ( this.firstname === this.persistedData.name ) return;
     this.storeToBackendApi();
   }
 
   storeAboutMe() : void {
-    if ( this.aboutme === this.persistedData.aboutme ) return;
+    if ( this.aboutme === this.persistedData.description ) return;
     this.storeToBackendApi();
   }
 
@@ -129,7 +129,10 @@ export class ProfilePage {
     // TODO: store to backend API
 
     // persist locally
-    this.appPersistence.setUserProfile(this.firstname, this.aboutme, this.persistedData.spokenLanguages);
+    
+    //TODO temporarily disabled
+    // this.appPersistence.setUserProfile(this.firstname, this.aboutme, this.persistedData.spokenLanguages);
+    
     this.persistedData = this.appPersistence.getAppDataCache();
     /*
     this.toastCtrl.create({
