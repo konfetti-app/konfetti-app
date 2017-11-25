@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController, AlertController } from 'ionic-angular';
-import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
-import {AppData, AppPersistenceProvider} from "../../providers/app-persistence/app-persistence";
+import { IonicPage, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
+
+import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
+import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
+import { ApiProvider, User} from '../../providers/api/api';
 
 @IonicPage()
 @Component({
@@ -26,8 +28,6 @@ export class ProfilePage {
   firstname : string = "";
   aboutme : string = "";
 
-  persistedData : AppData;
-
 
   constructor(
     //private navCtrl: NavController,
@@ -36,6 +36,8 @@ export class ProfilePage {
     private alertCtrl: AlertController,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
+    private loadingCtrl: LoadingController,
+    private api: ApiProvider,
     private translateService: TranslateService
   ) {
   }
@@ -44,6 +46,17 @@ export class ProfilePage {
     console.log('ionViewDidLoad ProfilePage');
   }
 
+  private updateDynamicDataUI() : void {
+
+    // gez profile data from app state
+    let user:User = this.appState.getUserInfo();
+
+    // init form data from profile (old data)
+    this.firstname = user.name;
+    this.aboutme = user.description;
+    this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(user.spokenLanguages);
+
+  }
 
   ionViewWillEnter() {
 
@@ -56,24 +69,52 @@ export class ProfilePage {
 
     }
 
-    // get profile data form persistence
-    this.persistedData = this.appPersistence.getAppDataCache();
-    if (this.persistedData.spokenLanguages.length==0) this.persistedData.spokenLanguages.push(this.appState.getActualAppLanguageInfo().locale);
+    // update UI with old data
+    this.updateDynamicDataUI();
 
-    // init form data from profile
-    this.firstname = this.persistedData.name;
-    this.aboutme = this.persistedData.description;
-    this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(this.persistedData.spokenLanguages);
+    // show loading module
+    let loadingModal = this.loadingCtrl.create({});
+    loadingModal.present().then();
+
+    // load profile data fresh from server
+    this.api.getUser(this.appPersistence.getAppDataCache().userid).subscribe( (user) => {
+
+      /*
+       * WIN
+       */
+
+      // update user profile in app state
+      this.appState.setUserInfo(user);
+
+      // update UI with new data
+      this.updateDynamicDataUI();
+
+      // hide loading spinner
+      loadingModal.dismiss().then();
+
+    }, (error) => {
+
+      /*
+       * FAIL
+       */
+
+      // hide loading spinner
+      loadingModal.dismiss().then();
+
+      // TODO: handle expection
+
+    });
+
 
   }
 
   storeFirstname() : void {
-    if ( this.firstname === this.persistedData.name ) return;
+    if ( this.firstname === this.appState.getUserInfo().name ) return;
     this.storeToBackendApi();
   }
 
   storeAboutMe() : void {
-    if ( this.aboutme === this.persistedData.description ) return;
+    if ( this.aboutme === this.appState.getUserInfo().description ) return;
     this.storeToBackendApi();
   }
 
@@ -92,7 +133,7 @@ export class ProfilePage {
         type: 'checkbox',
         label: lang.displayname,
         value: lang.locale,
-        checked: (this.persistedData.spokenLanguages.indexOf(lang.locale)>=0)
+        checked: (this.appState.getUserInfo().spokenLanguages.indexOf(lang.locale)>=0)
       });
     });
 
@@ -109,7 +150,9 @@ export class ProfilePage {
 
         // update form data
         this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(localeArray);
-        this.persistedData.spokenLanguages = localeArray;
+        let user:User = this.appState.getUserInfo();
+        user.spokenLanguages = localeArray;
+        this.appState.setUserInfo(user);
 
         // persist
         this.storeToBackendApi();
@@ -127,13 +170,8 @@ export class ProfilePage {
   storeToBackendApi() : void {
 
     // TODO: store to backend API
+    console.error("TODO: Store Data back to API");
 
-    // persist locally
-    
-    //TODO temporarily disabled
-    // this.appPersistence.setUserProfile(this.firstname, this.aboutme, this.persistedData.spokenLanguages);
-    
-    this.persistedData = this.appPersistence.getAppDataCache();
     /*
     this.toastCtrl.create({
       message: this.translateService.instant('Changes Saved'),

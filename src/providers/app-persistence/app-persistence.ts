@@ -33,9 +33,6 @@ export class AppData {
   name : string = null;
   username : string = null;
   password : string = null;
-  spokenLanguages : Array<string> = [];
-  preferredLanguage : string = null;
-  description : string = null;
 
   // store the session with the server
   jsonWebtoken : JsonWebToken = null;
