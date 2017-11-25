@@ -405,7 +405,7 @@ export class MainPage {
       // set GUI with data of given group
       let group = this.state.getNeighbourhoodById(focusGroupId);
       // TODO: what to do if id not found - return is null? --> exception
-      this.title = group.name;
+      this.title = group.name || "";
 
       // TODO: later Newsfeed?
 
