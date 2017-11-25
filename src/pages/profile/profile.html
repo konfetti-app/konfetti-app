@@ -74,6 +74,13 @@
 
     </div>
 
+    <img src="{{avatarUrl}}" />
+
+    <!-- hidden file input to enable file upload on browser -->
+    <div style="position: absolute;top: -100px;">
+      <input #fileInput type="file" (change)="onChangeFile($event)"/>
+    </div>
+
     <!--
     <button *ngIf="showAccountLink" (click)="buttonPasswordAndAccount()" ion-button clear style="margin-top: 24px;">
       <i class="fa fa-key" aria-hidden="true"></i>&nbsp;

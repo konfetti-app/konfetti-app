@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 import { Observable } from 'rxjs/Observable';
@@ -303,6 +303,40 @@ export class ApiProvider {
     });
   }
 
+  setUserAvatarImage(file:any) : Observable<any> {
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        // prepare header for formdata uoload
+        //headers = headers.append('Content-Type', 'multipart/form-data');
+
+        const formData: FormData = new FormData();
+        formData.append('avatar', file, file.name);
+
+        //const body = new HttpParams().set('avatar', file, file.name);
+
+        this.http.post<any>(this.apiUrlBase + 'api/assets/avatar', formData,{
+          headers: headers
+        }).subscribe( resp => {
+
+          observer.next(resp.data);
+          observer.complete();
+
+        }, error => {
+
+          // TODO handle retry
+          observer.error(error);
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
   private defaultHttpErrorHandling(error, errorObserver, debugTag:string, retryCallback) : void {
 
     // SZENARIO: Client is Offline
@@ -444,6 +478,11 @@ export class User {
   description: string;
   neighbourhoods: Array<Group>;
   spokenLanguages: Array<string>;
+  avatar: Avatar;
+}
+
+export interface Avatar {
+  filename: string;
 }
 
 export class UserUpdate {

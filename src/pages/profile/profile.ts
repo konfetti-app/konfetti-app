@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import {IonicPage, NavParams, ViewController, AlertController, LoadingController, ToastController} from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 
@@ -27,12 +27,17 @@ export class ProfilePage {
   spokenLangs : Array<LanguageInfo>;
   nickname : string = "";
   aboutme : string = "";
+  avatarUrl : string = "";
 
   /*
    * flag if data git changed
    */
   dataChanged : boolean = false;
 
+  /*
+   *
+   */
+  @ViewChild('fileInput') fileInputElement: ElementRef;
 
   constructor(
     //private navCtrl: NavController,
@@ -64,6 +69,15 @@ export class ProfilePage {
 
     // data in sync with API
     this.dataChanged = false;
+
+    this.updateDynamicImageUI();
+
+  }
+
+  public updateDynamicImageUI() : void {
+
+    // TODO set image (if available)
+    this.avatarUrl = "http://localhost:3000/assets/"+this.appState.getUserInfo().avatar.filename;
 
   }
 
@@ -127,8 +141,52 @@ export class ProfilePage {
     this.dataChanged = true;
   }
 
+  onChangeFile(event) {
+    var files = event.srcElement.files;
+    console.log("Selected Files");
+    console.dir(files);
+    this.api.setUserAvatarImage(files[0]).subscribe( (fileMeta) => {
+
+      console.log("OK");
+      console.dir(fileMeta.asset);
+
+      // update avatar on user app state
+      let user: User = this.appState.getUserInfo();
+      user.avatar = fileMeta.asset;
+      this.appState.setUserInfo(user);
+
+      // update ui
+      this.updateDynamicImageUI();
+      this.dataChanged = true;
+
+    }, (error) => {
+
+      console.log("FAIL");
+      console.dir(error);
+
+    });
+  }
+
   buttonChangeProfilePicture() : void {
-    alert("TODO: take picture from cam or file");
+
+    if (this.appState.isRunningOnRealDevice()) {
+
+      /*
+       * On Real Device
+       */
+
+      alert("TODO: take picture from cam or file");
+
+    } else {
+
+      /*
+       * On Browser (mostly during development)
+       */
+
+      this.fileInputElement.nativeElement.click();
+
+    }
+
   }
 
   buttonEditSpokenLangs() : void {
@@ -175,7 +233,6 @@ export class ProfilePage {
     selectionDialog.present().then(  );
 
   }
-
 
   buttonPasswordAndAccount(): void {
     this.viewCtrl.dismiss({ success: false , command: 'goAccount'} ).then();
