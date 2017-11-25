@@ -391,9 +391,6 @@ export class MainPage {
     // update user data including all groups
     this.api.getUser(this.persistence.getAppDataCache().userid).subscribe( (user: User) => {
 
-      console.log("OK User");
-      console.dir(user);
-
       // remember user in app state
       this.state.setUserInfo(user);
 
@@ -405,36 +402,31 @@ export class MainPage {
         this.persistence.setLastFocusGroupId(focusGroupId);
       }
 
-      console.log("Group to Focus:" + focusGroupId);
-
       // set GUI with data of given group
       let group = this.state.getNeighbourhoodById(focusGroupId);
       // TODO: what to do if id not found - return is null? --> exception
       this.title = group.name;
 
-      console.log("GROUP");
-      console.dir(group);
-
       // TODO: later Newsfeed?
-      // TODO: later Mapevents?
-      // TODO: setup Modules?
 
-      // decide if to show the onboarding intro
-      // TODO: maybe decide this not by parameter - use flags in app persistence
+      // TODO: later Mapevents?
+
+      // TODO: setup Modules?
       this.showModuleOverlay = true;
-      let showIntro : boolean = true;
-      if ((this.params!=null) && (this.params.data!=null)) {
-        if ((typeof this.params.data.showIntro != 'undefined') && (this.params.data.showIntro != null)) {
-          showIntro = this.params.data.showIntro;
-        }
-      }
+
+      // show intro if flag is not set for this group
+      let showIntro:boolean = !this.persistence.isFlagSetOnGroup(group._id, AppPersistenceProvider.FLAG_INTROSHOWN);
       this.setStateKonfettiNotice(showIntro);
       if (!showIntro) {
         setTimeout(() => {
           this.transformShowModules();
         },100);
+      } else {
+        // mark intro shown on group/hood
+        this.persistence.setFlagOnGroup(group._id,AppPersistenceProvider.FLAG_INTROSHOWN);
       }
 
+      // hide loading modal
       loadingModal.dismiss().then();
 
     }, error => {

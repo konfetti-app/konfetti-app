@@ -51,11 +51,10 @@ export class AppStateProvider {
   }
 
   /**
-   * Setter for User Info
+   * Setter for User Info and let listeners know about update.
    * @param {User} user
    */
   setUserInfo(user: User) : void {
-    console.log("NAME",user.name);
     this.userInfo = user;
     if (this.observerNewUserInfo!=null) this.observerNewUserInfo.next(user);
   }

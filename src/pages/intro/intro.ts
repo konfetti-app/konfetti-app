@@ -72,7 +72,7 @@ export class IntroPage {
     let modal : Modal = this.modalCtrl.create(CodeRedeemPage, {});
     modal.onDidDismiss(data => {
       if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
-        this.navCtrl.setRoot(MainPage, {showIntro:true}).then();
+        this.navCtrl.setRoot(MainPage, {}).then();
       }
     });
     modal.present().then();
@@ -83,14 +83,14 @@ export class IntroPage {
     modal.onDidDismiss(data => {
       console.log('Data',data);
       if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
-        this.navCtrl.setRoot(MainPage, {showIntro:false}).then();
+        this.navCtrl.setRoot(MainPage, {}).then();
       }
     });
     modal.present().then();
   }
 
   changeLanguage(locale: string) : void {
-    this.appState.updateActualAppLanguage(locale)
+    this.appState.updateActualAppLanguage(locale);
     this.appPersistence.setLocale(locale);
     this.actualLanguage = this.appState.getActualAppLanguageInfo();
   }

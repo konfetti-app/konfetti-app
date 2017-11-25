@@ -255,11 +255,9 @@ export class MyApp implements OnInit{
    * Loading the dynamic translations data for the app.
    */
   processAppData(data : AppData) {
+
     // TODO: based on app state set/refresh API tokens
     console.log(data.i18nLocale);
-
-    console.log("JWT");
-    console.dir(data.jsonWebtoken);
 
     this.readyAppState = true;
     this.checkIfAllReady();
@@ -297,7 +295,7 @@ export class MyApp implements OnInit{
     this.splashScreen.hide();
 
     // check state of app and jump to intro or to main page
-    this.nav.setRoot(IntroPage, {showIntro:false}).then();
+    this.nav.setRoot(IntroPage, {}).then();
 
   };
 

@@ -39,10 +39,17 @@ export class AppData {
   // group info
   lastFocusGroupId: string = null;
 
+  // flags on groups/hoods ( { "IDGROUP" : { "FLAGKEY" : BOOLEAN } } )
+  groupFlags: any = {};
+
 }
 
 @Injectable()
 export class AppPersistenceProvider {
+
+  // flags on groups/hoods
+  public static FLAG_INTROSHOWN: string = "INTRO";
+  public static FLAG_FIRSTPIN: string = "PIN";
 
   // once app data is loaded from persistence - keep in chache
   private appDataCache : AppData = null;
@@ -134,6 +141,31 @@ export class AppPersistenceProvider {
   getAppDataCache() : AppData {
     if (this.appDataCache==null) throw new Error('use getAppDataAsync first');
     return this.appDataCache;
+  }
+
+  /**
+   * Set a flag on a group/hood.
+   * @param {string} groupID
+   * @param {string} flag USE CONST like AppPersistenceProvider.FLAG_INTROSHOWN
+   */
+  setFlagOnGroup(groupID:string, flag:string) : void {
+    let flags:any = this.appDataCache.groupFlags[groupID];
+    if (!flags) flags = {};
+    flags[flag] = true;
+    this.appDataCache.groupFlags[groupID] = flags;
+    this.persistAppData();
+  }
+
+  /**
+   * Check if a flag is set on group/hood.
+   * @param {string} groupID
+   * @param {string} flag USE CONST like AppPersistenceProvider.FLAG_INTROSHOWN
+   * @returns {boolean}
+   */
+  isFlagSetOnGroup(groupID:string, flag:string) : boolean {
+    let flags:any = this.appDataCache.groupFlags[groupID];
+    if (!flags) flags = {};
+    return (typeof flags[flag] != "undefined");
   }
 
   /**
