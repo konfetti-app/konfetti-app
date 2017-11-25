@@ -75,6 +75,7 @@ export class ApiProvider {
 
       // Basic Auth with username and password
       let headers =  new HttpHeaders();
+      console.log("REFRESH JWT user("+user+") pass("+pass+")");
       headers = headers.append("Authorization", "Basic " + btoa(user+":"+pass));
 
       // get new JWT token
@@ -211,7 +212,7 @@ export class ApiProvider {
     });
   }
 
-  getUser(id: string) : Observable<any> {
+  getUser(id: string) : Observable<User> {
 
     return Observable.create((observer) => {
 
@@ -254,6 +255,53 @@ export class ApiProvider {
 
     });
    }
+
+  updateUserInfo(id: string, userUpdate: UserUpdate) : Observable<User> {
+
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        // prepare header for json body data
+        headers = headers.append('Content-Type', 'application/json');
+
+        this.http.post<any>(this.apiUrlBase + 'api/users/'+id, JSON.stringify(userUpdate),{
+          headers: headers
+        }).subscribe((resp) => {
+
+          /*
+           * WIN
+           */
+
+          observer.next(resp.data.user as User);
+          observer.complete();
+
+        }, error => {
+
+          // user not found
+          try {
+            if (JSON.parse(error.error).errors[0].message === 'user not found') {
+              observer.error('NOTFOUND');
+              return;
+            }
+          } catch (e) {}
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "getUser", () => {
+            this.updateUserInfo(id, userUpdate).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
 
   private defaultHttpErrorHandling(error, errorObserver, debugTag:string, retryCallback) : void {
 
@@ -385,10 +433,20 @@ export class User {
   disabled: boolean;
   isAdmin: boolean;
   lastSeen: number;
-  name: string;
+  nickname: string;
   description: string;
   neighbourhoods: Array<Group>;
   spokenLanguages: Array<string>;
+}
+
+export class UserUpdate {
+  nickname: string;
+  username: string;
+  preferredLanguage: string;
+  spokenLanguages: Array<string>;
+  description:string;
+  password:string;
+  email: string;
 }
 
 export class JsonWebToken {

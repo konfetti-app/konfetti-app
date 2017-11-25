@@ -5,7 +5,8 @@
     </ion-title>
     <ion-buttons end class="navheader-end-buttons" >
       <button ion-button icon-only (click)="buttonClose()">
-        <ion-icon name="close"></ion-icon>
+        <ion-icon *ngIf="!dataChanged" name="close"></ion-icon>
+        <ion-icon *ngIf="dataChanged" name="md-checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -36,7 +37,7 @@
 
           <ion-item style="width:95%; top: -10px;">
             <ion-label color="primary" floating>{{ 'PROFILE_FIRSTNAME' | translate }}</ion-label>
-            <ion-input type="text"  (blur)="storeFirstname()" [(ngModel)]="firstname" ></ion-input>
+            <ion-input type="text" (keyup)="onChangeNickname()" [(ngModel)]="nickname" ></ion-input>
           </ion-item>
 
         </ion-list>
@@ -49,7 +50,7 @@
 
     <ion-item>
       <ion-label color="primary" id="profile-aboutme-lable" stacked>{{ 'PROFILE_ABOUTME' | translate }}</ion-label>
-      <ion-input type="text" (blur)="storeAboutMe()" [(ngModel)]="aboutme" placeholder="{{ 'PROFILE_ABOUTME_DEFAULT' | translate }}"></ion-input>
+      <ion-input type="text" (keyup)="onChangeAbout()" [(ngModel)]="aboutme" placeholder="{{ 'PROFILE_ABOUTME_DEFAULT' | translate }}"></ion-input>
     </ion-item>
 
   </ion-list>
@@ -73,10 +74,12 @@
 
     </div>
 
+    <!--
     <button *ngIf="showAccountLink" (click)="buttonPasswordAndAccount()" ion-button clear style="margin-top: 24px;">
       <i class="fa fa-key" aria-hidden="true"></i>&nbsp;
       {{ 'PROFILE_CHANGEACCOUNT' | translate }}
     </button>
+    -->
 
   </div>
 

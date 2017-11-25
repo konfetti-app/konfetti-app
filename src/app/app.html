@@ -26,18 +26,18 @@
               <i class="fa fa-user-o" aria-hidden="true"></i>
             </div>
           </td>
-          <td style="padding-top: 11px;">
-            <div *ngIf="(!userInfo.name)" style="
+          <td (click)="buttonProfile()" style="padding-top: 11px;">
+            <div *ngIf="(!userInfo.nickname)" style="
   font-size: 130%;
   margin-left: 8px;
   font-weight: 500;">
               {{'MENU_USERNAME_UNKNOWN' | translate}}
             </div>
-            <div *ngIf="(userInfo.name)" style="
+            <div *ngIf="(userInfo.nickname)" style="
   font-size: 130%;
   margin-left: 8px;
   font-weight: 500;">
-              {{userInfo.name}}
+              {{userInfo.nickname}}
             </div>
             <button ion-button clear (click)="buttonKonfetti()" style="
               font-size: 110%;

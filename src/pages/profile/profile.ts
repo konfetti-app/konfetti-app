@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
+import {IonicPage, NavParams, ViewController, AlertController, LoadingController, ToastController} from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
-import { ApiProvider, User} from '../../providers/api/api';
+import {ApiProvider, Group, User, UserUpdate} from '../../providers/api/api';
 
 @IonicPage()
 @Component({
@@ -13,20 +13,25 @@ import { ApiProvider, User} from '../../providers/api/api';
 })
 export class ProfilePage {
 
-  /**
+  /*
    * following parameters can be set in navParams
    */
 
   // show a info for user to change to the account & password dialog
   showAccountLink : boolean = true;
 
-  /**
+  /*
    * following vars are just part of the class
    */
 
   spokenLangs : Array<LanguageInfo>;
-  firstname : string = "";
+  nickname : string = "";
   aboutme : string = "";
+
+  /*
+   * flag if data git changed
+   */
+  dataChanged : boolean = false;
 
 
   constructor(
@@ -38,6 +43,7 @@ export class ProfilePage {
     private appPersistence: AppPersistenceProvider,
     private loadingCtrl: LoadingController,
     private api: ApiProvider,
+    private toastCtrl: ToastController,
     private translateService: TranslateService
   ) {
   }
@@ -52,9 +58,12 @@ export class ProfilePage {
     let user:User = this.appState.getUserInfo();
 
     // init form data from profile (old data)
-    this.firstname = user.name;
+    this.nickname = user.nickname;
     this.aboutme = user.description;
     this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(user.spokenLanguages);
+
+    // data in sync with API
+    this.dataChanged = false;
 
   }
 
@@ -108,14 +117,14 @@ export class ProfilePage {
 
   }
 
-  storeFirstname() : void {
-    if ( this.firstname === this.appState.getUserInfo().name ) return;
-    this.storeToBackendApi();
+  onChangeNickname() : void {
+    if (this.nickname === this.appState.getUserInfo().nickname) return;
+    this.dataChanged = true;
   }
 
-  storeAboutMe() : void {
+  onChangeAbout() : void {
     if ( this.aboutme === this.appState.getUserInfo().description ) return;
-    this.storeToBackendApi();
+    this.dataChanged = true;
   }
 
   buttonChangeProfilePicture() : void {
@@ -154,8 +163,8 @@ export class ProfilePage {
         user.spokenLanguages = localeArray;
         this.appState.setUserInfo(user);
 
-        // persist
-        this.storeToBackendApi();
+        // mark that changed
+        this.dataChanged = true;
 
       }
     });
@@ -167,26 +176,63 @@ export class ProfilePage {
 
   }
 
-  storeToBackendApi() : void {
-
-    // TODO: store to backend API
-    console.error("TODO: Store Data back to API");
-
-    /*
-    this.toastCtrl.create({
-      message: this.translateService.instant('Changes Saved'),
-      duration: 1000
-    }).present().then();
-    */
-
-  }
 
   buttonPasswordAndAccount(): void {
     this.viewCtrl.dismiss({ success: false , command: 'goAccount'} ).then();
   }
 
   buttonClose(): void {
-    this.viewCtrl.dismiss({ success: false } ).then();
+
+    if (!this.dataChanged) {
+      this.viewCtrl.dismiss({ success: true } ).then();
+      return;
+    }
+
+    let userUpdate = new UserUpdate();
+    userUpdate.nickname = this.nickname;
+    userUpdate.description = this.aboutme;
+    userUpdate.spokenLanguages = this.appState.getUserInfo().spokenLanguages;
+    this.api.updateUserInfo(this.appPersistence.getAppDataCache().userid,userUpdate).subscribe(
+      user => {
+
+        /*
+         * WIN
+         */
+
+        // update user in app state (keep hoods because on this endpoint they are not populated)
+        user.neighbourhoods = this.appState.getUserInfo().neighbourhoods;
+        this.appState.setUserInfo(user);
+
+        // TODO: i18n
+        this.toastCtrl.create({
+          message: this.translateService.instant('Changes Saved'),
+          cssClass: 'toast-valid',
+          duration: 2000
+        }).present().then();
+
+        setTimeout(()=>{
+          this.viewCtrl.dismiss({ success: true } ).then();
+        },1300);
+
+      },
+      error => {
+
+        /*
+         * FAIL
+         */
+
+        // TODO: i18n
+        this.toastCtrl.create({
+          message: this.translateService.instant('Changes NOT Saved'),
+          cssClass: 'toast-invalid',
+          duration: 2000
+        }).present().then();
+
+        this.viewCtrl.dismiss({ success: false } ).then();
+
+      }
+    );
+
   }
 
 }
