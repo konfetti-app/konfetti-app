@@ -426,6 +426,13 @@ export interface Group {
   name: string;
   threads: Array<any>;
   activeModules: Array<any>;
+  geoData: GeoData;
+}
+
+export interface GeoData {
+  longitude: number;
+  latitude: number;
+  radius: number;
 }
 
 export class User {

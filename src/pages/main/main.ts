@@ -406,9 +406,14 @@ export class MainPage {
       // TODO: what to do if id not found - return is null? --> exception
       this.title = group.name || "";
 
-      // TODO: later Newsfeed?
+      // set map focus
+      this.lon = group.geoData.longitude;
+      this.lat = group.geoData.latitude;
+      this.zoom = this.state.convertRadiusToZoomLevel(group.geoData.radius);
 
       // TODO: later Mapevents?
+
+      // TODO: later Newsfeed?
 
       // TODO: setup Modules?
       this.showModuleOverlay = true;

@@ -184,6 +184,30 @@ export class AppStateProvider {
     return this.nativeWindow.appBuildTime;
   }
 
+  /**
+   * Find the zoom level that best for given radius.
+   * @param {number} radiusInMeters
+   * @returns {number} best fitting leaflet zoom level
+   */
+  convertRadiusToZoomLevel(radiusInMeters: number) : number {
+
+    // according to leaflet docs with every zoom counted up
+    // the with get divided by half ... see:
+    // http://leafletjs.com/examples/zoom-levels/
+
+    // the with in meters of zoom level 0 = erdumfang
+    let zoomLevel = 0;
+    let zoomWidth = 12742000;
+
+    // find the zoom level/width that is just a bit smaller than given radius
+    while ((radiusInMeters<zoomWidth) && (zoomLevel<20)) {
+      zoomLevel++;
+      zoomWidth = Math.round(zoomWidth / 2.0);
+    }
+
+    return (zoomLevel+1);
+  }
+
   /***************************************
    * Private Methods
    */
