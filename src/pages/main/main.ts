@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import {IonicPage, NavParams, ModalController, Modal, ToastController, LoadingController} from 'ionic-angular';
+import { IonicPage,  ModalController, Modal, ToastController, LoadingController } from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
@@ -121,7 +121,6 @@ export class MainPage {
   notificationModuleA : boolean = true;
 
   constructor(
-    private params: NavParams = null,
     private modalCtrl: ModalController,
     private translateService: TranslateService,
     private toastCtrl: ToastController,
@@ -430,9 +429,12 @@ export class MainPage {
       loadingModal.dismiss().then();
 
     }, error => {
+
       loadingModal.dismiss().then();
+
       // TODO forward later to a exception handling
-      console.error(error);
+      console.dir(error);
+
     });
 
   }

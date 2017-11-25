@@ -287,20 +287,42 @@ export class MyApp implements OnInit{
     // TODO: set like in local storage or match closet to browser lang
     this.appState.updateActualAppLanguage(this.appPersistence.getAppDataCache().i18nLocale);
 
-    // TODO init API data
-
     // remove native splash screen
     this.readyAll = true;
     this.loadingSpinner.dismiss().then();
     this.splashScreen.hide();
 
-    // check state of app and jump to intro or to main page
-    this.nav.setRoot(IntroPage, {}).then();
+    // TODO init API data
+    if (this.appPersistence.getAppDataCache().password) {
+
+      /*
+       * USER IS REGISTERED
+       */
+
+      // init API
+      this.api.setAccessCredentials(
+        this.appPersistence.getAppDataCache().username,
+        this.appPersistence.getAppDataCache().password,
+        this.appPersistence.getAppDataCache().jsonWebtoken
+      );
+
+      // jump to main page
+      this.nav.setRoot(MainPage, {}).then();
+
+    } else {
+
+      /*
+       * USER IS NEW
+       */
+
+      // jump to intro page
+      this.nav.setRoot(IntroPage, {}).then();
+
+    }
 
   };
 
   ngOnInit(): void {
-
   }
 
   buttonKonfetti() : void {

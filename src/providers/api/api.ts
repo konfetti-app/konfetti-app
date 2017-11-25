@@ -99,7 +99,7 @@ export class ApiProvider {
 
         // calculate token timeout timestamp ba
         let secondsUntilTokenExpires = tokenObject.exp - tokenObject.iat;
-        this.jsonWebToken.deadline = Date.now() + (secondsUntilTokenExpires * 1000);
+        this.jsonWebToken.deadline = Date.now() + ((secondsUntilTokenExpires-10) * 1000);
 
         // if listener set, inform about new access token
         if (this.observerNewAccessToken!=null) {
@@ -240,14 +240,17 @@ export class ApiProvider {
 
           // default error handling
           this.defaultHttpErrorHandling(error, observer, "getUser", () => {
-            this.getUser(id).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
-              observer.error(error);
-            });
+            this.getUser(id).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
           });
 
         });
 
-      }, error => observer.error(error));
+      }, error => {
+        observer.error(error)
+      });
 
     });
    }
@@ -264,9 +267,9 @@ export class ApiProvider {
         this.observeNetworkProblem.next(problem);
         return;
       }
-    }
+    } else
 
-    // try to renew JWT
+    // SZENARIO: Renew JWT
     if (error.status==401) {
       this.refreshAccessToken(this.user, this.pass).subscribe((newJWT) => {
 
@@ -289,17 +292,19 @@ export class ApiProvider {
           problem.id = "AUTHFAIL";
           problem.retryCallback = retryCallback;
           this.observeNetworkProblem.next(problem);
-          return;
         } else {
           // forward to original error callback
           errorObserver.error(error);
         }
 
       });
-    }
+    } else {
 
-    // forward to original error callback
-    errorObserver.error(error);
+      // forward to original error callback
+      console.log("defaultHttpErrorHandling: Not able to handle error --> FORWARD ERROR");
+      errorObserver.error(error);
+
+    }
 
   }
 
@@ -309,7 +314,7 @@ export class ApiProvider {
       // initial header setting
       let headers =  new HttpHeaders();
 
-      if (Date.now()>this.jsonWebToken.deadline) {
+      if ((!this.jsonWebToken) || (Date.now()>this.jsonWebToken.deadline)) {
 
         // JWT token need refresh
         this.refreshAccessToken(this.user, this.pass).subscribe((jwt: JsonWebToken) => {
@@ -338,7 +343,8 @@ export class ApiProvider {
 
         // build header with existing token
         headers = headers.append("Authorization", "Bearer " + this.jsonWebToken.token);
-        observer.next(this.jsonWebToken);
+
+        observer.next(headers);
         observer.complete();
 
       }
