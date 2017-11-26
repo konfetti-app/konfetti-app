@@ -74,11 +74,13 @@ export class ProfilePage {
 
   }
 
-  public updateDynamicImageUI() : void {
-
-    // TODO set image (if available)
-    this.avatarUrl = "http://localhost:3000/assets/"+this.appState.getUserInfo().avatar.filename;
-
+  private updateDynamicImageUI() : void {
+    if ((this.appState.getUserInfo().avatar) && (this.appState.getUserInfo().avatar.filename)) {
+      // set image
+      this.avatarUrl = this.api.buildImageURL(this.appState.getUserInfo().avatar.filename);
+    } else {
+      this.avatarUrl = "";
+    }
   }
 
   ionViewWillEnter() {
@@ -142,13 +144,15 @@ export class ProfilePage {
   }
 
   onChangeFile(event) {
-    var files = event.srcElement.files;
-    console.log("Selected Files");
-    console.dir(files);
-    this.api.setUserAvatarImage(files[0]).subscribe( (fileMeta) => {
 
-      console.log("OK");
-      console.dir(fileMeta.asset);
+    var files = event.srcElement.files;
+
+    // show loading module
+    let loadingModal = this.loadingCtrl.create({});
+    loadingModal.present().then();
+
+    // upload image to API
+    this.api.setUserAvatarImage(files[0]).subscribe( (fileMeta) => {
 
       // update avatar on user app state
       let user: User = this.appState.getUserInfo();
@@ -159,7 +163,13 @@ export class ProfilePage {
       this.updateDynamicImageUI();
       this.dataChanged = true;
 
+      // hide loading spinner
+      loadingModal.dismiss().then();
+
     }, (error) => {
+
+      // hide loading spinner
+      loadingModal.dismiss().then();
 
       console.log("FAIL");
       console.dir(error);

@@ -132,13 +132,6 @@ export class MainPage {
     this.showModuleFocus = "";
 
     this.eventMarkers = leaflet.featureGroup();
-    let marker: any = leaflet.marker([this.lat, this.lon]).on('click', () => {
-      this.toastCtrl.create({
-        message: 'TODO: What should happen?',
-        duration: 5000
-      }).present().then();
-    });
-    this.eventMarkers.addLayer(marker);
 
     this.zoomControl = leaflet.control.zoom({
       position:'topleft'
@@ -410,8 +403,16 @@ export class MainPage {
       this.lon = group.geoData.longitude;
       this.lat = group.geoData.latitude;
       this.zoom = this.state.convertRadiusToZoomLevel(group.geoData.radius);
+      this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
 
       // TODO: later Mapevents?
+      let marker: any = leaflet.marker([this.lat, this.lon]).on('click', () => {
+        this.toastCtrl.create({
+          message: 'TODO: What should happen?',
+          duration: 5000
+        }).present().then();
+      });
+      this.eventMarkers.addLayer(marker);
 
       // TODO: later Newsfeed?
 

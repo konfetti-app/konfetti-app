@@ -75,7 +75,6 @@ export class ApiProvider {
 
       // Basic Auth with username and password
       let headers =  new HttpHeaders();
-      console.log("REFRESH JWT user("+user+") pass("+pass+")");
       headers = headers.append("Authorization", "Basic " + btoa(user+":"+pass));
 
       // get new JWT token
@@ -325,8 +324,13 @@ export class ApiProvider {
 
         }, error => {
 
-          // TODO handle retry
-          observer.error(error);
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "setUserAvatarImage", () => {
+            this.setUserAvatarImage(file).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
 
         });
 
@@ -335,6 +339,15 @@ export class ApiProvider {
       });
 
     });
+  }
+
+  /**
+   * Get the URL where to load a uploaded image file (avatar or image content)
+   * @param {string} filename
+   * @returns {string} complete URL to be used in image tag src
+   */
+  buildImageURL(filename:string) : string {
+    return this.apiUrlBase+'assets/'+filename;
   }
 
   private defaultHttpErrorHandling(error, errorObserver, debugTag:string, retryCallback) : void {
@@ -433,13 +446,6 @@ export class ApiProvider {
 
     });
   }
-
-  /*
-  private isAccessTokenStillValid() : boolean {
-      if (this.accessTokenDeadline == null) return false;
-      return ( this.accessTokenDeadline < Date.now());
-  }
-  */
 
 }
 

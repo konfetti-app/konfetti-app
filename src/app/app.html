@@ -22,8 +22,15 @@
       <table>
         <tr>
           <td style="width:95px;">
-            <div class="side-menu-user-icon" (click)="buttonProfile()">
+            <div *ngIf="!avatarUrl" class="side-menu-user-icon" (click)="buttonProfile()">
               <i class="fa fa-user-o" aria-hidden="true"></i>
+            </div>
+            <div *ngIf="avatarUrl" class="side-menu-user-icon" style="
+                background-repeat: no-repeat;
+                background-color: white;
+                background-size: 100% 100%;"
+                [ngStyle]="{'background-image': 'url('+avatarUrl+')'}"
+            >
             </div>
           </td>
           <td (click)="buttonProfile()" style="padding-top: 11px;">

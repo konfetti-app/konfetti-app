@@ -45,7 +45,7 @@ export class MyApp implements OnInit{
    * Data for Sidemenu
    */
   userInfo : User = new User();
-
+  avatarUrl: string = ""
 
   constructor(
     private platform: Platform,
@@ -107,7 +107,18 @@ export class MyApp implements OnInit{
 
     // register on User Info change
     this.appState.listenOnNewUserInfo().subscribe( user => {
+
+      // update user info
       this.userInfo = user;
+
+      // updae avatar imaghe
+      if ((this.appState.getUserInfo().avatar) && (this.appState.getUserInfo().avatar.filename)) {
+        // set image
+        this.avatarUrl = this.api.buildImageURL(this.appState.getUserInfo().avatar.filename);
+      } else {
+        this.avatarUrl = "";
+      }
+
     });
 
     /**
