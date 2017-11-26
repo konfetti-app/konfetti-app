@@ -400,19 +400,21 @@ export class MainPage {
       this.title = group.name || "";
 
       // set map focus
-      this.lon = group.geoData.longitude;
-      this.lat = group.geoData.latitude;
-      this.zoom = this.state.convertRadiusToZoomLevel(group.geoData.radius);
-      this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
+      if (group.geoData) {
+        this.lon = group.geoData.longitude;
+        this.lat = group.geoData.latitude;
+        this.zoom = this.state.convertRadiusToZoomLevel(group.geoData.radius);
+        this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
 
-      // TODO: later Mapevents?
-      let marker: any = leaflet.marker([this.lat, this.lon]).on('click', () => {
-        this.toastCtrl.create({
-          message: 'TODO: What should happen?',
-          duration: 5000
-        }).present().then();
-      });
-      this.eventMarkers.addLayer(marker);
+        // TODO: later Mapevents?
+        let marker: any = leaflet.marker([this.lat, this.lon]).on('click', () => {
+          this.toastCtrl.create({
+            message: 'TODO: What should happen?',
+            duration: 5000
+          }).present().then();
+        });
+        this.eventMarkers.addLayer(marker);
+      }
 
       // TODO: later Newsfeed?
 
