@@ -25,6 +25,9 @@ import { TranslateModule } from '@ngx-translate/core';
 // http://ionicframework.com/docs/native/native-storage/
 import { NativeStorage } from '@ionic-native/native-storage';
 
+// https://ionicframework.com/docs/native/camera/
+import { Camera } from '@ionic-native/camera';
+
 import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -71,6 +74,7 @@ import { MainPageModule } from '../pages/main/main.module'
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider,
     NativeStorage,
+    Camera,
     AppPersistenceProvider,
     AppStateProvider,
     BarcodeScanner

@@ -64,6 +64,11 @@ export class MyApp implements OnInit{
     private alertCtrl: AlertController
   ) {
 
+    // set API to real server, when running in real device
+    if (this.appState.isRunningOnRealDevice()) {
+      this.api.setApiBaseUrl('https://konfettiapp.de:3000/');
+    }
+
     // on beginning disable side menu
     this.menuController.enable(false);
 

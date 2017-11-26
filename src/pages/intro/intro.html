@@ -38,38 +38,70 @@
   <!-- TODO: the ion-slides seem to have a bug with 'rtl' slide direction - check again with ionic v4 -->
   <ion-slides dir="ltr" pager style="height: 60%; margin-top: 20px;" [style.max-height.px]="slidesMaxHeight">
 
-    <ion-slide style="">
-      <img src="assets/imgs/intro_slide1.png" style="
-            margin-left:auto;
-            margin-right:auto;
-            margin-top: -16px;
-          ">
+    <!-- SLIDE 1 -->
+
+    <ion-slide>
+
+      <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide1.png');">
+        <div class="intro-slide-banner-text">
+          {{ 'INTRO_SLIDE1_BANNER' | translate}}
+        </div>
+      </div>
+
       <div class="slide-subtext">
         {{ 'INTRO_SLIDE1_SUBTEXT' | translate}}
       </div>
+
     </ion-slide>
 
-    <ion-slide style="">
-      <img src="assets/imgs/intro_slide2.png" style="
-            margin-left:auto;
-            margin-right:auto;
-            margin-top: -16px;
-          ">
+    <!-- SLIDE 2 -->
+
+    <ion-slide>
+
+      <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide2.png');">
+        <div class="intro-slide-banner-text">
+          {{ 'INTRO_SLIDE2_BANNER' | translate}}
+        </div>
+      </div>
+
       <div class="slide-subtext">
         {{ 'INTRO_SLIDE2_SUBTEXT' | translate}}
       </div>
+
     </ion-slide>
 
-    <ion-slide style="">
-      <img src="assets/imgs/intro_slide3.png" style="
-            margin-left:auto;
-            margin-right:auto;
-            margin-top: -16px;
-          ">
+    <!-- SLIDE 3 -->
+
+    <ion-slide>
+
+      <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide3.png');">
+        <div class="intro-slide-banner-text">
+          {{ 'INTRO_SLIDE3_BANNER' | translate}}
+        </div>
+      </div>
+
       <div class="slide-subtext">
         {{ 'INTRO_SLIDE3_SUBTEXT' | translate}}
       </div>
+
     </ion-slide>
+
+    <!-- SLIDE 4 -->
+
+    <ion-slide>
+
+      <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide4.png');">
+        <div class="intro-slide-banner-text">
+          {{ 'INTRO_SLIDE4_BANNER' | translate}}
+        </div>
+      </div>
+
+      <div class="slide-subtext">
+        {{ 'INTRO_SLIDE4_SUBTEXT' | translate}}
+      </div>
+
+    </ion-slide>
+
 
   </ion-slides>
 

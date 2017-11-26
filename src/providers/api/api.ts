@@ -34,6 +34,14 @@ export class ApiProvider {
   }
 
   /**
+   * Manually set API base URL
+   * @param {string} baseURL e.g. 'http://localhost:3000/'
+   */
+  setApiBaseUrl(baseURL: string) : void {
+    this.apiUrlBase = baseURL;
+  }
+
+  /**
    * Manually set access credentials - from persistence
    * @param {JsonWebToken} token
    */
@@ -307,11 +315,8 @@ export class ApiProvider {
 
       this.getJWTAuthHeaders().subscribe(headers => {
 
-        // prepare header for formdata uoload
-        //headers = headers.append('Content-Type', 'multipart/form-data');
-
         const formData: FormData = new FormData();
-        formData.append('avatar', file, file.name);
+        formData.append('avatar', file, (file.name) ? file.name : 'upload.jpg');
 
         //const body = new HttpParams().set('avatar', file, file.name);
 
@@ -401,6 +406,22 @@ export class ApiProvider {
 
     }
 
+  }
+
+  /**
+   * Convert a image data url into a file object that works with upload.
+   * @param {string} dataURI
+   * @returns {any}
+   */
+  public dataURItoBlob(dataURI: string) : any{
+    let byteString = atob(dataURI.split(',')[1]);
+    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    let ab = new ArrayBuffer(byteString.length);
+    let ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], {type: mimeString});
   }
 
   private getJWTAuthHeaders() : Observable<HttpHeaders> {

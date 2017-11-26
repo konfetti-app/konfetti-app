@@ -21,7 +21,7 @@
 
       <table>
         <tr>
-          <td style="width:95px;">
+          <td (click)="buttonProfile()" style="width:95px;">
             <div *ngIf="!avatarUrl" class="side-menu-user-icon" (click)="buttonProfile()">
               <i class="fa fa-user-o" aria-hidden="true"></i>
             </div>

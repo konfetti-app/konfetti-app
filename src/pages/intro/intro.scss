@@ -7,3 +7,20 @@ page-intro {
   margin-top: 12px;
   margin-bottom: 12px;
 }
+
+.intro-slide-image {
+  width: 262px;
+  height: 262px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-slide-banner-text {
+  text-transform: uppercase;
+  position: relative;
+  top: 242px;
+  font-size: 12px;
+  font-weight: bold;
+}

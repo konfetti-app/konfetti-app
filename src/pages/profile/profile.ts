@@ -1,10 +1,20 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import {IonicPage, NavParams, ViewController, AlertController, LoadingController, ToastController} from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
+import {
+  IonicPage,
+  NavParams,
+  ViewController,
+  AlertController,
+  LoadingController,
+  ToastController,
+  ActionSheetController
+} from 'ionic-angular';
 
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 import { ApiProvider, User, UserUpdate } from '../../providers/api/api';
+
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @IonicPage()
 @Component({
@@ -49,7 +59,9 @@ export class ProfilePage {
     private loadingCtrl: LoadingController,
     private api: ApiProvider,
     private toastCtrl: ToastController,
-    private translateService: TranslateService
+    private camera: Camera,
+    private translateService: TranslateService,
+    private actionSheetCtrl: ActionSheetController
   ) {
   }
 
@@ -145,14 +157,21 @@ export class ProfilePage {
 
   onChangeFile(event) {
 
-    var files = event.srcElement.files;
+    let files = event.srcElement.files;
+    console.log("FILES");
+    console.dir(files);
+    this.uploadImageToServer(files[0]);
+
+  }
+
+  uploadImageToServer(file:any) : void {
 
     // show loading module
     let loadingModal = this.loadingCtrl.create({});
     loadingModal.present().then();
 
     // upload image to API
-    this.api.setUserAvatarImage(files[0]).subscribe( (fileMeta) => {
+    this.api.setUserAvatarImage(file).subscribe( (fileMeta) => {
 
       // update avatar on user app state
       let user: User = this.appState.getUserInfo();
@@ -185,7 +204,29 @@ export class ProfilePage {
        * On Real Device
        */
 
-      alert("TODO: take picture from cam or file");
+      // TODO: i18n
+      this.actionSheetCtrl.create({
+        buttons: [
+          {
+            text: 'Camera',
+            icon: 'camera',
+            handler: () => {
+              this.getPictureFromCamera(false);
+            }
+          },{
+            text: 'Gallery',
+            icon: 'images',
+            handler: () => {
+              this.getPictureFromCamera(true);
+            }
+          },{
+            text: 'Cancel',
+            role: 'cancel',
+            icon: 'close',
+            handler: () => {}
+          }
+        ]
+      }).present().then();
 
     } else {
 
@@ -196,6 +237,43 @@ export class ProfilePage {
       this.fileInputElement.nativeElement.click();
 
     }
+
+  }
+
+  getPictureFromCamera(fromGallery:boolean) : void {
+
+    const options: CameraOptions = {
+      sourceType: fromGallery ? this.camera.PictureSourceType.PHOTOLIBRARY : this.camera.PictureSourceType.CAMERA,
+      quality: 90,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 200,
+      targetHeight: 200,
+      allowEdit: true,
+      cameraDirection: 1
+    };
+
+    this.camera.getPicture(options).then((imageData) => {
+
+      /*
+       * WIN
+       */
+
+      this.uploadImageToServer( this.api.dataURItoBlob( "data:image/jpeg;base64," + imageData) );
+
+    }, (err) => {
+
+      /*
+       * FAIL
+       */
+
+      console.log("FAIL CAM");
+      console.dir(err);
+
+      // TODO: if not backbutton or cancel by user - show error toast
+
+    });
 
   }
 
