@@ -219,7 +219,7 @@ export class ApiProvider {
     });
   }
 
-  redeemAdditionalCode(code:string) : Observable<any> {
+  redeemAdditionalCode(code:string) : Observable<Code> {
     return Observable.create((observer) => {
 
       this.getJWTAuthHeaders().subscribe(headers => {
@@ -228,16 +228,10 @@ export class ApiProvider {
           headers: headers
         }).subscribe( resp => {
 
-          console.log("OK REDEEM ADD");
-          console.dir(resp);
-
-          observer.next(resp.data);
+          observer.next(resp.data.code as Code);
           observer.complete();
 
         }, error => {
-
-          console.log("FAIL REDEEM ADD");
-          console.dir(error);
 
           // code invalid
           try {
@@ -528,11 +522,9 @@ export class ApiProvider {
  **************************************/
 
 export class UserCredentials {
-
   id: string;
   user: string;
   pass: string;
-
 }
 
 export interface Group {
@@ -559,6 +551,11 @@ export class User {
   neighbourhoods: Array<Group>;
   spokenLanguages: Array<string>;
   avatar: Avatar;
+}
+
+export interface Code {
+  actionType: string; // newNeighbour
+  neighbourhood: string;
 }
 
 export interface Avatar {

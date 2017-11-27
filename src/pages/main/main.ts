@@ -1,11 +1,11 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage,  ModalController, Modal, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage,  ModalController, Modal, ToastController, LoadingController, Events } from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
 import { CodeRedeemPage } from '../code-redeem/code-redeem';
-import { ApiProvider, User} from '../../providers/api/api';
+import {ApiProvider, Code, User} from '../../providers/api/api';
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 import { AppStateProvider } from "../../providers/app-state/app-state";
 
@@ -126,6 +126,7 @@ export class MainPage {
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private api: ApiProvider,
+    private events: Events,
     private persistence: AppPersistenceProvider,
     private state: AppStateProvider
   ) {
@@ -142,6 +143,16 @@ export class MainPage {
     this.moduleConfig.push('forum');
     this.moduleConfig.push('ideas');
     this.moduleConfig.push('news');
+
+    /*
+     * Event Bus
+     * https://ionicframework.com/docs/api/util/Events/
+     */
+
+    this.events.subscribe("main:update", () => {
+      console.log("Eventbus: Update focused group/hood");
+      this.updateData();
+    });
   }
 
   setStateKonfettiNotice(show: boolean) : void{
@@ -238,11 +249,22 @@ export class MainPage {
     let modal : Modal = this.modalCtrl.create(CodeRedeemPage, { modus: 'main'});
     modal.onDidDismiss(data => {
       if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
-        // TODO
-        this.toastCtrl.create({
-          message: 'TODO: Neuen Code verarbeiteten',
-          duration: 5000
-        }).present().then();
+
+        if ((data.code as Code).actionType == "newNeighbour") {
+
+          //
+          this.updateData();
+
+        } else {
+          console.log("buttonQRCodeScan: UNKNOWN CODE TYPE", data);
+
+          this.toastCtrl.create({
+            message: 'TODO: Neuen Code verarbeiteten',
+            duration: 5000
+          }).present().then();
+
+        }
+
       }
     });
     modal.present().then();
@@ -423,6 +445,7 @@ export class MainPage {
 
       // show intro if flag is not set for this group
       let showIntro:boolean = !this.persistence.isFlagSetOnGroup(group._id, AppPersistenceProvider.FLAG_INTROSHOWN);
+      console.log("SHOW INTRO",showIntro);
       this.setStateKonfettiNotice(showIntro);
       if (!showIntro) {
         setTimeout(() => {

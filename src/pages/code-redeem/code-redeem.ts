@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController, LoadingController, Loading, ToastController} from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 
-import { ApiProvider, UserCredentials } from "../../providers/api/api";
+import {ApiProvider, UserCredentials, Code, User} from "../../providers/api/api";
 import { AppStateProvider } from '../../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../../providers/app-persistence/app-persistence';
 
@@ -179,27 +179,50 @@ export class CodeRedeemPage {
     } else
     if (this.modus=='main') {
 
-      this.api.redeemAdditionalCode(this.code).subscribe( (data) => {
+      this.api.redeemAdditionalCode(this.code).subscribe( (code:Code) => {
 
         /*
-         * WIN (on redeeming additional codes the update of user data/roles is important)
+         * WIN (on redeeming additional codes the type of the code important)
          */
 
         // hide spinner
         this.loadingSpinner.dismiss().then();
         this.loadingSpinner = null;
 
-        // show user positive response
-        this.toastCtrl.create({
-          message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
-          cssClass: 'toast-valid',
-          duration: 1500
-        }).present().then(()=>{
-          setTimeout(()=>{
-            this.viewCtrl.dismiss({ success: true } ).then();
-          },1300);
-        });
+        if (code.actionType == "newNeighbour") {
 
+          /*
+           * New Neighborhood
+           */
+
+          // change focus to new neighborhood
+          this.appPersistence.setLastFocusGroupId(code.neighbourhood);
+
+          // TODO: i18n
+          this.toastCtrl.create({
+            message: 'New Neighborhood added',
+            cssClass: 'toast-valid',
+            duration: 1500
+          }).present().then(()=>{
+            setTimeout(()=>{
+              this.viewCtrl.dismiss({ success: true, code: code } ).then();
+            },1300);
+          });
+
+        } else {
+
+          // show user positive default response
+          this.toastCtrl.create({
+            message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
+            cssClass: 'toast-valid',
+            duration: 1500
+          }).present().then(()=>{
+            setTimeout(()=>{
+              this.viewCtrl.dismiss({ success: true } ).then();
+            },1300);
+          });
+
+        }
 
       }, (error) =>{
 

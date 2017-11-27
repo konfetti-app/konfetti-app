@@ -15,7 +15,7 @@ import { IntroPage } from '../pages/intro/intro';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
 import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
-import {ApiProvider, JsonWebToken, NetworkProblem, User} from "../providers/api/api";
+import { ApiProvider, JsonWebToken, NetworkProblem, User } from "../providers/api/api";
 
 @Component({
   templateUrl: 'app.html'
@@ -65,7 +65,7 @@ export class MyApp implements OnInit{
   ) {
 
     // set API to real server, when running in real device
-    if (!this.appState.isRunningOnRealDevice()) {
+    if (this.appState.isRunningOnRealDevice()) {
       this.api.setApiBaseUrl('https://konfettiapp.de:3000/');
     }
 
@@ -362,10 +362,12 @@ export class MyApp implements OnInit{
 
   buttonGroup(id : string) : void {
 
-    this.toastCtrl.create({
-      message: 'TODO',
-      duration: 5000
-    }).present().then();
+    // set selected group/hood as focus
+    this.appPersistence.setLastFocusGroupId(id);
+
+    // signal to app that focus has changed
+    this.events.publish("main:update");
+
   }
 
   buttonSettings() : void {
