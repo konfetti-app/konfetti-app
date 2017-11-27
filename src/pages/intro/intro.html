@@ -15,37 +15,52 @@
 
 <ion-content padding no-bounce>
 
-    <table style="width: 90%; max-width: 600px; margin-top: 24px; margin-right: auto; margin-left: auto;">
+    <table style="
+      width: 95%;
+      max-width: 600px;
+      margin-right: auto;
+      margin-left: auto;
+      margin-top: -12px;
+    ">
       <tr>
-        <td style="width:60%; text-align: center;">
+        <td style="width:50%; text-align: start;">
           <img src="assets/imgs/logo_text.png" style="
-            width: 100%;
+            width: 50%;
             max-width: 300px;
             margin-left:auto;
             margin-right:auto;
           ">
         </td>
-        <td style="width:40%; text-align: center; vertical-align: middle;">
-          <button ion-button clear (click)="buttonChangeLanguage()" style="color:darkgrey;" >
-            <ion-icon name="ios-globe-outline"></ion-icon>
+        <td style="width:50%; text-align: end; vertical-align: middle;">
+          <button ion-button clear
+                  (click)="buttonChangeLanguage()"
+                  style="color:darkgrey; padding: 0px;
+                  text-transform: none;
+                  font-size: 120%;" >
             <span style="padding-left: 4px; padding-right: 4px;">{{actualLanguage.displayname}}</span>
-            <ion-icon name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon name="ios-globe-outline"></ion-icon>
           </button>
         </td>
       </tr>
     </table>
 
   <!-- TODO: the ion-slides seem to have a bug with 'rtl' slide direction - check again with ionic v4 -->
-  <ion-slides dir="ltr" pager style="height: 60%; margin-top: 20px;" [style.max-height.px]="slidesMaxHeight">
+  <ion-slides dir="ltr" pager [style.max-height.px]="slidesMaxHeight">
 
     <!-- SLIDE 1 -->
 
-    <ion-slide>
+    <ion-slide class="slide-background" style="
+      background-image: url('assets/imgs/intro_slide1_back.png');
+    ">
 
       <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide1.png');">
         <div class="intro-slide-banner-text">
           {{ 'INTRO_SLIDE1_BANNER' | translate}}
         </div>
+      </div>
+
+      <div class="slide-maintext">
+        {{ 'INTRO_SLIDE1_MAINTEXT' | translate}}
       </div>
 
       <div class="slide-subtext">
@@ -56,12 +71,18 @@
 
     <!-- SLIDE 2 -->
 
-    <ion-slide>
+    <ion-slide class="slide-background" style="
+      background-image: url('assets/imgs/intro_slide2_back.png');
+    ">
 
       <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide2.png');">
         <div class="intro-slide-banner-text">
           {{ 'INTRO_SLIDE2_BANNER' | translate}}
         </div>
+      </div>
+
+      <div class="slide-maintext">
+        {{ 'INTRO_SLIDE2_MAINTEXT' | translate}}
       </div>
 
       <div class="slide-subtext">
@@ -72,12 +93,18 @@
 
     <!-- SLIDE 3 -->
 
-    <ion-slide>
+    <ion-slide class="slide-background" style="
+      background-image: url('assets/imgs/intro_slide1_back.png');
+    ">
 
       <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide3.png');">
         <div class="intro-slide-banner-text">
           {{ 'INTRO_SLIDE3_BANNER' | translate}}
         </div>
+      </div>
+
+      <div class="slide-maintext">
+        {{ 'INTRO_SLIDE3_MAINTEXT' | translate}}
       </div>
 
       <div class="slide-subtext">
@@ -88,12 +115,18 @@
 
     <!-- SLIDE 4 -->
 
-    <ion-slide>
+    <ion-slide class="slide-background" style="
+      background-image: url('assets/imgs/intro_slide2_back.png');
+    ">
 
       <div class="intro-slide-image" style="background-image: url('assets/imgs/intro_slide4.png');">
         <div class="intro-slide-banner-text">
           {{ 'INTRO_SLIDE4_BANNER' | translate}}
         </div>
+      </div>
+
+      <div class="slide-maintext">
+        {{ 'INTRO_SLIDE4_MAINTEXT' | translate}}
       </div>
 
       <div class="slide-subtext">
@@ -109,11 +142,16 @@
 
     <p>
       <button ion-button large (click)="buttonRedeemCode()" style="max-width: 95%;"
-              [innerHTML]="'INTRO_REDEEMCOUPON' | translate | lengthBreak:10"></button>
+              [innerHTML]="'CODEREDEEM_SEND' | translate | lengthBreak:10"></button>
     </p>
 
     <p>
-      <button ion-button clear (click)="buttonLogin()" >{{'INTRO_REGISTERED' | translate}}</button>
+      <button ion-button clear (click)="buttonLogin()" style="
+        max-height: 20px;
+        padding-bottom: 8px;
+      ">
+        {{'INTRO_REGISTERED' | translate}}
+      </button>
     </p>
 
   </div>

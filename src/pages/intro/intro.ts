@@ -36,7 +36,7 @@ export class IntroPage {
     this.availableLanguages = appState.getAllAvailableLanguages();
     this.actualLanguage = appState.getActualAppLanguageInfo();
 
-    this.slidesMaxHeight = this.appState.getDisplayHeight() - 275;
+    this.slidesMaxHeight = this.appState.getDisplayHeight() - 185;
 
   }
 

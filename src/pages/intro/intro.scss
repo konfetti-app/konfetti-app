@@ -2,10 +2,26 @@ page-intro {
 
 }
 
+.slide-background {
+  background-repeat: no-repeat;
+  background-size: 88%;
+  background-position: 6px 0px;
+}
+
+.slide-maintext {
+  color: #666;
+  text-transform: uppercase;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
 .slide-subtext {
   color: #666;
-  margin-top: 12px;
-  margin-bottom: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  font-size: 80%;
 }
 
 .intro-slide-image {
@@ -15,6 +31,7 @@ page-intro {
   background-size: 100% 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: -32px;
 }
 
 .intro-slide-banner-text {
