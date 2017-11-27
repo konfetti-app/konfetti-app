@@ -17,6 +17,7 @@
         "INTRO_SLIDE4_BANNER" : "Your Karma",
         "INTRO_SLIDE4_MAINTEXT" : "Get Confetti",
         "INTRO_SLIDE4_SUBTEXT" : "Actively participate in an activity and receive confetti as a thank you.",
+        "INTRO_BUTTON_CODE" : "Redeem Code",
 
         "INTRO_REGISTERED":"I already have an account",
         "CODEREDEEM_SEND" : "Redeem Code",
@@ -291,6 +292,7 @@
         "INTRO_SLIDE4_BANNER" : "Dein Karma",
         "INTRO_SLIDE4_MAINTEXT" : "Erhalte Konfetti",
         "INTRO_SLIDE4_SUBTEXT" : "Beteilige dich aktiv an einer Aktivität und erhalte zum Dank Konfetti.",
+        "INTRO_BUTTON_CODE" : "Code eingeben",
 
         "INTRO_REGISTERED":"Ich bin bereits bei Konfetti angemeldet",
         "CODEREDEEM_SEND" : "Code abschicken",
@@ -565,7 +567,7 @@
         "INTRO_SLIDE4_BANNER" : "الكرمة الخاص بك",
         "INTRO_SLIDE4_MAINTEXT" : "الحصول على النثار",
         "INTRO_SLIDE4_SUBTEXT" : "المشاركة بنشاط في نشاط وتلقي حلويات وشكرا لكم.",
-
+        "INTRO_BUTTON_CODE" : "ادخل الرمز",
 
         "INTRO_REGISTERED":"لدي حساب بالفعل",
         "CODEREDEEM_SEND" : "استرداد القسيمة",
