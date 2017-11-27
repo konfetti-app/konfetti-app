@@ -219,6 +219,59 @@ export class ApiProvider {
     });
   }
 
+  redeemAdditionalCode(code:string) : Observable<any> {
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        this.http.post<any>(this.apiUrlBase + 'api/codes/' + code, '',{
+          headers: headers
+        }).subscribe( resp => {
+
+          console.log("OK REDEEM ADD");
+          console.dir(resp);
+
+          observer.next(resp.data);
+          observer.complete();
+
+        }, error => {
+
+          console.log("FAIL REDEEM ADD");
+          console.dir(error);
+
+          // code invalid
+          try {
+            if (JSON.parse(error.error).errors[0].message === 'token not found') {
+              observer.error('INVALID');
+              return;
+            }
+          } catch (e) {}
+
+          // code already redeemed
+          try {
+            if (JSON.parse(error.error).errors[0].message === 'token is already redeemed') {
+              observer.error('REDEEMED');
+              return;
+            }
+          } catch (e) {}
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "redeemAdditionalCode", () => {
+            this.redeemAdditionalCode(code).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
   getUser(id: string) : Observable<User> {
 
     return Observable.create((observer) => {

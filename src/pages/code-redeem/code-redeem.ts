@@ -102,6 +102,36 @@ export class CodeRedeemPage {
     this.buttonRedeemCode();
   }
 
+  private processReedemFail(error:any) :void {
+
+    // hide spinner
+    this.loadingSpinner.dismiss().then();
+    this.loadingSpinner=null;
+
+    // TODO: toast message should let user know that code was already redeemed
+    if (error==="REDEEMED") {
+      this.toastCtrl.create({
+        message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
+        cssClass: 'toast-invalid',
+        duration: 2000
+      }).present().then();
+      return;
+    }
+
+    if (error==="INVALID") {
+      this.toastCtrl.create({
+        message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
+        cssClass: 'toast-invalid',
+        duration: 2000
+      }).present().then();
+      return;
+    }
+
+    // TODO: on every other error - show a ups message
+    console.log("FAIL", error);
+
+  }
+
   buttonRedeemCode() : void {
 
     // show loading spinner
@@ -110,74 +140,88 @@ export class CodeRedeemPage {
     });
     this.loadingSpinner.present().then();
 
+    if (this.modus=='intro') {
 
-    this.api.redeemCodeAnonymous(this.code, this.appState.getActualAppLanguageInfo().locale).subscribe( (user : UserCredentials) => {
+      this.api.redeemCodeAnonymous(this.code, this.appState.getActualAppLanguageInfo().locale).subscribe( (user : UserCredentials) => {
 
-      /*
-       * WIN
-       */
+        /*
+         * WIN (on intro the important part is the user account creation)
+         */
 
-      // persist user data
-      this.appPersistence.setUserCredentials(user.id, user.user, user.pass);
+        // persist user data
+        this.appPersistence.setUserCredentials(user.id, user.user, user.pass);
 
-      // hide spinner
-      this.loadingSpinner.dismiss().then();
-      this.loadingSpinner = null;
+        // hide spinner
+        this.loadingSpinner.dismiss().then();
+        this.loadingSpinner = null;
 
-      // show user positive response
-      this.toastCtrl.create({
-        message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
-        cssClass: 'toast-valid',
-        duration: 1500
-      }).present().then(()=>{
-        setTimeout(()=>{
-          this.viewCtrl.dismiss({ success: true } ).then();
-        },1300);
+        // show user positive response
+        this.toastCtrl.create({
+          message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
+          cssClass: 'toast-valid',
+          duration: 1500
+        }).present().then(()=>{
+          setTimeout(()=>{
+            this.viewCtrl.dismiss({ success: true } ).then();
+          },1300);
+        });
+
+      }, (error) => {
+
+        /*
+         * FAIL
+         */
+
+        this.processReedemFail(error);
+
       });
 
-    }, (error) => {
+    } else
+    if (this.modus=='main') {
 
-      /*
-       * FAIL
-       */
+      this.api.redeemAdditionalCode(this.code).subscribe( (data) => {
 
-      // hide spinner
-      this.loadingSpinner.dismiss().then();
-      this.loadingSpinner=null;
+        /*
+         * WIN (on redeeming additional codes the update of user data/roles is important)
+         */
 
-      // TODO: toast message should let user know that code was already redeemed
-      if (error==="REDEEMED") {
+        // hide spinner
+        this.loadingSpinner.dismiss().then();
+        this.loadingSpinner = null;
+
+        // show user positive response
         this.toastCtrl.create({
-          message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
-          cssClass: 'toast-invalid',
-          duration: 2000
-        }).present().then();
-        return;
-      }
-
-      if (error==="INVALID") {
-        this.toastCtrl.create({
-          message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
-          cssClass: 'toast-invalid',
-          duration: 2000
-        }).present().then();
-        return;
-      }
-
-      // TODO: on every other error - show a ups message
-      console.log("FAIL", error);
-
-    });
-
-    /*
-    if (this.code.trim().toLowerCase()==="234758") {
+          message: this.translateService.instant('CODEREDEEM_CODE_VALID'),
+          cssClass: 'toast-valid',
+          duration: 1500
+        }).present().then(()=>{
+          setTimeout(()=>{
+            this.viewCtrl.dismiss({ success: true } ).then();
+          },1300);
+        });
 
 
+      }, (error) =>{
+
+        /*
+         * FAIL
+         */
+
+        this.processReedemFail(error);
+
+      } );
 
     } else {
 
+      this.toastCtrl.create({
+        message: 'UNKOWN MODE: ' + this.modus,
+        cssClass: 'toast-invalid',
+        duration: 2000
+      }).present().then();
+
     }
-    */
+
+
 
   }
 
