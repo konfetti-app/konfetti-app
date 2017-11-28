@@ -64,10 +64,18 @@ export class MyApp implements OnInit{
     private alertCtrl: AlertController
   ) {
 
-    // set API to real server, when running in real device
+    // set API to real server, when running in real device or not on localhost in browser
+    let connectToRealServer: boolean = false;
     if (this.appState.isRunningOnRealDevice()) {
-      this.api.setApiBaseUrl('https://konfettiapp.de:3000/');
+      // Real Device
+      connectToRealServer = true;
+    } else {
+      // Browser
+      if (!(location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+        connectToRealServer = true;
+      }
     }
+    if (connectToRealServer) this.api.setApiBaseUrl('https://konfettiapp.de:3000/');
 
     // on beginning disable side menu
     this.menuController.enable(false);
