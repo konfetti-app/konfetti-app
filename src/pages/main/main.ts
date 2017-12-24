@@ -58,8 +58,8 @@ import { AppStateProvider } from "../../providers/app-state/app-state";
         boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.4)',
         borderColor: 'rgba(0, 0, 0, 0.4)'
       })),
-      transition( 'hidden => show', animate('1500ms ease-out')),
-      transition( 'show => hidden', animate('1000ms ease-out'))
+      transition( 'hidden => show', animate('1000ms ease-out')),
+      transition( 'show => hidden', animate('500ms ease-out'))
     ]),
 
     // --- Switch Modules ---
@@ -282,8 +282,8 @@ export class MainPage {
       setTimeout(() => {
         this.konfettiTourText = this.translateService.instant('TOUR_TEXT_MAP');
         this.langKeyTourNext = 'TOUR_CONTINUE';
-      }, 1250);
-    },1500);
+      }, 800);
+    },1000);
 
   }
 
@@ -304,7 +304,7 @@ export class MainPage {
           this.stateKonfettiTourFocus = 'show';
           setTimeout(()=>{
             this.konfettiTourText = this.translateService.instant('TOUR_TEXT_NEWS');
-          },1300);
+          },600);
         },800);
       }
 
@@ -315,7 +315,7 @@ export class MainPage {
           this.buttonModule('ideas');
           setTimeout(()=>{
             this.konfettiTourText = this.translateService.instant('TOUR_TEXT_IDEAS');
-          },1300);
+          },600);
         },100);
       }
 
@@ -327,7 +327,7 @@ export class MainPage {
           setTimeout(()=>{
             this.langKeyTourNext = 'TOUR_READY';
             this.konfettiTourText = this.translateService.instant('TOUR_TEXT_FORUM');
-          },1300);
+          },600);
         },100);
       }
 
@@ -336,7 +336,7 @@ export class MainPage {
         this.buttonModule('news');
       }
 
-      },1500);
+      },1000);
 
   }
 
@@ -482,11 +482,13 @@ export class MainPage {
   }
 
   // returns the icon css classes depending of module id
-  getModuleIcon(id: string) : string {
-    if (id==='news') return 'fa fa-home';
-    if (id==='ideas') return 'fa fa-lightbulb-o';
-    if (id==='forum') return 'fa fa-comments';
-    return 'mdi mdi-help'; // fallback
+  getModuleIcon(id: string) : any {
+
+    if (id==='news') return 'svghouse';
+    if (id==='ideas') return 'svghandshake';
+    if (id==='forum') return 'svgbubbles';
+
+    return '';
   }
 
   // returns the color depending of module id

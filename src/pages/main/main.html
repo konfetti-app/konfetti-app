@@ -40,7 +40,7 @@
       <div style="margin: auto;" [innerHTML]="'TOUR_WELCOME' | translate">
       </div>
     </div>
-    <div style="width: 160px; margin-left: auto; margin-right: auto;">
+    <div style="margin-left: auto; margin-right: auto;">
       <button ion-button round (click)="buttonKonfettiNotice()">
         <span [innerHTML]="'TOUR_START' | translate"></span>
       </button>
@@ -77,10 +77,16 @@
   <!-- Dynamic Module Buttons -->
 
   <div *ngFor="let id of moduleConfig; index as i">
-    <button ion-button round  (click)="buttonModule(id)" class="module-button" [style.right.px]="(10+(i*80))" style="
+    <button ion-button round
+            (click)="buttonModule(id)"
+            class="module-button svg-house {{getModuleIcon(id)}}"
+            [style.right.px]="(10+(i*80))"
+            style="
     right: 170px;
-  " [style.background-color]="(showModuleFocus===id) ? getModuleButtonColor(id) : 'grey'">
-      <i [ngClass]="getModuleIcon(id)" aria-hidden="true"></i>
+  "
+            [style.background-color]="(showModuleFocus===id) ? getModuleButtonColor(id) : 'grey'">
+      <!--<i [ngClass]="getModuleIcon(id)" aria-hidden="true"></i>
+      <img width="100%" src="./assets/icon/house.svg" /> <!-- [src]="getModuleIcon(id)" -->
     </button>
     <div *ngIf="getModuleHasNotification(id)" class="module-notification" [style.right.px]="(11+(i*80))" [style.background-color]="getModuleButtonColor(id)">&nbsp;</div>
   </div>
