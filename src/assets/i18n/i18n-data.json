@@ -20,7 +20,7 @@
         "INTRO_BUTTON_CODE" : "Redeem Code",
 
         "INTRO_REGISTERED":"I already have an account",
-        "CODEREDEEM_SEND" : "Redeem Code",
+        "CODEREDEEM_SEND" : "redeem",
         "CODEREDEEM_ASK" : "Enter number code or scan QR code",
         "CODEREDEEM_WHERE_TO_FIND" : "Where do I get a code?",
         "CODEREDEEM_CODE_VALID": "Code is OK",
@@ -295,7 +295,7 @@
         "INTRO_BUTTON_CODE" : "Code eingeben",
 
         "INTRO_REGISTERED":"Ich bin bereits bei Konfetti angemeldet",
-        "CODEREDEEM_SEND" : "Code abschicken",
+        "CODEREDEEM_SEND" : "eingeben",
         "CODEREDEEM_ASK" : "Zahlencode eingeben oder QR-Code scannen",
         "CODEREDEEM_WHERE_TO_FIND" : "Wo finde ich den Code?",
         "CODEREDEEM_CODE_VALID": "Der Code ist GÜLTIG.",

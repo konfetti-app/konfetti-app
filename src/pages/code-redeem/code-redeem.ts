@@ -251,7 +251,7 @@ export class CodeRedeemPage {
   buttonNoCode() : void {
     // TODO give user more info how to get a code
     this.toastCtrl.create({
-      message: 'Testcode: 234758',
+      message: 'Testcode: 1234',
       duration: 5000
     }).present().then();
   }

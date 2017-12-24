@@ -38,7 +38,11 @@
                   text-transform: none;
                   font-size: 120%;" >
             <span style="padding-left: 4px; padding-right: 4px;">{{actualLanguage.displayname}}</span>
-            <ion-icon name="ios-globe-outline"></ion-icon>
+            <img src="assets/imgs/language@2x.png" style="
+              width: 20px;
+              opacity: 0.3;
+              margin-sart: 5px;
+              "/>
           </button>
         </td>
       </tr>
@@ -145,7 +149,9 @@
               [innerHTML]="'INTRO_BUTTON_CODE' | translate | lengthBreak:10"></button>
     </p>
 
-    <p>
+    <p style="
+      margin-bottom: 22px;
+     ">
       <button ion-button clear (click)="buttonLogin()" style="
         max-height: 20px;
         padding-bottom: 8px;
