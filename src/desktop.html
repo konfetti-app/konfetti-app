@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+############################
+# Index for Desktop Demo
+############################
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulating Konfetti App</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+    .middleCenter {
+      width: 340px;
+      margin-left: auto;margin-right: auto;
+      border-width: 1px; border-color: black;
+    }
+    @media screen and (max-width: 450px) {
+      .justShowWhenBig {
+        display: none !important;
+      }
+    }
+  </style>
+  <script>
+    // redirect for mobile
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+      location.href = './www/index.html';
+    }
+  </script>
+</head>
+<body style="text-align: center; height: 100%; margin-top: 2px;">
+<iframe src="www/index.html" class="middleCenter appframe" scrolling="no" style=" min-height: 600px; margin-top: 2px;background-image: url('./assets/imgs/loading.gif'); background-repeat:no-repeat; background-position: center center;">
+</iframe>
+<div class="middleCenter" style="width: 330px; min-height: 60px; background-color: lightyellow; margin-top: 6px;
+    border-style: solid;padding: 6px; font-size: 11px; font-family: 'Helvetica'">
+  <p style="font-weight: bold; margin-top: 1px; margin-bottom: 3px;">This is a preview of the new konfetti app. </p><br>
+  Please report errors to: christian@konfettiapp.de
+</div>
+<a class="justShowWhenBig" href="https://github.com/konfetti-app/konfetti-app"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+</body>
+</html>

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController, LoadingController, Loading, ToastController} from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 
-import {ApiProvider, UserCredentials, Code, User} from "../../providers/api/api";
+import { ApiProvider, UserCredentials, Code } from "../../providers/api/api";
 import { AppStateProvider } from '../../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../../providers/app-persistence/app-persistence';
 

@@ -2,6 +2,8 @@
 
 App to build better local communities.
 
+See a preview running here: http://files.rotzoll.de/konfetti/
+
 This repo contains prototype v2 - in fresh development. You find prototype v1 here: https://github.com/rootzoll/konfetti-app
 
 ### Get it running locally for development
@@ -40,28 +42,5 @@ You can find the Translation Spreadsheet here:
 [LINK TO BE ADDED LATER]
 
 The export is managed with the following script:
-https://github.com/rootzoll/angular-translate-sheet-expot
-
-### Joining Betatest with Ionic View
-
-Short Video Tutorial (German): https://youtu.be/15ovpwUK81I
-
-Go to https://view.ionic.io and install the Ionic View App for iOS or Android.
-
-Start the Ionic View App. Use Search and enter the App ID `db5effdf`.
-
-Then you should see the konfetti-app in your list and you can start it.
-You see a "Shake device for Control Menu" screen. Thats not the konfetti app yet.
-Thats the Ionic View App telling you how to open the control menu and exit the Konfetti app.
-After a short while you should see the Welcome/Intro screen of the Konfetti app and you can start testing.
-
-### Pushing out a new text version of Ionic View (Admin Note)
-
-The local repo needs to be connected to the Ionic Pro Dashboard: https://dashboard.ionicjs.com 
-If not already use `ionic link --pro-id db5effdf` (access to account is needed).
-
-To push a new version to the Ionic View app Testers  `git push ionic master`.
-
-The next step should be automatically ... but just in case: Go to the Ionic Pro Dashboard. Under 'Code/Builds' the new commit should show up and offer after some time the 'deploy' option.
-When deployed the tag 'Master' should be visible on that commit and it should ne be available to Testers with the Ionic View App.
+https://github.com/rootzoll/angular-translate-sheet-export
 

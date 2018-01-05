@@ -75,8 +75,8 @@ page-main {
 .konfetti-tour-focus-module1 {
   border-width: 961px;
   border-radius: 1000px;
-  right: -960px;
-  top: calc(33% - 1000px);
+  right: -958px;
+  top: calc(33% - 996px);
   width: 2000px;
   height: 2000px;
 }
@@ -84,8 +84,8 @@ page-main {
 .konfetti-tour-focus-module2 {
   border-width: 961px;
   border-radius: 1000px;
-  right: -881px;
-  top: calc(33% - 1000px);
+  right: -878px;
+  top: calc(33% - 996px);
   width: 2000px;
   height: 2000px;
 }
@@ -93,8 +93,8 @@ page-main {
 .konfetti-tour-focus-module3 {
   border-width: 961px;
   border-radius: 1000px;
-  right: -801px;
-  top: calc(33% - 1000px);
+  right: -798px;
+  top: calc(33% - 996px);
   width: 2000px;
   height: 2000px;
 }
@@ -166,21 +166,21 @@ page-main {
 }
 
 .svghouse {
-  background-image: url(/assets/icon/house.svg);
+  background-image: url(./assets/icon/house.png);
   background-repeat: no-repeat;
   background-size: 60%;
   background-position: 50% 50%;
 }
 
 .svghandshake {
-  background-image: url(/assets/icon/handshake.svg);
+  background-image: url(./assets/icon/handshake.png);
   background-repeat: no-repeat;
   background-size: 70%;
   background-position: 50% 50%;
 }
 
 .svgbubbles {
-  background-image: url(/assets/icon/bubbles.svg);
+  background-image: url(./assets/icon/bubbles.png);
   background-repeat: no-repeat;
   background-size: 65%;
   background-position: 50% 50%;

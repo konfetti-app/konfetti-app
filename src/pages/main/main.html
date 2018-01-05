@@ -79,14 +79,18 @@
   <div *ngFor="let id of moduleConfig; index as i">
     <button ion-button round
             (click)="buttonModule(id)"
-            class="module-button svg-house {{getModuleIcon(id)}}"
+            class="module-button"
             [style.right.px]="(10+(i*80))"
             style="
     right: 170px;
   "
             [style.background-color]="(showModuleFocus===id) ? getModuleButtonColor(id) : 'grey'">
-      <!--<i [ngClass]="getModuleIcon(id)" aria-hidden="true"></i>
-      <img width="100%" src="./assets/icon/house.svg" /> <!-- [src]="getModuleIcon(id)" -->
+
+      <!-- later get styles and images from module .. but static for now -->
+      <img *ngIf="id=='news'"  src="./assets/icon/house.svg" style="margin-top: -4px; width: 35px; max-width: none;"/>
+      <img *ngIf="id=='ideas'"  src="./assets/icon/handshake.svg" style="margin-top: 5px; width: 41px; max-width: none;"/>
+      <img *ngIf="id=='forum'"  src="./assets/icon/bubbles.svg" style="margin-top: 0px; width: 35px; max-width: none;"/>
+
     </button>
     <div *ngIf="getModuleHasNotification(id)" class="module-notification" [style.right.px]="(11+(i*80))" [style.background-color]="getModuleButtonColor(id)">&nbsp;</div>
   </div>

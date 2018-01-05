@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>Konfetti</title>
 
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="viewport-fit=cover, width=360, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
 
@@ -48,12 +48,11 @@
   <link href="build/main.css" rel="stylesheet">
   <link href="assets/css/custom.css" rel="stylesheet">
 
-
 </head>
-<body style="text-align: center; background-color: grey;">
+<body style="text-align: center; background-image: url('./assets/imgs/loading.gif'); background-repeat:no-repeat; background-position: center center;">
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app style="max-width: 460px; max-height: 800px;"></ion-app>
+  <ion-app></ion-app>
 
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>
@@ -65,19 +64,11 @@
   <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
 
-  <div style="
-    position: absolute;
-    top: 10px;
-    left: 470px;
-    background-color: lightyellow;
-    border-color: darkgray;
-    border-width: 1px;
-    padding:16px;
-    font-family: sans-serif;
-  ">
-    Hinweis: Dies ist die Browser-Test-Ansicht.<br>
-    Am besten den Chrome-Browser nutzen. Später mehr.
-  </div>
+  <script>
+      try {
+        document.body.requestFullscreen();
+      } catch (e) {}
+  </script>
 
 </body>
 </html>

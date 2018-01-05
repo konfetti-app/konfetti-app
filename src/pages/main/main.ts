@@ -484,9 +484,9 @@ export class MainPage {
   // returns the icon css classes depending of module id
   getModuleIcon(id: string) : any {
 
-    if (id==='news') return 'svghouse';
-    if (id==='ideas') return 'svghandshake';
-    if (id==='forum') return 'svgbubbles';
+    if (id==='news') return 'house.png';
+    if (id==='ideas') return 'handshake.png';
+    if (id==='forum') return 'bubbles.svg';
 
     return '';
   }
