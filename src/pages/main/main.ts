@@ -5,7 +5,7 @@ import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
 import { CodeRedeemPage } from '../code-redeem/code-redeem';
-import {ApiProvider, Code, User} from '../../providers/api/api';
+import { ApiProvider, Code, User } from '../../providers/api/api';
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 import { AppStateProvider } from "../../providers/app-state/app-state";
 
@@ -85,6 +85,7 @@ export class MainPage {
 
   @ViewChild('map') mapContainer: ElementRef;
   map: any;
+  mapInitDone:boolean = false;
 
   showModuleOverlay: boolean = false;
   showModuleFocus : string = null;
@@ -153,6 +154,7 @@ export class MainPage {
       console.log("Eventbus: Update focused group/hood");
       this.updateData();
     });
+
   }
 
   setStateKonfettiNotice(show: boolean) : void{
@@ -376,6 +378,8 @@ export class MainPage {
 
   initMap() {
 
+    if (this.mapInitDone) return;
+
     this.map = leaflet.map("map",{zoomControl: false}).fitWorld();
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'konfettiapp.de',
@@ -386,6 +390,7 @@ export class MainPage {
     this.map.panTo({lon: this.lon, lat: this.lat-0.0025}, this.zoom);
 
     this.transformShowMap();
+    this.mapInitDone = true;
 
   }
 

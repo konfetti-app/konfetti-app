@@ -8,6 +8,7 @@ import { InitPage } from '../pages/init/init';
 import { IntroPage } from '../pages/intro/intro';
 import { ProfilePage } from '../pages/profile/profile';
 import { LoginPage } from '../pages/login/login';
+import { ChatPage } from '../pages/chat/chat';
 import { SettingsPage } from '../pages/settings/settings';
 import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
 import { LengthBreakPipe } from "../pipes/length-break/length-break";
@@ -44,6 +45,7 @@ import { MainPageModule } from '../pages/main/main.module'
     LoginPage,
     ProfilePage,
     SettingsPage,
+    ChatPage,
     CodeRedeemPage,
     LengthBreakPipe
   ],
@@ -65,6 +67,7 @@ import { MainPageModule } from '../pages/main/main.module'
     ProfilePage,
     CodeRedeemPage,
     LoginPage,
+    ChatPage,
     SettingsPage
   ],
   providers: [

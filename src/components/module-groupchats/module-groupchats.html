@@ -4,8 +4,15 @@
   <img src="./assets/imgs/mockup-forum.png" />
 </div>
 -->
-<ion-card style="width:100%; margin:0px;">
-    <ion-card-content style="padding: 5px 10px 5px;">
+<div style="min-height: 400px;">
+<ion-card style="
+  width:100%; 
+  margin:0px;
+  border-color: #80808029;
+  border-width: 1px;
+  border-style: solid;
+  ">
+    <ion-card-content (click)="selectCard('id')" style="padding: 5px 10px 5px;">
       <table style="width:100%;">
         <tr>
           <td style="width:60px;">
@@ -28,8 +35,19 @@
             <div class="card-text-main">Titel des Chats</div>
             <div class="card-text-underline">Unterzeile</div>
           </td>
-          <td style="width:50px;">C</td>
+          <td style="width:50px; font-size: 200%;">
+            🐺
+          </td>
         </tr>
       </table>  
     </ion-card-content>
   </ion-card>
+
+  <ion-fab *ngIf="showNewButton" (click)="buttonNew()" style="
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+  ">
+      <button ion-fab color="#78bce9"><ion-icon name="md-add"></ion-icon></button>
+    </ion-fab>
+  </div>    
