@@ -140,7 +140,7 @@ export class MainPage {
 
     // ordering is important
     this.moduleConfig = new Array<string>();
-    this.moduleConfig.push('forum');
+    this.moduleConfig.push('groupchats');
     this.moduleConfig.push('ideas');
     this.moduleConfig.push('news');
 
@@ -185,7 +185,7 @@ export class MainPage {
     } else {
 
       // deactivate notification bubble on module
-      if (moduleName==='forum') this.notificationModuleA = false;
+      if (moduleName==='groupchats') this.notificationModuleA = false;
 
       if (this.showModuleFocus==='') {
         // fresh - just fade in
@@ -323,7 +323,7 @@ export class MainPage {
         this.classKonfettiTourFocus = 'konfetti-tour-focus-module1';
         setTimeout(()=>{
           this.stateKonfettiTourFocus = 'show';
-          this.buttonModule('forum');
+          this.buttonModule('groupchats');
           setTimeout(()=>{
             this.langKeyTourNext = 'TOUR_READY';
             this.konfettiTourText = this.translateService.instant('TOUR_TEXT_FORUM');
@@ -486,7 +486,7 @@ export class MainPage {
 
     if (id==='news') return 'house.png';
     if (id==='ideas') return 'handshake.png';
-    if (id==='forum') return 'bubbles.svg';
+    if (id==='groupchats') return 'bubbles.svg';
 
     return '';
   }
@@ -495,7 +495,7 @@ export class MainPage {
   getModuleButtonColor(id : string) {
     if (id==='news') return '#d1736f';
     if (id==='ideas') return '#92bc81';
-    if (id==='forum') return '#78bce9';
+    if (id==='groupchats') return '#78bce9';
     return 'red'; // fallback
   }
 
@@ -506,7 +506,7 @@ export class MainPage {
   }
 
   getModuleHasNotification(id: string) {
-    if (id==='forum') return this.notificationModuleA;
+    if (id==='groupchats') return this.notificationModuleA;
     return false; // fallback
   }
 

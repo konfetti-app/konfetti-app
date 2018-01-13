@@ -89,7 +89,7 @@
       <!-- later get styles and images from module .. but static for now -->
       <img *ngIf="id=='news'"  src="./assets/icon/house.svg" style="margin-top: -4px; width: 35px; max-width: none;"/>
       <img *ngIf="id=='ideas'"  src="./assets/icon/handshake.svg" style="margin-top: 5px; width: 41px; max-width: none;"/>
-      <img *ngIf="id=='forum'"  src="./assets/icon/bubbles.svg" style="margin-top: 0px; width: 35px; max-width: none;"/>
+      <img *ngIf="id=='groupchats'"  src="./assets/icon/bubbles.svg" style="margin-top: 0px; width: 35px; max-width: none;"/>
 
     </button>
     <div *ngIf="getModuleHasNotification(id)" class="module-notification" [style.right.px]="(11+(i*80))" [style.background-color]="getModuleButtonColor(id)">&nbsp;</div>
@@ -114,9 +114,9 @@
           </div>
         </div>
 
-        <div *ngSwitchCase="'forum'">
-          <div *ngIf="showModuleFocus==='forum'" style="padding: 8px; padding-top: 48px;">
-            <img src="./assets/imgs/mockup-forum.png" />
+        <div *ngSwitchCase="'groupchats'">
+          <div *ngIf="showModuleFocus==='groupchats'" style="padding: 8px; padding-top: 48px;">
+            <module-groupchats [config]="getModuleConfig(id)"></module-groupchats>
           </div>
         </div>
 
