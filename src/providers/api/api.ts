@@ -266,6 +266,51 @@ export class ApiProvider {
     });
   }
 
+  // TODO: Connect to correct API endpoint
+  getChat(id: string) : Observable<Chat> {
+
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        this.http.get<any>(this.apiUrlBase + 'api/chat/'+id, {
+          headers: headers
+        }).subscribe((resp) => {
+
+          /*
+           * WIN
+           */
+
+          observer.next(resp.data.chat as Chat);
+          observer.complete();
+
+        }, error => {
+
+          // not found
+          try {
+            if (JSON.parse(error.error).errors[0].message === 'chat not found') {
+              observer.error('NOTFOUND');
+              return;
+            }
+          } catch (e) {}
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "getChat", () => {
+            this.getChat(id).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+   }
+
   getUser(id: string) : Observable<User> {
 
     return Observable.create((observer) => {
@@ -285,7 +330,7 @@ export class ApiProvider {
 
         }, error => {
 
-          // user not found
+          // not found
           try {
             if (JSON.parse(error.error).errors[0].message === 'user not found') {
               observer.error('NOTFOUND');
@@ -551,6 +596,12 @@ export class User {
   neighbourhoods: Array<Group>;
   spokenLanguages: Array<string>;
   avatar: Avatar;
+}
+
+// TODO: sync with backend
+export class Chat {
+  title:string;
+  emoji:string;
 }
 
 export interface Code {

@@ -7,7 +7,15 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>chat</ion-title>
+
+    <ion-title>{{pageTitel}}</ion-title>
+
+    <ion-buttons end class="navheader-end-buttons" (click)="showDialogEditChat($event)">
+        <button ion-button icon-only >
+          <i class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
+        </button>
+      </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>

@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+
 import { ChatPage } from '../../pages/chat/chat';
+
 /*
 
   Dev Notes:
@@ -19,8 +21,6 @@ export class ModuleGroupchatsComponent {
 
   @Input() config:any = null;
 
-  showNewButton:boolean = true;
-
   text:string = "No Config";
 
   constructor(public navCtrl: NavController) {
@@ -30,7 +30,7 @@ export class ModuleGroupchatsComponent {
   }
 
   // user wants to view a existing group chat
-  selectCard(id:string) : void {
+  public selectCard(id:string) : void {
     this.navCtrl.push(ChatPage, {
       type: "multi",
       id: id
@@ -38,7 +38,7 @@ export class ModuleGroupchatsComponent {
   }
 
   // user wants to create a new group chat
-  buttonNew() : void {
+  public buttonNew() : void {
     this.navCtrl.push(ChatPage,{
       type: "multi",
       id: null
