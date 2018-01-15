@@ -1,21 +1,39 @@
-<!--
-  Generated template for the ChatEditPage page.
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+    </ion-title>
+    <ion-buttons end class="navheader-end-buttons" >
+      <button ion-button icon-only (click)="buttonClose()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+</ion-header>
 <ion-content padding>
 
     <!-- TODO: i18n -->
 
     <ion-list style="margin-bottom: 0px;">
 
-        <h3>Neuer Nachbarschafts-Chat</h3>
+        <div *ngIf="newChatMode">
 
-        <div class="intro-text">
-          Du brauchst etwas, wolltest mal was fragen, hast etwas zu verschenken .. 
-          starte einen Nachbarschafts-Chat und komm mit deinen Nachbarn ins Gespräch.
-        </div>  
+          <h3 style="text-align: start; -webkit-padding-start: 12px;">
+            Neuer Nachbarschafts-Chat
+          </h3>
+
+          <div class="intro-text">
+            Du brauchst etwas, wolltest mal was fragen, hast etwas zu verschenken .. 
+            starte einen Nachbarschafts-Chat und komm mit deinen Nachbarn ins Gespräch.
+          </div> 
+
+        </div>
+
+        <div *ngIf="!newChatMode">
+            <h3 style="text-align: start; -webkit-padding-start: 12px;">
+              Chat bearbeiten
+            </h3>
+        </div>
 
         <ion-item>
             <ion-label color="primary" stacked>Chat Titel (20 Zeichen)</ion-label>
@@ -43,7 +61,8 @@
           width: 100%;
           margin-top: 18px;
         ">
-          Chat anlegen
+          <span *ngIf="newChatMode">Chat anlegen</span>
+          <span *ngIf="!newChatMode">Speichern</span>
         </button>
 
       </ion-list>

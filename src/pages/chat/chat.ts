@@ -10,6 +10,8 @@ import {
   PopoverController,
   PopoverOptions,
   NavParams,
+  ModalController,
+  Modal,
   ToastController
 } from 'ionic-angular';
 
@@ -62,6 +64,7 @@ export class ChatPage {
     private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     private state: AppStateProvider,
+    private modalCtrl: ModalController,
     private navParams: NavParams
   ) {
 
@@ -104,7 +107,7 @@ export class ChatPage {
       */
 
       // let user set chat details first
-      this.showDialogEditChat(null);
+      this.showDialogEditChat();
 
     } else {
 
@@ -151,49 +154,45 @@ export class ChatPage {
 
   } 
 
-  showDialogEditChat(myEvent) : void {
+  showDialogEditChat() : void {
 
-    let popover = this.popoverCtrl.create(ChatEditPage, {chat: this.chat, callback: (data) => {
+    let modal : Modal = this.modalCtrl.create(ChatEditPage, { chat: this.chat });
+    modal.onDidDismiss( (data:any) => {
 
-      this.chat = data;
-      this.showInfoHeader = true;
-      this.showEnterMessageFooter = true;
-      popover.dismiss();
+        // user did close dialog by cancel
+        if (data==null) {
+          if (this.chatId==null) {
+            // user did not created chat - so go back to main menu
+            this.navCtrl.pop();
+          }
+          return;
+        }
 
-    }}, {
-      cssClass: 'popover-chat-edit',
-      showBackdrop: true,
-      enableBackdropDismiss: true
-    });
-
-    popover.present({
-      ev: myEvent
-    });
-
-    popover.onDidDismiss(()=>{
-
-      if ((this.chat==null) || (this.chat.title.trim().length==0)) {
-
-        // user did not created chat - so go back to main menu
-        this.navCtrl.pop();
-
-      } else {
-
-        if (this.chatId==null) {
-
-          // user wants chat to be created
-          alert("TODO: Create new Chat with name: "+this.chat.title);
-
-        } else {
-
-          // check if user edited existing chat details --> store
-          alert("TODO: Check if user edited details and store ");
-
-        }        
-
-      }
+          this.chat = data.chat;
+          this.showInfoHeader = true;
+          this.showEnterMessageFooter = true;
+  
+          if (this.chatId==null) {
+  
+            // user wants chat to be created
+            this.toastCtrl.create({
+              message: "TODO: Create new Chat with name: "+this.chat.title,
+              duration: 3000
+            }).present().then();
+  
+          } else {
+  
+            // check if user edited existing chat details --> store
+            this.toastCtrl.create({
+              message: 'TODO: Check if user edited details and store ',
+              duration: 3000
+            }).present().then();
+  
+          }
 
     });
+    modal.present().then();
+
   }
 
   sendMessage(): void {

@@ -11,7 +11,7 @@
     <ion-title>{{pageTitel}}</ion-title>
 
     <ion-buttons end class="navheader-end-buttons">
-        <button ion-button icon-only (click)="showDialogEditChat($event)" style="width:40px;">
+        <button ion-button icon-only (click)="showDialogEditChat()" style="width:40px;">
           <i class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
         </button>
         <button ion-button icon-only (click)="buttonSubscribe()" style="width:40px;">
@@ -26,7 +26,7 @@
 
 <ion-content #messagescroll padding>
 
-    <div *ngIf="showInfoHeader" style="
+    <div *ngIf="showInfoHeader" (click)="showDialogEditChat()" style="
     position: fixed;
     width: 100%;
     height: 70px;
