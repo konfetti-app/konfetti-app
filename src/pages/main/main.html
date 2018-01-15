@@ -3,10 +3,11 @@
   <ion-navbar>
     <button ion-button menuToggle icon-only>
       <ion-icon name="menu"></ion-icon>
-      <div class="header-notification"></div>
+      <!-- DEACTIVATED notification signaling events on other groups-->
+      <!--<div class="header-notification"></div>-->
     </button>
     <ion-title></ion-title>
-    <!-- deactivated scan button for now
+    <!-- DEACTIVATED scan button for now
     <ion-buttons end class="navheader-end-buttons" >
       <button ion-button icon-only (click)="buttonQRCodeScan()">
         <i class="mdi mdi-camera-enhance navheader-button" style="font-size: 160%;"></i>
@@ -22,6 +23,9 @@
 <ion-content no-bounce>
 
   <div (click)="buttonMap()" id="map" style="
+    position: fixed;
+    top: 0px;
+    left: 0px;
     width:100%;
     height:100%;
     background-color: lightgoldenrodyellow;

@@ -5,8 +5,8 @@ page-main {
 .main-group-title {
   transform: skew(-8deg) rotate(-5deg);
   text-transform: uppercase;
-  position: absolute;
-  top: 24px;
+  position: fixed;
+  top: 68px;
   right: 10px;
   background-color: color($colors, primary);
   color: white;

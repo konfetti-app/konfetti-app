@@ -1,10 +1,31 @@
-page-chat {
-
+page-chat .fixed-content {
+    background-image: url(./../assets/imgs/chat-background.jpg);
+    background-color: #E0DAD6;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .popover-chat-edit .popover-content {
-    top: 53px !important;
+    top: 45px !important;
     left: 1% !important;
     width: 98% !important;
-    max-height: 60%;
+    min-height: 50%;
+}
+
+.message {
+    background-color: lightblue;
+    border-radius: 10px;
+    padding: 4px;
+    margin: 6px;
+}
+
+.card-text-overline {
+    font-size: 75%;
+}
+.card-text-main {
+    font-size: 125%;
+    font-weight: 600;
+}
+.card-text-underline {
+    font-size: 75%;
 }

@@ -6,6 +6,46 @@
 -->
 <ion-content padding>
 
-  TODO CHET EDIT: Set Title and Emoticon 
+    <!-- TODO: i18n -->
+
+    <ion-list style="margin-bottom: 0px;">
+
+        <h3>Neuer Nachbarschafts-Chat</h3>
+
+        <div class="intro-text">
+          Du brauchst etwas, wolltest mal was fragen, hast etwas zu verschenken .. 
+          starte einen Nachbarschafts-Chat und komm mit deinen Nachbarn ins Gespräch.
+        </div>  
+
+        <ion-item>
+            <ion-label color="primary" stacked>Chat Titel (20 Zeichen)</ion-label>
+            <ion-input 
+              type="text" 
+              placeholder="Gib hier einen kurzen Titel ein" 
+              maxlength="20"
+              [(ngModel)]="chatTitle"
+            ></ion-input>
+        </ion-item>
+
+        <ion-label color="primary" style="
+          text-align: start;
+          -webkit-padding-start: 16px;
+          margin-top: 22px;"
+        stacked>Icon</ion-label>
+        
+        <ion-slides class="icon-slides" (click)="clickIcon()">
+            <ion-slide *ngFor="let emoji of emojiMap">
+             <h1>{{emoji}}</h1>
+            </ion-slide>
+        </ion-slides>
+
+        <button ion-button (click)="clickButton()" style="    
+          width: 100%;
+          margin-top: 18px;
+        ">
+          Chat anlegen
+        </button>
+
+      </ion-list>
 
 </ion-content>

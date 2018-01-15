@@ -603,6 +603,15 @@ export class Chat {
   title:string;
   emoji:string;
 }
+// TODO: sync with backend
+export interface Message {
+  _id?: string;
+  chatId?: string;
+  senderId?: string;
+  content?: string;
+  createdAt?: Date;
+  ownership?: string;
+}
 
 export interface Code {
   actionType: string; // newNeighbour

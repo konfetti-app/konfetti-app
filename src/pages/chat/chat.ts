@@ -1,16 +1,22 @@
-import { Component } from '@angular/core';
+import { 
+  Component,
+  ViewChild
+  } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { 
   IonicPage, 
   NavController, 
   LoadingController,
   PopoverController,
   PopoverOptions,
-  NavParams 
+  NavParams,
+  ToastController
 } from 'ionic-angular';
 
 import { ChatEditPage } from '../chat-edit/chat-edit';
 
-import { ApiProvider, Chat } from '../../providers/api/api';
+import { AppStateProvider } from "../../providers/app-state/app-state";
+import { ApiProvider, Chat, Message } from '../../providers/api/api';
 
 /**
  * Generated class for the ChatPage page.
@@ -26,20 +32,40 @@ import { ApiProvider, Chat } from '../../providers/api/api';
 })
 export class ChatPage {
 
+  showInfoHeader:boolean = false;
+  showEnterMessageFooter:boolean = false;
+  showFootRoom:boolean = false;
+
+  // scroll panel with massages on
+  @ViewChild('messagescroll') messagescroll:any;
+
   // chat data
   chatId:string = null;
-  chat:Chat = null;
+  chat:Chat = {
+    title: "",
+    emoji: ""
+  };
+
+  messages: Array<Message> = [];
+  isSubscribed:boolean = false;
+
+  messageInput:string = "";
 
   // TODO: i18n
-  pageTitel:string = "New Chat";
+  pageTitel:string = "";
 
   constructor(
     private navCtrl: NavController, 
     private api: ApiProvider,
     private loadingCtrl: LoadingController,
-    public popoverCtrl: PopoverController,
+    private popoverCtrl: PopoverController,
+    private toastCtrl: ToastController,
+    private state: AppStateProvider,
     private navParams: NavParams
   ) {
+
+    // browser needs some extra space on the panel
+    this.showFootRoom = !state.isRunningOnRealDevice();
 
     this.chatId = navParams.get("id");
   }
@@ -48,8 +74,16 @@ export class ChatPage {
     EVENTS
   */
 
+  ionViewWillEnter() {
+    this.showInfoHeader = (this.chatId!=null);
+  }
+
   ionViewDidEnter() {
     this.initChatData();
+  }
+
+  ionViewWillLeave() {
+    this.showEnterMessageFooter = false;
   }
 
   ionViewDidLoad() {
@@ -88,12 +122,21 @@ export class ChatPage {
     
           // hide loading spinner
           loadingModal.dismiss().then();
+
+          this.showEnterMessageFooter = true;
     
         }, (error)=>{
     
           /* ERROR */
-          alert('TODO: FAILED getting Chat from Server: '+error);
+          console.error('TODO: FAILED getting Chat from Server: '+error);
+          
+          this.chat = {
+            title: "FAILED LOADING",
+            emoji: "🔧"
+          };
     
+          this.showEnterMessageFooter = true;
+
           // hide loading spinner
           loadingModal.dismiss().then();
     
@@ -105,7 +148,14 @@ export class ChatPage {
 
   showDialogEditChat(myEvent) : void {
 
-    let popover = this.popoverCtrl.create(ChatEditPage, {chat: this.chat, callback: this.callbackDialogEditChat}, {
+    let popover = this.popoverCtrl.create(ChatEditPage, {chat: this.chat, callback: (data) => {
+
+      this.chat = data;
+      this.showInfoHeader = true;
+      this.showEnterMessageFooter = true;
+      popover.dismiss();
+
+    }}, {
       cssClass: 'popover-chat-edit',
       showBackdrop: true,
       enableBackdropDismiss: true
@@ -117,7 +167,7 @@ export class ChatPage {
 
     popover.onDidDismiss(()=>{
 
-      if ((this.chat==null) || (this.chat.title.trim.length==0)) {
+      if ((this.chat==null) || (this.chat.title.trim().length==0)) {
 
         // user did not created chat - so go back to main menu
         this.navCtrl.pop();
@@ -141,8 +191,52 @@ export class ChatPage {
     });
   }
 
-  callbackDialogEditChat(chat:Chat, dismiss:true) {
-    this.chat = chat;
+  sendMessage(): void {
+
+    if (!this.isSubscribed) {
+      // TODO: subscribe to chat if posting a message
+      this.isSubscribed = true;
+      console.error("TODO: Update with server that user is now subscribed on chat.");
+    }
+
+    let message:Message = {
+      _id: "2",
+      chatId: "0",
+      senderId: "1",
+      content: this.messageInput,
+      createdAt: new Date(),
+      ownership: "other"
+    };
+
+    this.messages.push(message);
+    this.messageInput = "";
+
+    this.messagescroll.scrollToBottom(300);
+  }
+
+  buttonSubscribe() : void {
+    this.isSubscribed = !this.isSubscribed;
+
+    if (this.isSubscribed) {
+      this.toastCtrl.create({
+        message: "Du erhälst jetzt Benachrichtingungen",
+        cssClass: 'toast',
+        duration: 3000
+      }).present().then();
+    } else {
+      this.toastCtrl.create({
+        message: "Benachrichtingungen deaktiviert",
+        cssClass: 'toast',
+        duration: 3000
+      }).present().then();
+    }
+    console.error("TODO: Update subscribe with server ("+this.isSubscribed+")");
+  }
+
+  focusMessageImput(gotFocus:boolean) : void {
+    setTimeout(() => {
+      this.messagescroll.scrollToBottom(100);
+    },200);
   }
 
 }

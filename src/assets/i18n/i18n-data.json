@@ -19,6 +19,8 @@
         "INTRO_SLIDE4_SUBTEXT" : "Actively participate in an activity and receive confetti as a thank you.",
         "INTRO_BUTTON_CODE" : "Redeem Code",
 
+        "CHATEDIT_TOAST_ENTERTITLE" : "Title for chat is needed.",
+
         "INTRO_REGISTERED":"I already have an account",
         "CODEREDEEM_SEND" : "redeem",
         "CODEREDEEM_ASK" : "Enter number code or scan QR code",
@@ -294,6 +296,8 @@
         "INTRO_SLIDE4_SUBTEXT" : "Beteilige dich aktiv an einer Aktivität und erhalte zum Dank Konfetti.",
         "INTRO_BUTTON_CODE" : "Code eingeben",
 
+        "CHATEDIT_TOAST_ENTERTITLE" : "Der Chat braucht einen Titel.",
+
         "INTRO_REGISTERED":"Ich bin bereits bei Konfetti angemeldet",
         "CODEREDEEM_SEND" : "eingeben",
         "CODEREDEEM_ASK" : "Zahlencode eingeben oder QR-Code scannen",
@@ -568,6 +572,8 @@
         "INTRO_SLIDE4_MAINTEXT" : "الحصول على النثار",
         "INTRO_SLIDE4_SUBTEXT" : "المشاركة بنشاط في نشاط وتلقي حلويات وشكرا لكم.",
         "INTRO_BUTTON_CODE" : "ادخل الرمز",
+
+        "CHATEDIT_TOAST_ENTERTITLE" : "تحتاج الدردشة إلى عنوان.",
 
         "INTRO_REGISTERED":"لدي حساب بالفعل",
         "CODEREDEEM_SEND" : "استرداد القسيمة",

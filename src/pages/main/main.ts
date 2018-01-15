@@ -254,7 +254,6 @@ export class MainPage {
 
         if ((data.code as Code).actionType == "newNeighbour") {
 
-          //
           this.updateData();
 
         } else {
@@ -423,6 +422,7 @@ export class MainPage {
 
       // set GUI with data of given group
       let group = this.state.getNeighbourhoodById(focusGroupId);
+
       // TODO: what to do if id not found - return is null? --> exception
       this.title = group.name || "";
 
@@ -450,7 +450,6 @@ export class MainPage {
 
       // show intro if flag is not set for this group
       let showIntro:boolean = !this.persistence.isFlagSetOnGroup(group._id, AppPersistenceProvider.FLAG_INTROSHOWN);
-      console.log("SHOW INTRO",showIntro);
       this.setStateKonfettiNotice(showIntro);
       if (!showIntro) {
         setTimeout(() => {
@@ -476,23 +475,18 @@ export class MainPage {
   }
 
   ionViewDidLoad() {
+    this.initMap();
   }
 
   ionViewWillEnter() {
-
-    this.initMap();
-
     this.updateData();
-
   }
 
   // returns the icon css classes depending of module id
   getModuleIcon(id: string) : any {
-
     if (id==='news') return 'house.png';
     if (id==='ideas') return 'handshake.png';
     if (id==='groupchats') return 'bubbles.svg';
-
     return '';
   }
 

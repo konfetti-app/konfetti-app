@@ -186,3 +186,13 @@ p {
 .action-sheet-title {
   text-align: center !important;
 }
+
+.toolbar {
+  height: 45px !important;
+  max-height: 45px;
+  min-height: 45px;
+}  
+
+.leaflet-top .leaflet-control {
+  margin-top: 64px !important;
+}

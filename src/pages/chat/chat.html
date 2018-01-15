@@ -20,7 +20,116 @@
 
 </ion-header>
 
+<ion-content #messagescroll padding>
 
-<ion-content padding>
+    <div *ngIf="showInfoHeader" style="
+    position: fixed;
+    width: 100%;
+    height: 70px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 4px;
+    background-color: #f3f3f3;
+    z-index: 10;
+    margin-top: -17px;
+    -webkit-margin-start: -16px;
+      ">
+      <table style="width:100%;">
+          <tr>
+            <td style="width:60px;">
+                <img 
+                  src="./assets/imgs/avatar-test.png" 
+                  style="
+                    width: 60px;
+                    border-radius: 60px;
+                    border-width: 1px;
+                    border-color: #f1f1f1;
+                    border-style: solid;
+                  "
+                />
+            </td>
+            <td style="
+              text-align: start;
+              -webkit-padding-start: 10px;
+            ">
+              <div class="card-text-overline">Mike</div>
+              <div class="card-text-main">{{chat.title}}</div>
+              <div class="card-text-underline">2 Abonnenten</div>
+            </td>
+            <td style="width:50px; font-size: 200%;">
+                {{chat.emoji}}
+            </td>
+            <td > 
+                <button ion-button clear (click)="buttonSubscribe()"style="
+                  font-size: 140%;
+                  width: 40px;
+                  -webkit-margin-end: 0px;
+                ">
+                    <i *ngIf="isSubscribed" class="fa fa-bell" aria-hidden="true"></i>
+                    <i *ngIf="!isSubscribed" class="fa fa-bell-slash-o" aria-hidden="true"></i>
+                  </button>
+            </td>
+          </tr>
+        </table>  
+    </div>
+
+    <!-- <ion-scroll scrollY="true" class="messages" > -->
+
+        <!-- keep head room -->  
+        <div style="height:65px;">&nbsp;</div>
+
+        <div *ngFor="let message of messages">
+            <div [class]="'message message-' + message.ownership">
+              <div class="message-content">{{message.content}}</div>
+              <span class="message-timestamp">{{message.createdAt}}</span>
+          </div>
+        </div>
+
+        <!-- keep food room -->  
+        <div *ngIf="showFootRoom" style="height:56px;">&nbsp;</div>
+
+    <!-- </ion-scroll> -->
 
 </ion-content>
+
+<ion-footer *ngIf="showEnterMessageFooter" style="background-color: #f3f3f3;">
+    <label class="item-input-wrapper">
+
+      <table style="
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      ">
+        <tr>
+          <td style="
+            text-align: end;
+          "><ion-input class="message-input-field"
+            type="text" 
+            [(ngModel)]="messageInput"
+            placeholder="Nachricht eingeben"
+            (focus)="focusMessageImput(true)" (focusout)="focusMessageImput(false)"
+            (keyup.enter)="sendMessage()"
+            style="
+              background-color: white;
+              -webkit-padding-start: 10px;
+              height: 42px;
+              border-radius: 10px 0px 0px 10px;
+              font-size: 120%;
+              padding-top: 2px;
+            "
+            ></ion-input></td>
+          <td style="
+            width: 10%;
+            text-align: start;
+          ">      
+            <button ion-button (click)="sendMessage()" style="height: 42px;">
+                <ion-icon name="md-send"></ion-icon>
+            </button></td>
+        </tr>
+      </table>  
+
+     </label>
+
+  </ion-footer>
