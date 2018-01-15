@@ -10,9 +10,13 @@
 
     <ion-title>{{pageTitel}}</ion-title>
 
-    <ion-buttons end class="navheader-end-buttons" (click)="showDialogEditChat($event)">
-        <button ion-button icon-only >
+    <ion-buttons end class="navheader-end-buttons">
+        <button ion-button icon-only (click)="showDialogEditChat($event)" style="width:40px;">
           <i class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
+        </button>
+        <button ion-button icon-only (click)="buttonSubscribe()" style="width:40px;">
+          <i *ngIf="isSubscribed" class="fa fa-bell" aria-hidden="true"></i>
+          <i *ngIf="!isSubscribed" class="fa fa-bell-slash-o" aria-hidden="true"></i>
         </button>
       </ion-buttons>
 
@@ -56,18 +60,8 @@
               <div class="card-text-main">{{chat.title}}</div>
               <div class="card-text-underline">2 Abonnenten</div>
             </td>
-            <td style="width:50px; font-size: 200%;">
+            <td style="width:50px; font-size: 200%;-webkit-padding-end: 10px;">
                 {{chat.emoji}}
-            </td>
-            <td > 
-                <button ion-button clear (click)="buttonSubscribe()"style="
-                  font-size: 140%;
-                  width: 40px;
-                  -webkit-margin-end: 0px;
-                ">
-                    <i *ngIf="isSubscribed" class="fa fa-bell" aria-hidden="true"></i>
-                    <i *ngIf="!isSubscribed" class="fa fa-bell-slash-o" aria-hidden="true"></i>
-                  </button>
             </td>
           </tr>
         </table>  
@@ -115,7 +109,6 @@
               background-color: white;
               -webkit-padding-start: 10px;
               height: 42px;
-              border-radius: 10px 0px 0px 10px;
               font-size: 120%;
               padding-top: 2px;
             "

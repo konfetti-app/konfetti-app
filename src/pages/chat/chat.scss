@@ -29,3 +29,11 @@ page-chat .fixed-content {
 .card-text-underline {
     font-size: 75%;
 }
+
+[dir="ltr"] .message-input-field {
+    border-radius: 10px 0px 0px 10px;
+}
+  
+[dir="rtl"] .message-input-field {
+    border-radius: 0px 10px 10px 0px;
+}
