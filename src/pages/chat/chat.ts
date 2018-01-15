@@ -19,10 +19,11 @@ import { AppStateProvider } from "../../providers/app-state/app-state";
 import { ApiProvider, Chat, Message } from '../../providers/api/api';
 
 /**
- * Generated class for the ChatPage page.
+ * The Page where all the Chat Stuff happens.
  *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * See https://angular-meteor.com/tutorials/whatsapp2/ionic/messages-page 
+ * for some inspiration for the UI if needed.
+ * 
  */
 
 @IonicPage()
@@ -110,6 +111,10 @@ export class ChatPage {
         /*
           GET CHAT DATA
         */
+
+        // MAKE THAT CHAT DATA OBJECT IS ALREADY GIVENM BY PAGE CALLER
+        // --> just load meessages and show Spinner instead of messages
+        // --> dont make modal - tooo much flicker on page transition
 
         // show loading module
         let loadingModal = this.loadingCtrl.create({});
