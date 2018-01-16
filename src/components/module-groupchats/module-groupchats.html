@@ -5,14 +5,25 @@
 </div>
 -->
 <div style="min-height: 400px;">
-<ion-card style="
+
+<ion-spinner *ngIf="loading"></ion-spinner>
+
+<div *ngIf="((!loading) && (chats.length==0))" style="
+padding-top: 10px;
+color: grey;
+">
+  Noch keine Chats vorhanden.
+</div>
+
+<ion-card *ngFor="let chat of chats" style="
   width:100%; 
   margin:0px;
   border-color: #f1f1f1;
   border-width: 1px;
   border-style: solid;
+  margin-bottom: 14px;
   ">
-    <ion-card-content (click)="selectCard('id')" style="padding: 5px 10px 5px;">
+    <ion-card-content (click)="selectCard(chat)" style="padding: 5px 10px 5px;">
       <table style="width:100%;">
         <tr>
           <td style="width:60px;">
@@ -31,12 +42,12 @@
             text-align: start;
             -webkit-padding-start: 10px;
           ">
-            <div class="card-text-overline">Name</div>
-            <div class="card-text-main">Titel des Chats</div>
-            <div class="card-text-underline">Unterzeile</div>
+            <div class="card-text-overline">TODO Name</div>
+            <div class="card-text-main">{{chat.name}}</div>
+            <div class="card-text-underline">?? Nachbarn</div>
           </td>
           <td style="width:50px; font-size: 200%;">
-            🐺
+              {{chat.description}}
           </td>
         </tr>
       </table>  

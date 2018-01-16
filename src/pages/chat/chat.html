@@ -24,7 +24,16 @@
 
 </ion-header>
 
-<ion-content #messagescroll padding>
+<ion-content #messagescroll padding class="messagescroll">
+
+    <ion-refresher [enabled]="!loading" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        pullingText="ältere Nachrichten laden"
+        refreshingSpinner="circles"
+        refreshingText="lade ältere Nachrichten">
+      </ion-refresher-content>
+    </ion-refresher>
 
     <div *ngIf="showInfoHeader" (click)="showDialogEditChat()" style="
     position: fixed;
@@ -56,12 +65,12 @@
               text-align: start;
               -webkit-padding-start: 10px;
             ">
-              <div class="card-text-overline">Mike</div>
-              <div class="card-text-main">{{chat.title}}</div>
-              <div class="card-text-underline">2 Abonnenten</div>
+              <div class="card-text-overline">?? Author</div>
+              <div class="card-text-main">{{chat.name}}</div>
+              <div class="card-text-underline">?? Abonnenten</div>
             </td>
             <td style="width:50px; font-size: 200%;-webkit-padding-end: 10px;">
-                {{chat.emoji}}
+                {{chat.description}}
             </td>
           </tr>
         </table>  
@@ -71,6 +80,12 @@
 
         <!-- keep head room -->  
         <div style="height:65px;">&nbsp;</div>
+
+        <ion-spinner *ngIf="loading"></ion-spinner>
+
+        <div *ngIf="(messages.length==0) && (!loading)" style="color:grey; font-style: italic;">
+          Lass deine Nachbarn wissen, um was es geht und komm ins Gespräch ... schreib deine erste Nachricht.
+        </div>
 
         <div *ngFor="let message of messages">
             <div [class]="'message message-' + message.ownership">
@@ -117,7 +132,7 @@
             width: 10%;
             text-align: start;
           ">      
-            <button ion-button (click)="sendMessage()" style="height: 42px;">
+            <button ion-button (click)="sendMessage()" [disabled]="loading" style="height: 42px;">
                 <ion-icon name="md-send"></ion-icon>
             </button></td>
         </tr>

@@ -2,6 +2,9 @@ import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { ChatPage } from '../../pages/chat/chat';
+import { ApiProvider, Chat } from '../../providers/api/api';
+import { AppStateProvider } from "../../providers/app-state/app-state";
+import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 
 /*
 
@@ -21,20 +24,44 @@ export class ModuleGroupchatsComponent {
 
   @Input() config:any = null;
 
-  text:string = "No Config";
+  // the active neighborhood
+  activeGroupId:string;
 
-  constructor(public navCtrl: NavController) {
+  // true if network request is going on
+  loading:boolean = true;
 
-    if (this.config!=null) this.text = this.config.test;
+  // chats to display
+  chats:Array<Chat> = [];
 
+  constructor(
+    private navCtrl: NavController,
+    private api: ApiProvider,
+    private persistence: AppPersistenceProvider,
+    private state: AppStateProvider
+  ) {
+
+    // get the actual neighborhood
+    this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
+
+    // TODO: refresh data everytime user comes back to module later (event?)
+    this.refreshData();
+  }
+
+  private refreshData(): void {
+    this.loading = true;
+    this.api.getChats(this.activeGroupId,"moduleGroupChat").subscribe((chats:Array<Chat>) => {
+      this.chats = chats;
+      console.log("chats",this.chats);
+      this.loading = false;
+    }, (error) => {
+      this.loading = false;
+      alert("TODO: Error on getting chatlist");
+    });
   }
 
   // user wants to view a existing group chat
-  public selectCard(id:string) : void {
-    this.navCtrl.push(ChatPage, {
-      type: "multi",
-      id: id
-    });
+  public selectCard(chat:Chat) : void {
+    this.navCtrl.push(ChatPage, { chat: chat } );
   }
 
   // user wants to create a new group chat

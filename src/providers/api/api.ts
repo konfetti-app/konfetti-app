@@ -266,8 +266,43 @@ export class ApiProvider {
     });
   }
 
-  // TODO: Connect to correct API endpoint
-  getChat(id: string) : Observable<Chat> {
+  getChats(groupId:String, context:String) : Observable<Array<Chat>> {
+
+  return Observable.create((observer) => {
+
+    this.getJWTAuthHeaders().subscribe(headers => {
+
+      this.http.get<any>(this.apiUrlBase + 'api/chats/'+groupId+"/"+context, {
+        headers: headers
+      }).subscribe((resp) => {
+
+        /*
+         * WIN
+         */
+
+        observer.next(resp.data.chatChannels as Array<Chat>);
+        observer.complete();
+
+      }, error => {
+        // default error handling
+        this.defaultHttpErrorHandling(error, observer, "getChat", () => {
+          this.getChats(groupId, context).subscribe(
+            (win) => {  observer.next(win); observer.complete(); },
+            (error) => observer.error(error)
+          );
+        });
+
+      });
+
+    }, error => {
+      observer.error(error)
+    });
+
+  });
+ } 
+
+ // TODO: Connect to correct API endpoint
+ getChat(id: string) : Observable<Chat> {
 
     return Observable.create((observer) => {
 
@@ -310,6 +345,45 @@ export class ApiProvider {
 
     });
    }
+
+   createChat(chat:Chat) : Observable<Chat> {
+
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        // prepare header for json body data
+        headers = headers.append('Content-Type', 'application/json');
+
+        this.http.post<any>(this.apiUrlBase + 'api/chats/', JSON.stringify(chat),{
+          headers: headers
+        }).subscribe((resp) => {
+
+          /*
+           * WIN
+           */
+
+          observer.next(resp.data.chatChannel as Chat);
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "getUser", () => {
+            this.createChat(chat).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
 
   getUser(id: string) : Observable<User> {
 
@@ -599,10 +673,17 @@ export class User {
 }
 
 // TODO: sync with backend
+// "created":{"byUser":"5a5bf3e0c92b890c3761bd4f","date":1516052079},
+// "disabled":false,"members":[],"chatMessages":[],"type":"chatChannel"}
 export class Chat {
-  title:string;
-  emoji:string;
+  _id?: string;
+  name: string;
+  description: string;
+  parentNeighbourhood: string;
+  context: string;
+  // TODO: add further data as delivered from API
 }
+
 // TODO: sync with backend
 export interface Message {
   _id?: string;

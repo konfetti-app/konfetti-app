@@ -59,7 +59,7 @@ export class ChatEditPage {
     this.chat = this.navParams.get('chat');
     
     // when new chat
-    if ((this.chat==null) || (this.chat.title==""))  {
+    if ((this.chat==null) || (this.chat.name==""))  {
 
       this.newChatMode = true;
       console.log("ChatEdit: Act in NEW CHAT mode.");
@@ -74,8 +74,8 @@ export class ChatEditPage {
       console.log("ChatEdit: Act in EDIT CHAT mode.", this.chat);
 
       // set as in input data
-      this.chatTitle = this.chat.title;
-      this.chatIconIndex = this.getIconIndexByChar(this.chat.emoji);
+      this.chatTitle = this.chat.name;
+      this.chatIconIndex = this.getIconIndexByChar(this.chat.description);
 
     }
   }
@@ -103,9 +103,9 @@ export class ChatEditPage {
 
     // set chat data and return and make callback (which will close dialog)
     if (this.chat==null) this.chat = new Chat();
-    this.chat.title = this.chatTitle.trim();
-    this.chat.title = this.chat.title.charAt(0).toUpperCase() + this.chat.title.slice(1);
-    this.chat.emoji = this.emojiMap[this.slides.getActiveIndex()];
+    this.chat.name = this.chatTitle.trim();
+    this.chat.name = this.chat.name.charAt(0).toUpperCase() + this.chat.name.slice(1);
+    this.chat.description = this.emojiMap[this.slides.getActiveIndex()];
     this.viewCtrl.dismiss({ chat: this.chat } ).then();
   }
 

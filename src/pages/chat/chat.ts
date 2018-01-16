@@ -7,6 +7,7 @@ import {
   IonicPage, 
   NavController, 
   LoadingController,
+  Loading,
   PopoverController,
   PopoverOptions,
   NavParams,
@@ -18,6 +19,8 @@ import {
 import { ChatEditPage } from '../chat-edit/chat-edit';
 
 import { AppStateProvider } from "../../providers/app-state/app-state";
+import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
+
 import { ApiProvider, Chat, Message } from '../../providers/api/api';
 
 /**
@@ -43,16 +46,15 @@ export class ChatPage {
   @ViewChild('messagescroll') messagescroll:any;
 
   // chat data
-  chatId:string = null;
-  chat:Chat = {
-    title: "",
-    emoji: ""
-  };
+  chat:Chat = null;
 
   messages: Array<Message> = [];
   isSubscribed:boolean = false;
 
   messageInput:string = "";
+
+  loading:boolean = true;
+  loadingSpinner : Loading = null;
 
   // TODO: i18n
   pageTitel:string = "";
@@ -65,13 +67,13 @@ export class ChatPage {
     private toastCtrl: ToastController,
     private state: AppStateProvider,
     private modalCtrl: ModalController,
+    private persistence: AppPersistenceProvider,
     private navParams: NavParams
   ) {
 
     // browser needs some extra space on the panel
     this.showFootRoom = !state.isRunningOnRealDevice();
-
-    this.chatId = navParams.get("id");
+    this.chat = navParams.get("chat") as Chat;
   }
 
   /*
@@ -79,11 +81,19 @@ export class ChatPage {
   */
 
   ionViewWillEnter() {
-    this.showInfoHeader = (this.chatId!=null);
+    this.showInfoHeader = (this.chat!=null);
   }
 
   ionViewDidEnter() {
-    this.initChatData();
+    if (this.chat==null) {
+      // offer new chat to start with
+      this.chat = new Chat();
+      this.chat.name = "";
+      this.chat.description = "";
+      this.showDialogEditChat();
+    } else {
+      this.showEnterMessageFooter = true;
+    }
   }
 
   ionViewWillLeave() {
@@ -98,61 +108,16 @@ export class ChatPage {
     INTERACTION
   */
 
-  initChatData() : void {
-
-    if (this.chatId==null) {
-
-      /*
-        NEW CHAT
-      */
-
-      // let user set chat details first
-      this.showDialogEditChat();
-
-    } else {
-
-        /*
-          GET CHAT DATA
-        */
-
-        // MAKE THAT CHAT DATA OBJECT IS ALREADY GIVENM BY PAGE CALLER
-        // --> just load meessages and show Spinner instead of messages
-        // --> dont make modal - tooo much flicker on page transition
-
-        // show loading module
-        let loadingModal = this.loadingCtrl.create({});
-        loadingModal.present().then();
+    // Pull To Refresh Action
+  doRefresh(refresher) {
     
-        this.api.getChat(this.chatId).subscribe((chat) => {
-    
-          /* WIN */
-          alert('TODO: Display Chat from Server');
-    
-          // hide loading spinner
-          loadingModal.dismiss().then();
-
-          this.showEnterMessageFooter = true;
-    
-        }, (error)=>{
-    
-          /* ERROR */
-          console.error('TODO: FAILED getting Chat from Server: '+error);
-          
-          this.chat = {
-            title: "FAILED LOADING",
-            emoji: "🔧"
-          };
-    
-          this.showEnterMessageFooter = true;
-
-          // hide loading spinner
-          loadingModal.dismiss().then();
-    
-        });
-
-    }
-
-  } 
+      console.log('Begin async operation', refresher);
+  
+      setTimeout(() => {
+        console.log('Async operation has ended');
+        refresher.complete();
+      }, 2000);
+  }
 
   showDialogEditChat() : void {
 
@@ -161,26 +126,59 @@ export class ChatPage {
 
         // user did close dialog by cancel
         if (data==null) {
-          if (this.chatId==null) {
+          if ((typeof this.chat._id == "undefined") || (this.chat._id==null)) {
             // user did not created chat - so go back to main menu
             this.navCtrl.pop();
           }
           return;
         }
 
-          this.chat = data.chat;
-          this.showInfoHeader = true;
-          this.showEnterMessageFooter = true;
+        this.chat = data.chat;
   
-          if (this.chatId==null) {
+        if ((typeof this.chat._id == "undefined") || (this.chat._id==null)) {
   
-            // user wants chat to be created
+          // user wants chat to be created
+
+          // show loading spinner
+          this.loadingSpinner = this.loadingCtrl.create({
+            content: ''
+          });
+          this.loadingSpinner.present().then();
+
+          // make API request
+          this.chat.parentNeighbourhood = this.persistence.getAppDataCache().lastFocusGroupId;
+          this.chat.context = "moduleGroupChat";
+          this.api.createChat(this.chat).subscribe((chat:Chat)=>{
+
+            // WIN
+
+            this.chat = chat;
+            this.showInfoHeader = true;
+            this.showEnterMessageFooter = true;
+
+            // hide spinner
+            this.loadingSpinner.dismiss().then();
+            this.loadingSpinner = null;
+
+          }, (error)=>{
+
+            // FAIL
+
             this.toastCtrl.create({
-              message: "TODO: Create new Chat with name: "+this.chat.title,
+              message: "Failed to create Chat",
               duration: 3000
-            }).present().then();
+            }).present().then(()=>{
+              this.navCtrl.pop();
+            });
+
+            // hide spinner
+            this.loadingSpinner.dismiss().then();
+            this.loadingSpinner = null;
+
+          });
+
   
-          } else {
+        } else {
   
             // check if user edited existing chat details --> store
             this.toastCtrl.create({
@@ -188,7 +186,7 @@ export class ChatPage {
               duration: 3000
             }).present().then();
   
-          }
+        }
 
     });
     modal.present().then();
