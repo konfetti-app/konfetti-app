@@ -450,6 +450,7 @@ export class MainPage {
 
       // show intro if flag is not set for this group
       let showIntro:boolean = !this.persistence.isFlagSetOnGroup(group._id, AppPersistenceProvider.FLAG_INTROSHOWN);
+      console.log("Show Intro:"+showIntro);
       this.setStateKonfettiNotice(showIntro);
       if (!showIntro) {
         setTimeout(() => {

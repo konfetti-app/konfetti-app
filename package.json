@@ -50,6 +50,7 @@
     "leaflet": "^1.2.0",
     "phonegap-plugin-barcodescanner": "^6.0.8",
     "rxjs": "5.4.3",
+    "socket.io": "^2.0.4",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.17"
   },

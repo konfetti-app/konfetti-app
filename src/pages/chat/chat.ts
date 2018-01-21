@@ -2,14 +2,12 @@ import {
   Component,
   ViewChild
   } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { DatePipe } from '@angular/common';
 import { 
   IonicPage, 
   NavController, 
   LoadingController,
   Loading,
-  PopoverController,
-  PopoverOptions,
   NavParams,
   ModalController,
   Modal,
@@ -63,7 +61,6 @@ export class ChatPage {
     private navCtrl: NavController, 
     private api: ApiProvider,
     private loadingCtrl: LoadingController,
-    private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     private state: AppStateProvider,
     private modalCtrl: ModalController,
@@ -73,7 +70,7 @@ export class ChatPage {
 
     // browser needs some extra space on the panel
     this.showFootRoom = !state.isRunningOnRealDevice();
-    this.chat = navParams.get("chat") as Chat;
+    this.chat = this.navParams.get("chat") as Chat;
   }
 
   /*
@@ -85,15 +82,117 @@ export class ChatPage {
   }
 
   ionViewDidEnter() {
+
     if (this.chat==null) {
-      // offer new chat to start with
+
+      /*
+        CREATE NEW CHAT
+      */
+
       this.chat = new Chat();
       this.chat.name = "";
       this.chat.description = "";
       this.showDialogEditChat();
+
     } else {
+
+      /*
+        EXISTING CHAT
+      */
+
       this.showEnterMessageFooter = true;
+      this.initChatMessages();
+
     }
+  }
+
+  // inits a chat
+  initChatMessages(): void {
+
+      /*
+        GET OLD CHAT MESSAGES FROM API
+      */
+
+      this.api.getChatMessages(this.chat, 0).subscribe((messages:Array<Message>)=>{
+        this.loading = false;
+        messages.forEach( (message:Message) => {
+          this.addMessageToChat(message);
+        });
+        if (messages.length>0) setTimeout(()=>{
+          this.messagescroll.scrollToBottom(500);
+        },300);
+      }, (error) => {
+        this.loading = false;
+        alert("TODO: handle error on chat init");
+      });
+
+      /*
+        RECEIVE NEW CHAT MESSAGE FROM SOCKET
+      */
+
+      this.api.initChatSocket(this.chat).subscribe((message:Message)=>{
+        this.addMessageToChat(message);
+        setTimeout(()=>{
+          this.messagescroll.scrollToBottom(200);
+        },100);
+      }, (error) => {
+        alert("TODO: handle error on chat init");
+      });
+
+  }
+
+  // takes a message from backend and prpares it for use in app
+  addMessageToChat(msg:Message) {
+  
+    // check if message is from user
+    if (msg.parentUser==null) {
+      msg.belongsToUser = true;
+    } else {
+      if (this.persistence.getAppDataCache().userid==msg.parentUser._id) {
+        msg.belongsToUser = true;
+      } else {
+        msg.belongsToUser = false;
+      }
+    }
+
+    // set avatar image and name
+    if (msg.belongsToUser) {
+      msg.displayName = this.state.getUserInfo().nickname;
+      if ((this.state.getUserInfo().avatar) && (this.state.getUserInfo().avatar.filename)) {
+        // user image
+        msg.displayImage = this.api.buildImageURL(this.state.getUserInfo().avatar.filename);
+      } else {
+        // default image
+        msg.displayImage = "./assets/imgs/default-user.jpg";
+      }
+    } else {
+      // set for user
+      msg.displayName = 'Anonymous';
+      msg.displayImage = "./assets/imgs/default-user.jpg";
+      if (msg.parentUser!=null) {
+        // TODO get real name
+        msg.displayName = msg.parentUser._id;
+        if ((msg.parentUser.avatar) && (msg.parentUser.avatar.filename)) {
+          msg.displayImage = this.api.buildImageURL(msg.parentUser.avatar.filename);
+        }
+      }
+    }
+
+    // set date
+    let datePipe = new DatePipe(this.state.getActualAppLanguageInfo().locale);
+    let messageAge = Date.now() - msg.date;
+    if ( messageAge > (24 * 60 * 60) ) {
+      // is older than one day (time + date)
+      msg.displayTime = datePipe.transform(new Date(msg.date * 1000), 'fullDate');
+    } else {
+      // was this day (just time)
+      msg.displayTime = datePipe.transform(new Date(msg.date * 1000), 'shortTime');
+    }
+
+    console.log("PROCESSED CHAT MESSAGE",msg);
+
+    // push message to list
+    this.messages.push(msg);
   }
 
   ionViewWillLeave() {
@@ -132,10 +231,8 @@ export class ChatPage {
           }
           return;
         }
-
-        this.chat = data.chat;
   
-        if ((typeof this.chat._id == "undefined") || (this.chat._id==null)) {
+        if ((typeof data.chat._id == "undefined") || (data.chat._id==null)) {
   
           // user wants chat to be created
 
@@ -148,17 +245,25 @@ export class ChatPage {
           // make API request
           this.chat.parentNeighbourhood = this.persistence.getAppDataCache().lastFocusGroupId;
           this.chat.context = "moduleGroupChat";
-          this.api.createChat(this.chat).subscribe((chat:Chat)=>{
+          this.api.createChat(data.chat).subscribe((chat:Chat)=>{
 
             // WIN
 
             this.chat = chat;
             this.showInfoHeader = true;
             this.showEnterMessageFooter = true;
+            this.chat = this.api.addDisplayInfoToChat(
+              this.chat, 
+              this.persistence.getAppDataCache().userid,
+              this.state.getUserInfo().nickname,
+              this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
+           )
 
             // hide spinner
             this.loadingSpinner.dismiss().then();
             this.loadingSpinner = null;
+
+            this.initChatMessages();
 
           }, (error)=>{
 
@@ -201,18 +306,13 @@ export class ChatPage {
       console.error("TODO: Update with server that user is now subscribed on chat.");
     }
 
-    let message:Message = {
-      _id: "2",
-      chatId: "0",
-      senderId: "1",
-      content: this.messageInput,
-      createdAt: new Date(),
-      ownership: "other"
-    };
+    /*
+      SEND NEW CHAT MESSAGE OVER SOCKET
+    */
 
-    this.messages.push(message);
+    this.api.sendChatSocket(this.messageInput);
+
     this.messageInput = "";
-
     this.messagescroll.scrollToBottom(300);
   }
 

@@ -26,6 +26,7 @@
 
 <ion-content #messagescroll padding class="messagescroll">
 
+    <!-- DEACTIVATED until its possible to load older messages from API
     <ion-refresher [enabled]="!loading" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content
         pullingIcon="arrow-dropdown"
@@ -34,6 +35,7 @@
         refreshingText="lade ältere Nachrichten">
       </ion-refresher-content>
     </ion-refresher>
+    -->
 
     <div *ngIf="showInfoHeader" (click)="showDialogEditChat()" style="
     position: fixed;
@@ -51,9 +53,10 @@
           <tr>
             <td style="width:60px;">
                 <img 
-                  src="./assets/imgs/avatar-test.png" 
+                [src]="chat.displayImage" 
                   style="
                     width: 60px;
+                    height: 60px;
                     border-radius: 60px;
                     border-width: 1px;
                     border-color: #f1f1f1;
@@ -65,9 +68,9 @@
               text-align: start;
               -webkit-padding-start: 10px;
             ">
-              <div class="card-text-overline">?? Author</div>
-              <div class="card-text-main">{{chat.name}}</div>
-              <div class="card-text-underline">?? Abonnenten</div>
+              <div class="card-text-overline">{{chat.displayName}}</div>
+              <div class="card-text-main-chat">{{chat.name}}</div>
+              <div class="card-text-underline">{{(chat.members.length+1)}} Personen</div>
             </td>
             <td style="width:50px; font-size: 200%;-webkit-padding-end: 10px;">
                 {{chat.description}}
@@ -75,8 +78,6 @@
           </tr>
         </table>  
     </div>
-
-    <!-- <ion-scroll scrollY="true" class="messages" > -->
 
         <!-- keep head room -->  
         <div style="height:65px;">&nbsp;</div>
@@ -88,16 +89,75 @@
         </div>
 
         <div *ngFor="let message of messages">
-            <div [class]="'message message-' + message.ownership">
-              <div class="message-content">{{message.content}}</div>
-              <span class="message-timestamp">{{message.createdAt}}</span>
-          </div>
+                
+        <!-- message from user of app -->
+        <table *ngIf="message.belongsToUser" style="
+           margin: 0 0 0 auto;
+         ">
+           <tr>
+             <td>
+                 <div class="message" style="text-align: end;">
+                     <div class="message-author">{{message.displayName}}</div>
+                     <div class="message-content">{{message.text}}</div>
+                     <div class="message-timestamp">{{message.displayTime}}</div>
+                 </div>
+             </td>
+             <td style="
+              vertical-align: top; 
+              padding-top: 5px;
+              width: 40px;
+              ">
+                <img 
+                  [src]="message.displayImage" 
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 40px;
+                    border-width: 1px;
+                    border-color: #b5b5b5;
+                    border-style: solid;
+                  "
+                />
+              </td>
+           </tr>
+         </table>  
+
+        <!-- message from others -->
+        <table *ngIf="!message.belongsToUser" style="
+           margin: 0 auto 0 0;
+         ">
+           <tr>
+             <td style="
+              vertical-align: top;
+              padding-top: 5px;
+              width: 40px;
+              ">
+                <img 
+                  [src]="message.displayImage" 
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 40px;
+                    border-width: 1px;
+                    border-color: #b5b5b5;
+                    border-style: solid;
+                  "
+                />
+             </td>
+             <td>
+                 <div class="message" style="text-align: start;">
+                     <span class="message-author">{{message.displayName}}</span>
+                     <div class="message-content">{{message.text}}</div>
+                     <span class="message-timestamp">{{message.displayTime}}</span>
+                 </div>
+             </td>
+           </tr>
+         </table>  
+
         </div>
 
         <!-- keep food room -->  
         <div *ngIf="showFootRoom" style="height:56px;">&nbsp;</div>
-
-    <!-- </ion-scroll> -->
 
 </ion-content>
 

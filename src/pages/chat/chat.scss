@@ -15,8 +15,17 @@ page-chat .fixed-content {
 .message {
     background-color: lightblue;
     border-radius: 10px;
-    padding: 4px;
+    padding: 8px;
     margin: 6px;
+}
+
+.message-author {
+    font-weight: bold;
+}
+
+.message-timestamp {
+    font-size: 75%;
+    color: grey;
 }
 
 .card-text-overline {
@@ -40,4 +49,17 @@ page-chat .fixed-content {
 
 .messagescroll .scroll-content {
     background-color: transparent !important;
+}
+
+.card-text-overline {
+    font-size: 75%;
+}
+.card-text-main-chat {
+    font-size: 125%;
+    font-weight: 600;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.card-text-underline {
+    font-size: 75%;
 }

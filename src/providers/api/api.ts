@@ -4,6 +4,9 @@ import 'rxjs/add/operator/map';
 
 import { Observable } from 'rxjs/Observable';
 
+// https://medium.com/@vipinswarnkar1989/socket-io-in-mean-angular4-todo-app-29af9683957f
+import io from "socket.io-client";
+
 
 /*
  * Interface to the Konfetti Backend API
@@ -24,14 +27,19 @@ export class ApiProvider {
   private observerNewAccessToken : any = null;
   private observeNetworkProblem : any = null;
 
-  constructor(private http: HttpClient) {
+  // websocket for chat
+  private socketChat = null;
+
+  constructor(
+    private http: HttpClient
+  ) {
 
     // init JWT with outdated value
     this.jsonWebToken = new JsonWebToken();
     this.jsonWebToken.token = '';
     this.jsonWebToken.deadline = 0;
-
   }
+
 
   /**
    * Manually set API base URL
@@ -148,6 +156,45 @@ export class ApiProvider {
 
     });
 
+  }
+
+  /**
+   * Opens a WebSocket to revceive messages on a Chat.
+   * @param chat the chat to connect to
+   */
+  initChatSocket(chat:Chat): Observable<Message> {
+    return Observable.create( (observer ) => {
+      this.socketChat = io.connect(this.apiUrlBase);
+      this.socketChat.on('connect', () => {
+        this.socketChat
+        .emit('authenticate', {token: this.jsonWebToken.token})
+        .on('authenticated', () => {
+          console.log('SOCKETIO: User authenticated');
+          this.socketChat.on('connection established', (data) => {
+            console.log('SOCKETIO: chat connection established');
+            this.socketChat.emit("room selection", {"roomID": chat._id});
+            console.log('SOCKETIO: selected room '+chat._id);
+            this.socketChat.on('chat message', (data:Message) => {
+              console.log("SOCKETIO: Got message",data);
+              observer.next(data);
+            });
+          });
+        })
+        .on('unauthorized', (msg) => {
+          observer.error('unauthorized');
+        })
+      });
+    });  
+  };
+
+
+  /**
+   * Sends a text message on the actual connected chat.
+   * @param text the text message to send to chat
+   */
+  sendChatSocket(text:string) : void {
+    if (this.socketChat==null) return;
+    this.socketChat.emit('chat message', text);
   }
 
   /**
@@ -301,22 +348,45 @@ export class ApiProvider {
   });
  } 
 
- // TODO: Connect to correct API endpoint
- getChat(id: string) : Observable<Chat> {
+ addDisplayInfoToChat(chat:Chat, userId:string, userName:string, avatarFilename:string) : Chat {
+
+  // check if user is admin
+  chat.userIsAdmin = false;
+  if (chat.created.byUser==userId) chat.userIsAdmin = true;
+
+  // set author image & name
+  if (chat.userIsAdmin) {
+    chat.displayName = userName;
+    if (avatarFilename) {
+      // user image
+      chat.displayImage = this.buildImageURL(avatarFilename);
+    } else {
+      // default image
+      chat.displayImage = "./assets/imgs/default-user.jpg";
+    }
+  } else {
+    // TODO: set the author name correct
+    chat.displayName = "TODO: getAuthorName";
+    chat.displayImage = "./assets/imgs/default-user.jpg";
+  }
+
+  return chat;
+}
+
+ getChatMessages(chat:Chat, timestamp:number) : Observable<Array<Message>> {
 
     return Observable.create((observer) => {
 
       this.getJWTAuthHeaders().subscribe(headers => {
-
-        this.http.get<any>(this.apiUrlBase + 'api/chat/'+id, {
+        
+        this.http.get<any>(this.apiUrlBase + 'api/chats/channel/'+chat._id+'/since/'+timestamp, {
           headers: headers
         }).subscribe((resp) => {
 
           /*
            * WIN
            */
-
-          observer.next(resp.data.chat as Chat);
+          observer.next(resp.data.chatMessages as Array<Message>);
           observer.complete();
 
         }, error => {
@@ -330,8 +400,8 @@ export class ApiProvider {
           } catch (e) {}
 
           // default error handling
-          this.defaultHttpErrorHandling(error, observer, "getChat", () => {
-            this.getChat(id).subscribe(
+          this.defaultHttpErrorHandling(error, observer, "getChatMessages", () => {
+            this.getChatMessages(chat, timestamp).subscribe(
               (win) => {  observer.next(win); observer.complete(); },
               (error) => observer.error(error)
             );
@@ -676,22 +746,36 @@ export class User {
 // "created":{"byUser":"5a5bf3e0c92b890c3761bd4f","date":1516052079},
 // "disabled":false,"members":[],"chatMessages":[],"type":"chatChannel"}
 export class Chat {
+
   _id?: string;
   name: string;
   description: string;
-  parentNeighbourhood: string;
-  context: string;
-  // TODO: add further data as delivered from API
+  created:any;
+  members:Array<any>;
+  parentNeighbourhood:string;
+  context:string;
+
+  // local field (not part of backend data)
+  userIsAdmin?:boolean;
+  displayImage?:string;
+  displayName?:string;
 }
 
-// TODO: sync with backend
 export interface Message {
-  _id?: string;
-  chatId?: string;
-  senderId?: string;
-  content?: string;
-  createdAt?: Date;
-  ownership?: string;
+
+  // data from backend
+  _id:string;
+  channelName:string;
+  date:number;
+  parentUser:any;
+  type:string;
+  text:string;
+
+  // local field (not part of backend data)
+  belongsToUser?: boolean; 
+  displayName?:string;
+  displayImage?:string;
+  displayTime?:string;
 }
 
 export interface Code {

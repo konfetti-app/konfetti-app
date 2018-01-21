@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { ChatPage } from '../../pages/chat/chat';
 import { ApiProvider, Chat } from '../../providers/api/api';
@@ -48,10 +48,19 @@ export class ModuleGroupchatsComponent {
   }
 
   private refreshData(): void {
+
     this.loading = true;
     this.api.getChats(this.activeGroupId,"moduleGroupChat").subscribe((chats:Array<Chat>) => {
-      this.chats = chats;
-      console.log("chats",this.chats);
+      this.chats = [];
+      chats.forEach((chat:Chat) => {
+        chat = this.api.addDisplayInfoToChat(
+          chat, 
+          this.persistence.getAppDataCache().userid,
+          this.state.getUserInfo().nickname,
+          this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
+        );
+        this.chats.push(chat);
+      });
       this.loading = false;
     }, (error) => {
       this.loading = false;

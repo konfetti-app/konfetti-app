@@ -4,7 +4,7 @@
   <img src="./assets/imgs/mockup-forum.png" />
 </div>
 -->
-<div style="min-height: 400px;">
+<div style="min-height: 400px;padding-bottom: 35px;">
 
 <ion-spinner *ngIf="loading"></ion-spinner>
 
@@ -28,9 +28,10 @@ color: grey;
         <tr>
           <td style="width:60px;">
               <img 
-                src="./assets/imgs/avatar-test.png" 
+                [src]="chat.displayImage" 
                 style="
                   width: 60px;
+                  height: 60px;
                   border-radius: 60px;
                   border-width: 1px;
                   border-color: #f1f1f1;
@@ -42,9 +43,9 @@ color: grey;
             text-align: start;
             -webkit-padding-start: 10px;
           ">
-            <div class="card-text-overline">TODO Name</div>
+            <div class="card-text-overline">{{chat.displayName}}</div>
             <div class="card-text-main">{{chat.name}}</div>
-            <div class="card-text-underline">?? Nachbarn</div>
+            <div class="card-text-underline">{{(chat.members.length+1)}} Personen</div>
           </td>
           <td style="width:50px; font-size: 200%;">
               {{chat.description}}
@@ -60,5 +61,5 @@ color: grey;
     right: 12px;
   ">
       <button ion-fab color="#78bce9"><ion-icon name="md-add"></ion-icon></button>
-    </ion-fab>
+  </ion-fab>
   </div>    

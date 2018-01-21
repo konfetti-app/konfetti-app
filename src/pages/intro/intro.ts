@@ -22,6 +22,8 @@ export class IntroPage {
   availableLanguages: Array<LanguageInfo>;
   actualLanguage: LanguageInfo;
 
+  hidePage: boolean = false;
+
   constructor(
     private navCtrl: NavController,
     //private navParams: NavParams,
@@ -73,8 +75,11 @@ export class IntroPage {
     modal.onDidDismiss(data => {
       if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
         this.navCtrl.setRoot(MainPage, {}).then();
+      } else {
+        this.hidePage = false;
       }
     });
+    this.hidePage = true;
     modal.present().then();
   }
 
