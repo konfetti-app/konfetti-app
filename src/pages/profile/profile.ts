@@ -328,8 +328,6 @@ export class ProfilePage {
 
   buttonClose(): void {
 
-    alert("data changed: "+this.dataChanged);
-
     if (!this.dataChanged) {
       this.viewCtrl.dismiss({ success: true } ).then();
       return;

@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import {IonicPage, ToastController, ViewController} from 'ionic-angular';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { IonicPage, ToastController, ViewController, Platform} from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
-import {AppVersion} from "@ionic-native/app-version";
+import { AppVersion } from "@ionic-native/app-version";
+
+import { ParticlesProvider } from '../../providers/particles/particles';
 
 @IonicPage()
 @Component({
@@ -15,12 +17,18 @@ export class SettingsPage {
   actualLanguage: LanguageInfo;
   versionString: string = "Browser";
 
+  // for the particle test
+  @ViewChild('canvasObj') canvasElement : ElementRef;
+  public isPlaying : boolean = false;
+
   constructor(
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
     private appVersion: AppVersion,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private _PARTICLE: ParticlesProvider,
+    private platform: Platform
     ) {
 
       // get version strings
@@ -41,7 +49,23 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
+    this.prepareCanvas();
   }
+
+     /**
+    *
+    * Programmatically link to the HTML5 Canvas object and define
+    * the necessary width and height for the Canvas
+    *
+    * @public
+    * @method prepareCanvas
+    * @return {None}
+    */
+    prepareCanvas() : void
+    {
+       this._PARTICLE.initialiseCanvas(this.canvasElement.nativeElement, this.platform.width(), this.platform.height());
+    }
+
 
   ionViewWillEnter() {
     this.availableLanguages = this.appState.getAllAvailableLanguages();
@@ -71,6 +95,17 @@ export class SettingsPage {
 
   compareLangs(lang1:LanguageInfo, lang2:LanguageInfo) : boolean {
     return lang1.locale === lang2.locale;
+  }
+
+
+  public startAnimation() : void
+  {
+     this.isPlaying = true;
+     this._PARTICLE.startAnimation(2000, ()=>{
+      // callback when done 
+      this.isPlaying = false;
+     });
+
   }
 
 }

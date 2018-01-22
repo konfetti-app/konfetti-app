@@ -30,6 +30,7 @@ import { NativeStorage } from '@ionic-native/native-storage';
 // https://ionicframework.com/docs/native/camera/
 import { Camera } from '@ionic-native/camera';
 
+import { ParticlesProvider } from '../providers/particles/particles';
 import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -83,7 +84,8 @@ import { MainPageModule } from '../pages/main/main.module'
     Camera,
     AppPersistenceProvider,
     AppStateProvider,
-    BarcodeScanner
+    BarcodeScanner,
+    ParticlesProvider
   ]
 })
 export class AppModule {}

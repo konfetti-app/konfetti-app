@@ -5,7 +5,6 @@ import {
 
 import { 
   IonicPage, 
-  NavController, 
   Slides,
   NavParams,
   ViewController,
@@ -48,7 +47,6 @@ export class ChatEditPage {
   ];
 
   constructor(
-    private navCtrl: NavController, 
     private navParams: NavParams,
     private toastCtrl: ToastController,
     private viewCtrl: ViewController,
