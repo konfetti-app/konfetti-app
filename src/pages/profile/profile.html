@@ -4,16 +4,23 @@
       {{ 'PROFILE_TITLE' | translate }}
     </ion-title>
     <ion-buttons end class="navheader-end-buttons" >
-      <button ion-button icon-only (click)="buttonClose()">
+      <button ion-button icon-only (click)="buttonClose()" *ngIf="notice.length==0">
         <ion-icon *ngIf="!dataChanged" name="close"></ion-icon>
         <ion-icon *ngIf="dataChanged" name="md-checkmark"></ion-icon>
       </button>
+      <button ion-button icon-only (click)="buttonClose()" *ngIf="notice.length>0">
+          <ion-icon name="close"></ion-icon>
+        </button>
     </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding no-bounce>
+
+  <div *ngIf="notice.length>0" class="notice-text"> 
+      {{notice}}
+  </div>
 
   <table style="width: 100%;">
     <tr>
@@ -69,7 +76,7 @@
   </ion-list>
 
 
-  <div style="padding-top: 12px;">
+  <div style="padding-top: 4px;">
 
     <div class="label label-md label-md-primary" style="-webkit-padding-start: 16px; font-size: 16px;">
       {{ 'PROFILE_LANGUAGES_LABLE' | translate }}
@@ -98,6 +105,10 @@
       {{ 'PROFILE_CHANGEACCOUNT' | translate }}
     </button>
     -->
+
+    <button ion-button block color="primary" (click)="buttonContinue()" style="margin-top: 38px;">
+      Weiter
+    </button>
 
   </div>
 

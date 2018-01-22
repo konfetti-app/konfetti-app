@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController, Modal, } from 'ionic-angular';
 
-import { ChatPage } from '../../pages/chat/chat';
 import { ApiProvider, Chat } from '../../providers/api/api';
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
+
+import { ChatPage } from '../../pages/chat/chat';
+import { ProfilePage } from '../../pages/profile/profile';
 
 /*
 
@@ -37,6 +39,7 @@ export class ModuleGroupchatsComponent {
     private navCtrl: NavController,
     private api: ApiProvider,
     private persistence: AppPersistenceProvider,
+    private modalCtrl: ModalController,
     private state: AppStateProvider
   ) {
 
@@ -75,10 +78,42 @@ export class ModuleGroupchatsComponent {
 
   // user wants to create a new group chat
   public buttonNew() : void {
-    this.navCtrl.push(ChatPage,{
-      type: "multi",
-      id: null
-    });
+
+    // check if user has already set profile for chat
+    if (!this.state.isMinimalUserInfoSet(true)) {
+
+      if (!this.state.isMinimalUserInfoSet()) {
+
+        // user needs to set profile namen and photo first
+        let modal : Modal = this.modalCtrl.create(ProfilePage, { 
+          showAccountLink: false, 
+          photoNeeded: true,
+          notice: 'Wir brauchen noch Name und Foto von dir, bevor du einen neuen Chat anlegen kannst.'
+        });
+        modal.onDidDismiss(data => {
+          if (this.state.isMinimalUserInfoSet(true)) this.buttonNew();
+        });
+        modal.present().then();
+
+      } else {
+
+        // user has name set but is missing still photo
+        let modal : Modal = this.modalCtrl.create(ProfilePage, { 
+          showAccountLink: false, 
+          photoNeeded: true,
+          notice: 'Wir brauchen noch ein Foto von dir, bevor du einen neuen Chat anlegen kannst.'
+        });
+        modal.onDidDismiss(data => {
+          if (this.state.isMinimalUserInfoSet(true)) this.buttonNew();
+        });
+        modal.present().then();
+
+      }
+
+    } else {
+      this.navCtrl.push(ChatPage,{});
+    } 
+
   }
 
 

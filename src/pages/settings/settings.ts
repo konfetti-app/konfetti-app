@@ -97,7 +97,6 @@ export class SettingsPage {
     return lang1.locale === lang2.locale;
   }
 
-
   public startAnimation() : void
   {
      this.isPlaying = true;

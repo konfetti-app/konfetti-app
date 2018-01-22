@@ -20,6 +20,8 @@
         "INTRO_BUTTON_CODE" : "Redeem Code",
 
         "CHATEDIT_TOAST_ENTERTITLE" : "Title for chat is needed.",
+        "PROFILE_TOAST_NICKNAME" : "First name is needed.",
+        "PROFILE_TOAST_PHOTO" : "Profile image is needed.",
 
         "INTRO_REGISTERED":"I already have an account",
         "CODEREDEEM_SEND" : "redeem",
@@ -297,6 +299,8 @@
         "INTRO_BUTTON_CODE" : "Code eingeben",
 
         "CHATEDIT_TOAST_ENTERTITLE" : "Der Chat braucht einen Titel.",
+        "PROFILE_TOAST_NICKNAME" : "Bitte Vorname eingeben.",
+        "PROFILE_TOAST_PHOTO" : "Bitte ein Profilfoto hinzufügen.",
 
         "INTRO_REGISTERED":"Ich bin bereits bei Konfetti angemeldet",
         "CODEREDEEM_SEND" : "eingeben",
@@ -574,6 +578,8 @@
         "INTRO_BUTTON_CODE" : "ادخل الرمز",
 
         "CHATEDIT_TOAST_ENTERTITLE" : "تحتاج الدردشة إلى عنوان.",
+        "PROFILE_TOAST_NICKNAME" : "الرجاء إدخال اسمك الأول.",
+        "PROFILE_TOAST_PHOTO" : "الرجاء إضافة صورة ملف شخصي.",
 
         "INTRO_REGISTERED":"لدي حساب بالفعل",
         "CODEREDEEM_SEND" : "استرداد القسيمة",

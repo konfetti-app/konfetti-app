@@ -15,6 +15,7 @@ import {
 } from 'ionic-angular';
 
 import { ChatEditPage } from '../chat-edit/chat-edit';
+import { ProfilePage } from '../profile/profile';
 
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
@@ -299,6 +300,22 @@ export class ChatPage {
   }
 
   sendMessage(): void {
+
+    if (!this.state.isMinimalUserInfoSet()) {
+
+      // user needs to set profile namen and photo first
+      let modal : Modal = this.modalCtrl.create(ProfilePage, { 
+        showAccountLink: false, 
+        photoNeeded: false,
+        notice: 'Wir brauchen noch deinen Name, bevor du beim Chat mitmachen kannst.'
+      });
+      modal.onDidDismiss(data => {
+        if (this.state.isMinimalUserInfoSet(true)) this.sendMessage();
+      });
+      modal.present().then();
+      return;
+      
+    } 
 
     if (!this.isSubscribed) {
       // TODO: subscribe to chat if posting a message

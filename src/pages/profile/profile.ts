@@ -30,6 +30,11 @@ export class ProfilePage {
   // show a info for user to change to the account & password dialog
   showAccountLink : boolean = true;
 
+  // show a custiom notice
+  notice : string = "";
+
+  photoNeeded : boolean = false;
+
   /*
    * following vars are just part of the class
    */
@@ -50,7 +55,6 @@ export class ProfilePage {
   @ViewChild('fileInput') fileInputElement: ElementRef;
 
   constructor(
-    //private navCtrl: NavController,
     private params: NavParams,
     private viewCtrl: ViewController,
     private alertCtrl: AlertController,
@@ -102,6 +106,14 @@ export class ProfilePage {
 
       if ((typeof this.params.data.showAccountLink != 'undefined') && (this.params.data.showAccountLink != null)) {
         this.showAccountLink = this.params.data.showAccountLink;
+      }
+
+      if ((typeof this.params.data.notice != 'undefined') && (this.params.data.notice != null)) {
+        this.notice= this.params.data.notice;
+      }
+
+      if ((typeof this.params.data.photoNeeded != 'undefined') && (this.params.data.photoNeeded != null)) {
+        this.photoNeeded = this.params.data.photoNeeded;
       }
 
     }
@@ -156,12 +168,9 @@ export class ProfilePage {
   }
 
   onChangeFile(event) {
-
     let files = event.srcElement.files;
-    console.log("FILES");
     console.dir(files);
     this.uploadImageToServer(files[0]);
-
   }
 
   uploadImageToServer(file:any) : void {
@@ -326,17 +335,54 @@ export class ProfilePage {
     this.viewCtrl.dismiss({ success: false , command: 'goAccount'} ).then();
   }
 
+  buttonContinue(): void {
+
+    // check if nickname is set
+    if ((this.nickname==null) || (this.nickname.trim().length<1)) {
+      // TODO: i18n
+      this.toastCtrl.create({
+        message: this.translateService.instant('PROFILE_TOAST_NICKNAME'),
+        cssClass: 'toast-invalid',
+        duration: 2000
+      }).present().then();
+      return;
+    }
+
+    if (this.photoNeeded) {
+        // check if nickname is set
+        if ((this.avatarUrl==null) || (this.avatarUrl.trim().length<1)) {
+          // TODO: i18n
+          this.toastCtrl.create({
+            message: this.translateService.instant('PROFILE_TOAST_PHOTO'),
+            cssClass: 'toast-invalid',
+            duration: 2000
+          }).present().then();
+          return;
+        }
+    }
+
+    this.storeUserDataAndClose();
+
+  }
+
   buttonClose(): void {
 
-    if (!this.dataChanged) {
+    if ((!this.dataChanged) || (this.notice.length>0)) {
       this.viewCtrl.dismiss({ success: true } ).then();
       return;
     }
 
+    this.storeUserDataAndClose();
+
+  }
+
+  storeUserDataAndClose():void {
     let userUpdate = new UserUpdate();
     userUpdate.nickname = this.nickname;
     userUpdate.description = this.aboutme;
     userUpdate.spokenLanguages = this.appState.getUserInfo().spokenLanguages;
+    let loadingModal = this.loadingCtrl.create({});
+    loadingModal.present().then();
     this.api.updateUserInfo(this.appPersistence.getAppDataCache().userid,userUpdate).subscribe(
       user => {
 
@@ -347,6 +393,9 @@ export class ProfilePage {
         // update user in app state (keep hoods because on this endpoint they are not populated)
         user.neighbourhoods = this.appState.getUserInfo().neighbourhoods;
         this.appState.setUserInfo(user);
+
+        // hide loading spinner
+        loadingModal.dismiss().then();
 
         // TODO: i18n
         this.toastCtrl.create({
@@ -366,6 +415,9 @@ export class ProfilePage {
          * FAIL
          */
 
+        // hide loading spinner
+        loadingModal.dismiss().then();
+
         // TODO: i18n
         this.toastCtrl.create({
           message: this.translateService.instant('Changes NOT Saved'),
@@ -377,7 +429,6 @@ export class ProfilePage {
 
       }
     );
-
   }
 
 }

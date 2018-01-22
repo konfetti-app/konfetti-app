@@ -68,6 +68,26 @@ export class AppStateProvider {
   }
 
   /**
+   * Check if at least a the user has set a nickname.
+   */
+  isMinimalUserInfoSet(imageIsMandatory:boolean=false) : boolean {
+
+    // check that name is set
+    if (this.userInfo==null) return false;
+    if (this.userInfo.nickname==null) return false;
+    if (this.userInfo.nickname.length==0) return false;
+
+    // check for image
+    if (imageIsMandatory) {
+      if (this.userInfo.avatar==null) return false;
+      if (this.userInfo.avatar.filename==null) return false;
+      if (this.userInfo.avatar.filename.length==0) return false;
+    }
+
+    return true;
+  }
+
+  /**
    * Listen on updates on the user info object
    * @returns {Observable<User>}
    */
