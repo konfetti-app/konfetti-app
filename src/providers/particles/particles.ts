@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 
 /**
- 
-  Based on:
+  Mix of on:
   http://masteringionic.com/blog/2017-12-05-creating-a-random-particle-generator-with-html5-canvas-api-and-ionic-framework/?utm_source=masteringionic_newsletter&utm_medium=email&utm_campaign=visit_blog&utm_content=adding_3d_animation_to_ionic_applications_with_threejs
+  &
+  http://jsfiddle.net/Javalsu/vxP5q/743/?utm_source=website&utm_medium=embed&utm_campaign=vxP5q
 
   1) in HTML: <canvas #canvasObj style="position: fixed;
            top: 0px;
@@ -17,7 +18,6 @@ import 'rxjs/add/operator/map';
   2) in TS: @ViewChild('canvasObj') canvasElement : ElementRef;
      nativeElement: this.canvasElement.nativeElement
      this._PARTICLE.initialiseCanvas(this.canvasElement.nativeElement, 320, 600);
-
  */
 @Injectable()
 export class ParticlesProvider {
@@ -25,6 +25,35 @@ export class ParticlesProvider {
   private _CANVAS 			: any;
   private _CONTEXT 		: any;
   private _ANIMATION;
+
+  mp:number = 150; //max particles
+  particles:Array<any> = [];
+  angle:number = 0;
+  tiltAngle:number = 0;
+  confettiActive:boolean = true;
+  animationComplete:boolean = true;
+  deactivationTimerHandler:any;
+  reactivationTimerHandler:any;
+  animationHandler:any;
+
+  // particle props
+  particleColors:any = {
+    colorOptions: ["DodgerBlue", "OliveDrab", "Gold", "pink", "SlateBlue", "lightblue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"],
+    colorIndex: 0,
+    colorIncrementer: 0,
+    colorThreshold: 10,
+    getColor: function () {
+        if (this.colorIncrementer >= 10) {
+            this.colorIncrementer = 0;
+            this.colorIndex++;
+            if (this.colorIndex >= this.colorOptions.length) {
+                this.colorIndex = 0;
+            }
+        }
+        this.colorIncrementer++;
+        return this.colorOptions[this.colorIndex];
+    }
+  }
 
   constructor(
   ) { }
@@ -47,129 +76,22 @@ export class ParticlesProvider {
   }
 
   /**
-   *
-   * Replay, from the start, the animation that had
-   * been previously stopped
-   *
-   * @public
-   * @method replayAnimation
-   * @return {None}
+   * Start a confetti rain.
    */
-  public startAnimation(milliseconds:number, callbackWhenDone:any=null) : void
+  public startAnimation(count:number, milliseconds:number, callbackWhenDone:any=null) : void
   {
-
+    this.mp = count;
     setTimeout(()=>{
       cancelAnimationFrame(this._ANIMATION);
       this.clearCanvas();
       if (callbackWhenDone!=null) callbackWhenDone();
     }, milliseconds);
-
      this.clearCanvas();
      this.renderToCanvas();
   }
 
   /**
-   *
-   * Creates a particle using the Canvas API
-   *
-   * @public
-   * @method renderParticle
-   * @param context       {Object}   		The HTML Canvas context object
-   * @param canvasWidth   {Number}   		The Canvas object width value
-   * @param canvasHeight  {Number}   		The Canvas object height value
-   * @return {None}
-   */
-  private renderParticle(context			: any,
-                 canvasWidth 	    : number,
-                 canvasHeight 	    : number)
-  {
-
-     // Define particle properties
-     let startingX     : number 	= Math.round(canvasWidth/2) + Math.random() * 225,
-         startingY     : number 	= Math.round(canvasHeight/2) + Math.random() * 115 - 57,
-         radius        : number    = this.generateRandomValue(7, 2),
-         startAngle    : number    = 0,
-         endAngle      : number    = 2 * Math.PI,
-         clockwise     : boolean   = false,
-
-         // Define the colour value for each generated particle using the HSLA CSS property
-         hue           : number    = this.generateRandomValue(50, 0),
-         saturation    : any       = 100 + '%',
-         lightness     : any       = 50 + '%',
-         alpha         : number    = 1,
-         colourFill    : any       = "hsla(" + hue + "," + saturation + "," + lightness + "," + alpha + ")";
-
-
-     // Update the X * Y axis values for the particle
-     startingX 					= startingX + Math.random() * 310 - 245;
-     startingY 					= startingY + Math.random() * 410 - 225;
-
-
-     // Generate the shape
-     // - startingX 	(position on X axis)
-     // - startingY 	(position on Y axis)
-     // - radius    	(width of particle)
-     // - startAngle   (starts from)
-     // - endAngle   	(ends at)
-     // - clockwise    (direction - clockwise or not)
-     context.beginPath();
-     context.arc(startingX,
-                 startingY,
-                 radius,
-                 startAngle,
-                 endAngle,
-                 clockwise);
-     context.fillStyle = colourFill;
-     context.fill();
-  }
-
-  /**
-   *
-   * Generates a random numeric value
-   *
-   * @public
-   * @method generateRandomValue
-   * @param min     {Number}   		Minimum numeric value
-   * @param max     {Number}   		Maximum numeric value
-   * @return {Number}
-   */
-  private generateRandomValue(min : number,
-                      max : number) : number
-  {
-     let maxVal : number     = max,
-         minVal : number     = min,
-         genVal : number;
-
-     // Generate max value
-     if(maxVal === 0)
-     {
-        maxVal = maxVal;
-     }
-     else {
-        maxVal = 1;
-     }
-
-     // Generate min value
-     if(minVal)
-     {
-        minVal = minVal;
-     }
-     else {
-        minVal = 0;
-     }
-
-     genVal  = minVal + (maxVal - minVal) * Math.random();
-
-     return genVal;
-  }
-
-  /**
-   *
    * Sets up the HTML5 Canvas
-   *
-   * @public
-   * @method setupCanvas
-   * @return {None}
    */
   private setupCanvas() : void
   {
@@ -179,12 +101,7 @@ export class ParticlesProvider {
   }
 
   /**
-   *
    * Clear and recreate the HTML5 Canvas object
-   *
-   * @public
-   * @method clearCanvas
-   * @return {None}
    */
   private clearCanvas() : void
   {
@@ -193,46 +110,132 @@ export class ParticlesProvider {
   }
 
   /**
-   *
    * Render the particle animation to the HTML5 Canvas object
-   *
-   * @public
-   * @method renderToCanvas
-   * @return {None}
    */
   private renderToCanvas() : void
   {
-     this.createParticleAnimation();
+    // create particles to start with
+    this.particles = [];
+    this.animationComplete = false;
+    for (var i = 0; i < this.mp; i++) {
+      var particleColor = this.particleColors.getColor();
+      this.particles.push(new confettiParticle(this._CONTEXT, particleColor, this._CANVAS.width, this._CANVAS.height, this.mp));
+    }
+
+    this.createKonfettiAnimation();
   }
 
   /**
-   *
    * Create the particle animation using the requestAnimationFrame object
-   *
-   * @public
-   * @method createParticleAnimation
-   * @return {None}
    */
-  private createParticleAnimation() : void
-  {
-     // Generate a new particle via loop iteration
-     for(var i = 0;
-             i < 10;
-             i++)
-     {
-        this.renderParticle(this._CONTEXT,
-                         this._CANVAS.width,
-                         this._CANVAS.height);
-     }
+  private createKonfettiAnimation() : void {
 
+      // clear screen and draw all particles
+      this._CONTEXT.clearRect(0, 0, this._CANVAS.width, this._CANVAS.height);
+      for (let i = 0; i < this.mp; i++) this.particles[i].draw();
+
+      // Update
+      let remainingFlakes = 0;
+      let particle;
+      this.angle += 0.01;
+      this.tiltAngle += 0.1;
+
+      for (let i = 0; i < this.mp; i++) {
+
+        particle = this.particles[i];
+        if (this.animationComplete) return;
+
+        if (!this.confettiActive && particle.y < -15) {
+                particle.y = this._CANVAS.height + 100;
+                continue;
+        }
+
+        // stepParticle
+        particle.tiltAngle += particle.tiltAngleIncremental;
+        particle.y += (Math.cos(this.angle + particle.d) + 3 + particle.r / 2) / 2;
+        particle.x += Math.sin(this.angle);
+        particle.tilt = (Math.sin(particle.tiltAngle - (i / 3))) * 15;
+
+        // check if particle is within height
+        if (particle.y <= this._CANVAS.height) {
+          remainingFlakes++;
+        }
+
+        /* --> activate if you want to recycle done particles
+        // CheckForReposition
+        if ((particle.x > this._CANVAS.width + 20 || particle.x < -20 || particle.y > this._CANVAS.height) && this.confettiActive) {
+          if (i % 5 > 0 || i % 2 == 0) //66.67% of the flakes
+          {
+              this.repositionParticle(particle, Math.random() * this._CANVAS.width, -10, Math.floor(Math.random() * 10) - 10);
+          } else {
+              if (Math.sin(this.angle) > 0) {
+                  //Enter from the left
+                  this.repositionParticle(particle, -5, Math.random() * this._CANVAS.height, Math.floor(Math.random() * 10) - 10);
+              } else {
+                  //Enter from the right
+                  this.repositionParticle(particle, this._CANVAS.width + 5, Math.random() * this._CANVAS.height, Math.floor(Math.random() * 10) - 10);
+              }
+          }
+        } 
+        */
+
+      }
+
+      // stop confetti
+      if (remainingFlakes === 0) {
+        this.animationComplete = true;
+        this._CONTEXT.clearRect(0, 0, this._CANVAS.width, this._CANVAS.height);
+      }
 
      // Use the requestAnimationFrame method to generate new particles a minimum
      // of 60x a second (or whatever the browser refresh rate is) BEFORE the next
      // browser repaint
-     this._ANIMATION = requestAnimationFrame(() =>
+     if (!this.animationComplete) this._ANIMATION = requestAnimationFrame(() =>
      {
-        this.createParticleAnimation();
+        this.createKonfettiAnimation();
      });
+
   }
 
+  private repositionParticle(particle, xCoordinate, yCoordinate, tilt) {
+    particle.x = xCoordinate;
+    particle.y = yCoordinate;
+    particle.tilt = tilt;
+  }
+
+}
+
+export class confettiParticle {
+
+  ctx:any;
+  x:number;
+  y:number;
+  d:number;
+  r:number;
+  tilt:number;
+  tiltAngleIncremental:number;
+  tiltAngle:number;
+  color:string;
+
+  constructor(canvasContext, color, w, h, mp) {
+    this.ctx = canvasContext;
+    this.color = color;
+    this.x = Math.random() * w; // x-coordinate
+    this.y = (Math.random() * h) - h; //y-coordinate
+    this.r = Math.floor(Math.random() * (30 - 10 + 1) + 10); //radius;
+    this.d = (Math.random() * mp) + 10; //density;
+    this.tilt = Math.floor(Math.random() * 10) - 10;
+    this.tiltAngleIncremental = (Math.random() * 0.07) + .05;
+    this.tiltAngle = 0;
+  }
+
+  draw() {
+    this.ctx.beginPath();
+    this.ctx.lineWidth = this.r / 2;
+    this.ctx.strokeStyle = this.color;
+    this.ctx.moveTo(this.x + this.tilt + (this.r / 4), this.y);
+    this.ctx.lineTo(this.x + this.tilt, this.y + this.tilt + (this.r / 4));
+    return this.ctx.stroke();  
+  }
+  
 }

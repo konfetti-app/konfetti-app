@@ -100,7 +100,7 @@ export class SettingsPage {
   public startAnimation() : void
   {
      this.isPlaying = true;
-     this._PARTICLE.startAnimation(2000, ()=>{
+     this._PARTICLE.startAnimation(100, 5000, ()=>{
       // callback when done 
       this.isPlaying = false;
      });
