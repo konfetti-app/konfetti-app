@@ -198,6 +198,15 @@ export class ApiProvider {
   }
 
   /**
+   * Closes a socket channel.
+   */
+  closeChatSocket(): void {
+    if (this.socketChat==null) return;
+    this.socketChat.close();
+    this.socketChat = null;
+  }
+
+  /**
    * SignUp and join a group by sending a code token to he server.
    * @param {string} code number code
    * @returns {Observable<RedeemCodeRepsonse>}

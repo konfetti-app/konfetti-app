@@ -107,6 +107,16 @@ export class ChatPage {
     }
   }
 
+  ionViewWillLeave() {
+    console.log("Leaving Chat");
+    this.api.closeChatSocket();
+    this.showEnterMessageFooter = false;
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ChatPage');
+  }
+
   // inits a chat
   initChatMessages(): void {
 
@@ -194,14 +204,6 @@ export class ChatPage {
 
     // push message to list
     this.messages.push(msg);
-  }
-
-  ionViewWillLeave() {
-    this.showEnterMessageFooter = false;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatPage');
   }
 
   /*
