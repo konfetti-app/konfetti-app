@@ -11,7 +11,8 @@ import {
   NavParams,
   ModalController,
   Modal,
-  ToastController
+  ToastController,
+  AlertController
 } from 'ionic-angular';
 
 import { ChatEditPage } from '../chat-edit/chat-edit';
@@ -66,7 +67,8 @@ export class ChatPage {
     private state: AppStateProvider,
     private modalCtrl: ModalController,
     private persistence: AppPersistenceProvider,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private alertCtrl: AlertController
   ) {
 
     // browser needs some extra space on the panel
@@ -335,6 +337,49 @@ export class ChatPage {
 
     this.messageInput = "";
     this.messagescroll.scrollToBottom(300);
+  }
+
+  buttonDeleteChat() : void {
+    let confirm = this.alertCtrl.create({
+      title: 'Delete Chat?',
+      message: 'Do you really want to delete this Chat with all its content?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'DELETE Chat',
+          handler: () => {
+            
+            // show loading spinner
+            this.loadingSpinner = this.loadingCtrl.create({
+              content: ''
+            });
+            this.loadingSpinner.present().then();
+
+            // delete on backend (sets disabled = true)
+            this.api.deleteChat(this.chat).subscribe(()=>{
+              
+              // WIN
+
+              // hide spinner & leave page
+              this.loadingSpinner.dismiss().then();
+              this.loadingSpinner = null;
+              this.navCtrl.pop();
+              
+            }, (error) => {
+              // FAIL - hide spinner
+              this.loadingSpinner.dismiss().then();
+              this.loadingSpinner = null;
+            });
+
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   buttonSubscribe() : void {

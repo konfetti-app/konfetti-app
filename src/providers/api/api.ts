@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 // https://medium.com/@vipinswarnkar1989/socket-io-in-mean-angular4-todo-app-29af9683957f
 import io from "socket.io-client";
 
-
 /*
  * Interface to the Konfetti Backend API
  * https://github.com/konfetti-app/konfetti-backend
@@ -361,7 +360,7 @@ export class ApiProvider {
 
   // check if user is admin
   chat.userIsAdmin = false;
-  if (chat.created.byUser==userId) chat.userIsAdmin = true;
+  if (chat.created.byUser._id==userId) chat.userIsAdmin = true;
 
   // set author image & name
   if (chat.userIsAdmin) {
@@ -374,9 +373,9 @@ export class ApiProvider {
       chat.displayImage = "./assets/imgs/default-user.jpg";
     }
   } else {
-    // TODO: set the author name correct
-    chat.displayName = "TODO: getAuthorName";
-    chat.displayImage = "./assets/imgs/default-user.jpg";
+    // set when other user
+    chat.displayName = chat.created.byUser.nickname;
+    chat.displayImage = this.buildImageURL(chat.created.byUser.avatar.filename);
   }
 
   return chat;
@@ -448,8 +447,47 @@ export class ApiProvider {
         }, error => {
 
           // default error handling
-          this.defaultHttpErrorHandling(error, observer, "getUser", () => {
+          this.defaultHttpErrorHandling(error, observer, "createChat", () => {
             this.createChat(chat).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
+  deleteChat(chat:Chat) : Observable<void> {
+
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        // prepare header for json body data
+        headers = headers.append('Content-Type', 'application/json');
+
+        this.http.delete<any>(this.apiUrlBase + 'api/chats/channel/'+chat._id,{
+          headers: headers
+        }).subscribe((resp) => {
+
+          /*
+           * WIN
+           */
+
+          observer.next();
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "deleteChat", () => {
+            this.deleteChat(chat).subscribe(
               (win) => {  observer.next(win); observer.complete(); },
               (error) => observer.error(error)
             );
@@ -562,8 +600,6 @@ export class ApiProvider {
 
         const formData: FormData = new FormData();
         formData.append('avatar', file, (file.name) ? file.name : 'upload.jpg');
-
-        //const body = new HttpParams().set('avatar', file, file.name);
 
         this.http.post<any>(this.apiUrlBase + 'api/assets/avatar', formData,{
           headers: headers
@@ -686,6 +722,7 @@ export class ApiProvider {
 
           // build header with new token
           headers = headers.append("Authorization", "Bearer " + jwt.token);
+          headers = headers.append("Cache-Control", "no-cache, must-revalidate");
           observer.next(headers);
           observer.complete();
 
@@ -704,7 +741,7 @@ export class ApiProvider {
 
         // build header with existing token
         headers = headers.append("Authorization", "Bearer " + this.jsonWebToken.token);
-
+        headers = headers.append("Cache-Control", "no-cache, must-revalidate");
         observer.next(headers);
         observer.complete();
 

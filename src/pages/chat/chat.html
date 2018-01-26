@@ -11,8 +11,11 @@
     <ion-title>{{pageTitel}}</ion-title>
 
     <ion-buttons end class="navheader-end-buttons">
-        <button ion-button icon-only (click)="showDialogEditChat()" style="width:40px;">
-          <i *ngIf="((chat!=null) && (chat.userIsAdmin))" class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
+        <button *ngIf="((chat!=null) && (chat.userIsAdmin))" ion-button icon-only (click)="buttonDeleteChat()" style="width:40px;">
+            <i class="mdi mdi-delete navheader-button" style="font-size: 160%;"></i>
+        </button>
+        <button *ngIf="((chat!=null) && (chat.userIsAdmin))" ion-button icon-only (click)="showDialogEditChat()" style="width:40px;">
+          <i class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
         </button>
         <button ion-button icon-only (click)="buttonSubscribe()" style="width:40px;">
           <i *ngIf="isSubscribed" class="fa fa-bell" aria-hidden="true"></i>

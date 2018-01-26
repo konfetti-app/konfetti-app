@@ -197,12 +197,6 @@ export class ParticlesProvider {
 
   }
 
-  private repositionParticle(particle, xCoordinate, yCoordinate, tilt) {
-    particle.x = xCoordinate;
-    particle.y = yCoordinate;
-    particle.tilt = tilt;
-  }
-
 }
 
 export class confettiParticle {
