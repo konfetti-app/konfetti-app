@@ -181,8 +181,8 @@ export class ChatPage {
 
     // set date
     let datePipe = new DatePipe(this.state.getActualAppLanguageInfo().locale);
-    let messageAge = Date.now() - msg.date;
-    if ( messageAge > (24 * 60 * 60) ) {
+    let messageAge = Date.now() - (msg.date * 1000);
+    if ( messageAge > (24 * 60 * 60 * 1000) ) {
       // is older than one day (time + date)
       msg.displayTime = datePipe.transform(new Date(msg.date * 1000), 'fullDate');
     } else {
