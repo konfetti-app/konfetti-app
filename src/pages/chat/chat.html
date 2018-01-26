@@ -12,7 +12,7 @@
 
     <ion-buttons end class="navheader-end-buttons">
         <button ion-button icon-only (click)="showDialogEditChat()" style="width:40px;">
-          <i *ngIf="chat.userIsAdmin" class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
+          <i *ngIf="((chat!=null) && (chat.userIsAdmin))" class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
         </button>
         <button ion-button icon-only (click)="buttonSubscribe()" style="width:40px;">
           <i *ngIf="isSubscribed" class="fa fa-bell" aria-hidden="true"></i>
@@ -157,7 +157,7 @@
         </div>
 
         <!-- keep food room -->  
-        <div *ngIf="showFootRoom" style="height:56px;">&nbsp;</div>
+        <div *ngIf="showFootRoom" style="height:62px;">&nbsp;</div>
 
 </ion-content>
 
@@ -183,7 +183,7 @@
             style="
               background-color: white;
               -webkit-padding-start: 10px;
-              height: 42px;
+              height: 46px;
               font-size: 120%;
               padding-top: 2px;
             "

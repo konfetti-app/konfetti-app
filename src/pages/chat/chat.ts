@@ -142,7 +142,7 @@ export class ChatPage {
 
   }
 
-  // takes a message from backend and prpares it for use in app
+  // takes a message from backend and prepares it for use in app
   addMessageToChat(msg:Message) {
   
     // check if message is from user
@@ -172,7 +172,7 @@ export class ChatPage {
       msg.displayImage = "./assets/imgs/default-user.jpg";
       if (msg.parentUser!=null) {
         // TODO get real name
-        msg.displayName = msg.parentUser._id;
+        msg.displayName = msg.parentUser.nickname;
         if ((msg.parentUser.avatar) && (msg.parentUser.avatar.filename)) {
           msg.displayImage = this.api.buildImageURL(msg.parentUser.avatar.filename);
         }
@@ -310,7 +310,9 @@ export class ChatPage {
         notice: 'Wir brauchen noch deinen Name, bevor du beim Chat mitmachen kannst.'
       });
       modal.onDidDismiss(data => {
-        if (this.state.isMinimalUserInfoSet(true)) this.sendMessage();
+        if (this.state.isMinimalUserInfoSet(false)) {
+          this.sendMessage();
+        }
       });
       modal.present().then();
       return;

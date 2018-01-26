@@ -1,5 +1,18 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { Nav, Platform, ModalController, Modal, ToastController, AlertController } from 'ionic-angular';
+import { 
+  Component, 
+  ViewChild, 
+  OnInit 
+} from '@angular/core';
+
+import { 
+  Nav, 
+  Platform, 
+  ModalController, 
+  Modal, 
+  ToastController, 
+  AlertController 
+} from 'ionic-angular';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MenuController, Events } from 'ionic-angular';
@@ -12,10 +25,17 @@ import { MainPage } from '../pages/main/main';
 import { ProfilePage } from '../pages/profile/profile';
 import { SettingsPage } from '../pages/settings/settings';
 import { IntroPage } from '../pages/intro/intro';
+import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
 import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
-import { ApiProvider, JsonWebToken, NetworkProblem, User } from "../providers/api/api";
+import { 
+  ApiProvider, 
+  JsonWebToken, 
+  NetworkProblem, 
+  User,
+  Code
+} from "../providers/api/api";
 
 @Component({
   templateUrl: 'app.html'
@@ -385,7 +405,41 @@ export class MyApp implements OnInit{
     //this.nav.setRoot(SettingsPage).then();
   }
 
+  /*
+    TODO Optionen:
+    a) Weiteren Code eingeben/scannen.
+    b) Wie finde ich eine Nachbarschaft? 
+    c) Eigene Nachbarschaft/Haus gründen.`,
+  */
   buttonNewGroup() : void {
+
+    // TODO:
+    alert("TODO: Let Modal check on other endpoint - because user already has account.");
+
+    let modal : Modal = this.modalCtrl.create(CodeRedeemPage, { modus: 'main'});
+    modal.onDidDismiss(data => {
+      if ((data != null) && (typeof data.success != 'undefined') && (data.success)) {
+
+        if ((data.code as Code).actionType == "newNeighbour") {
+
+          alert("TODO: Check if data updated.");
+          //this.updateData();
+
+        } else {
+          console.log("buttonQRCodeScan: UNKNOWN CODE TYPE", data);
+
+          this.toastCtrl.create({
+            message: 'TODO: Neuen Code verarbeiteten',
+            duration: 5000
+          }).present().then();
+
+        }
+
+      }
+    });
+    modal.present().then();
+
+    /*
     // TODO
     this.toastCtrl.create({
       message: `TODO Optionen:
@@ -394,6 +448,7 @@ export class MyApp implements OnInit{
     c) Eigene Nachbarschaft/Haus gründen.`,
       duration: 5000
     }).present().then();
+    */
 
   }
 
