@@ -30,6 +30,9 @@ import { NativeStorage } from '@ionic-native/native-storage';
 // https://ionicframework.com/docs/native/camera/
 import { Camera } from '@ionic-native/camera';
 
+// https://ionicframework.com/docs/native/keyboard/
+import { Keyboard } from '@ionic-native/keyboard';
+
 import { ParticlesProvider } from '../providers/particles/particles';
 import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
@@ -82,6 +85,7 @@ import { MainPageModule } from '../pages/main/main.module'
     ApiProvider,
     NativeStorage,
     Camera,
+    Keyboard,
     AppPersistenceProvider,
     AppStateProvider,
     BarcodeScanner,

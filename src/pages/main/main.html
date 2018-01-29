@@ -134,6 +134,10 @@
 
   </ion-content>
 
+  <ion-fab (click)="buttonNew()" *ngIf="showFabButton" [ngClass]="{'ion-fab-ios': isIOS, 'ion-fab ' : true }">
+      <button ion-fab color="#78bce9"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
+
 </div>
 
 

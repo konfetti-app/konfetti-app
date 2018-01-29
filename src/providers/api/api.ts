@@ -375,7 +375,11 @@ export class ApiProvider {
   } else {
     // set when other user
     chat.displayName = chat.created.byUser.nickname;
-    chat.displayImage = this.buildImageURL(chat.created.byUser.avatar.filename);
+    if (chat.created.byUser.avatar) {
+      chat.displayImage = this.buildImageURL(chat.created.byUser.avatar.filename);
+    } else {
+      chat.displayImage = "./assets/imgs/default-user.jpg";
+    }
   }
 
   return chat;

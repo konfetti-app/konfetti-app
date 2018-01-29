@@ -17,7 +17,7 @@
     .middleCenter {
       width: 340px;
       margin-left: auto;margin-right: auto;
-      border-width: 1px; border-color: black;
+      border-width: 2px; border-color: black;
     }
     @media screen and (max-width: 450px) {
       .justShowWhenBig {
@@ -26,10 +26,17 @@
     }
   </style>
   <script>
-    // redirect for mobile
+    
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+      // redirect for mobile
       location.href = './www/index.html';
+    } else {
+      // notice of not Chrome or Safari
+      var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+      var isChrome = !!window.chrome && !!window.chrome.webstore;
+      if ((!isSafari) && (!isChrome)) alert('NOTICE: For correct UI preview - please open in Chrome or Safari Browser.');
     }
+
   </script>
 </head>
 <body style="text-align: center; height: 100%; margin-top: 2px;">
@@ -37,7 +44,9 @@
 </iframe>
 <div class="middleCenter" style="width: 330px; min-height: 60px; background-color: lightyellow; margin-top: 6px;
     border-style: solid;padding: 6px; font-size: 11px; font-family: 'Helvetica'">
-  <p style="font-weight: bold; margin-top: 1px; margin-bottom: 3px;">This is a preview of the new konfetti app. </p><br>
+  <p style="font-weight: bold; margin-top: 1px; margin-bottom: 3px;">This is a preview of the new konfetti app. 
+    So that it looks like on an Android or iOS device please use <a href="https://www.google.com/intl/de/chrome/browser/desktop/index.html" target="_blank">Chrome</a> 
+    or <a href="https://support.apple.com/downloads/safari" target="_blank">Safari</a> Browser on your computer. Thx.</p><br>
   Please report errors to: christian@konfettiapp.de
 </div>
 <a class="justShowWhenBig" href="https://github.com/konfetti-app/konfetti-app"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>

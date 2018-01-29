@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title [ngClass]="{'ion-title-ios': isIOS }">
       {{ 'PROFILE_TITLE' | translate }}
     </ion-title>
     <ion-buttons end class="navheader-end-buttons" >

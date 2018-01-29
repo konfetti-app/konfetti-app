@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { NavController, ModalController, Modal, } from 'ionic-angular';
+import { 
+  NavController, 
+  ModalController, 
+  Modal,
+  Events
+} from 'ionic-angular';
 
 import { ApiProvider, Chat } from '../../providers/api/api';
 import { AppStateProvider } from "../../providers/app-state/app-state";
@@ -35,19 +40,36 @@ export class ModuleGroupchatsComponent {
   // chats to display
   chats:Array<Chat> = [];
 
+  // flag is running on iOS
+  isIOS: boolean;
+
   constructor(
     private navCtrl: NavController,
     private api: ApiProvider,
     private persistence: AppPersistenceProvider,
     private modalCtrl: ModalController,
-    private state: AppStateProvider
+    private state: AppStateProvider,
+    private events: Events
   ) {
+
+    this.isIOS = this.state.isIOS();
 
     // get the actual neighborhood
     this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
 
     // TODO: refresh data everytime user comes back to module later (event?)
     this.refreshData();
+
+    /*
+     * Event Bus
+     * https://ionicframework.com/docs/api/util/Events/
+     */
+
+    this.events.subscribe("new:groupchats", () => {
+      console.log("Eventbus: New GroupChat");
+      this.buttonNew();
+    });
+
   }
 
   private refreshData(): void {

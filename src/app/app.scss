@@ -19,6 +19,24 @@ p {
   text-align: center;
 }
 
+ion-title {
+  padding-top: 4px !important;
+}
+
+.ion-title-ios {
+  margin-top: -10px;
+}
+
+.ion-fab {
+  position: fixed;
+  bottom: 12px;
+  right: 13px;
+}
+
+.ion-fab-ios {
+  //position: absolute !important;
+}
+
 .toast-message {
   text-align: center;
 }

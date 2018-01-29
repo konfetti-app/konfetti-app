@@ -2,7 +2,7 @@
 
   <ion-navbar>
 
-    <ion-title>
+    <ion-title [ngClass]="{'ion-title-ios': isIOS }">
       {{ 'MENU_SETTINGS' | translate }}
     </ion-title>
 

@@ -20,6 +20,8 @@ import {
 
 import { Subscription } from 'rxjs';
 
+import { Keyboard } from '@ionic-native/keyboard';
+
 import { ChatEditPage } from '../chat-edit/chat-edit';
 import { ProfilePage } from '../profile/profile';
 
@@ -61,11 +63,17 @@ export class ChatPage {
   loading:boolean = true;
   loadingSpinner : Loading = null;
 
+  keyboardIsOpen:boolean = false;
+  isIOS:boolean;
+
   // TODO: i18n
   pageTitel:string = "";
 
+  // platform event subscriptions
   private onPauseSubscription: Subscription;
   private onResumeSubscription: Subscription;
+  private onKeyboardShowSubscription: Subscription;
+  private onKeyboardHideSubscription: Subscription;
 
   constructor(
     private navCtrl: NavController, 
@@ -77,12 +85,17 @@ export class ChatPage {
     private persistence: AppPersistenceProvider,
     private navParams: NavParams,
     private alertCtrl: AlertController,
+    private keyboard: Keyboard,
     private platform: Platform
   ) {
 
     // browser needs some extra space on the panel
     this.showFootRoom = !state.isRunningOnRealDevice();
     this.chat = this.navParams.get("chat") as Chat;
+
+
+    // flag for fixing some iOS quirks
+    this.isIOS = this.state.isIOS();
 
   }
 
@@ -91,6 +104,7 @@ export class ChatPage {
   */
 
   ionViewWillEnter() {
+
     console.log("ionViewWillEnter ChatPage");
     this.showInfoHeader = (this.chat!=null);
 
@@ -105,6 +119,25 @@ export class ChatPage {
       console.log("onResumeSubscription");
       if (this.chat!=null) this.initChatMessages();
     }); 
+
+    // register on mobile keyboard event show
+    this.onKeyboardShowSubscription = this.keyboard.onKeyboardShow().subscribe(()=>{
+      console.log("Keyboard Show");
+      this.keyboardIsOpen = true;
+      setTimeout(() => {
+        if (this.messagescroll) this.messagescroll.scrollToBottom(100);
+      },300);
+    });
+
+    // register on mobile keyboard event show
+    this.onKeyboardShowSubscription = this.keyboard.onKeyboardHide().subscribe(()=>{
+      console.log("Keyboard Hide");
+      this.keyboardIsOpen = false;
+    });
+
+    // init keyboard state
+    this.keyboardIsOpen = false;
+    this.keyboard.close();
 
   }
 
@@ -146,8 +179,10 @@ export class ChatPage {
       this.api.closeChatSocket();
 
       // unsubscribe from platform events
-      this.onResumeSubscription.unsubscribe();
-      this.onPauseSubscription.unsubscribe();
+      if (this.onResumeSubscription) this.onResumeSubscription.unsubscribe();
+      if (this.onPauseSubscription) this.onPauseSubscription.unsubscribe();
+      if (this.onKeyboardShowSubscription) this.onKeyboardShowSubscription.unsubscribe();
+      if (this.onKeyboardHideSubscription) this.onKeyboardHideSubscription.unsubscribe();
 
     }
 
@@ -171,7 +206,7 @@ export class ChatPage {
           this.addMessageToChat(message);
         });
         if (messages.length>0) setTimeout(()=>{
-          this.messagescroll.scrollToBottom(500);
+          if (this.messagescroll) this.messagescroll.scrollToBottom(500);
         },300);
       }, (error) => {
         this.loading = false;
@@ -185,7 +220,7 @@ export class ChatPage {
       this.api.initChatSocket(this.chat).subscribe((message:Message)=>{
         this.addMessageToChat(message);
         setTimeout(()=>{
-          this.messagescroll.scrollToBottom(200);
+          if (this.messagescroll) this.messagescroll.scrollToBottom(200);
         },100);
       }, (error) => {
         alert("TODO: handle error on chat init");
@@ -241,7 +276,7 @@ export class ChatPage {
       msg.displayTime = datePipe.transform(new Date(msg.date * 1000), 'shortTime');
     }
 
-    console.log("PROCESSED CHAT MESSAGE",msg);
+    // console.log("PROCESSED CHAT MESSAGE",msg);
 
     // push message to list
     this.messages.push(msg);
@@ -375,7 +410,7 @@ export class ChatPage {
     this.api.sendChatSocket(this.messageInput);
 
     this.messageInput = "";
-    this.messagescroll.scrollToBottom(300);
+    if (this.messagescroll) this.messagescroll.scrollToBottom(300);
   }
 
   buttonDeleteChat() : void {
@@ -441,10 +476,9 @@ export class ChatPage {
   }
 
   focusMessageInput(gotFocus:boolean) : void {
-    console.log("focusMessageInput");
-    setTimeout(() => {
-      this.messagescroll.scrollToBottom(100);
-    },200);
+    if (gotFocus) setTimeout(() => {
+      if (this.messagescroll) this.messagescroll.scrollToBottom(100);
+    },300);
   }
 
 }

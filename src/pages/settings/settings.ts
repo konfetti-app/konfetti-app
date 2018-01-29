@@ -21,6 +21,9 @@ export class SettingsPage {
   @ViewChild('canvasObj') canvasElement : ElementRef;
   public isPlaying : boolean = false;
 
+  // flag is running on iOS
+  isIOS: boolean;
+
   constructor(
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
@@ -30,6 +33,8 @@ export class SettingsPage {
     private _PARTICLE: ParticlesProvider,
     private platform: Platform
     ) {
+
+      this.isIOS = this.appState.isIOS();
 
       // get version strings
       this.versionString = this.appState.getAppBuildTime();

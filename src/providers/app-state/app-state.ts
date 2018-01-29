@@ -7,8 +7,8 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform } from 'ionic-angular';
-import {Group, User} from './../../providers/api/api';
-import {Observable} from "rxjs/Observable";
+import { Group, User } from './../../providers/api/api';
+import { Observable } from "rxjs/Observable";
 
 function getWindow (): any {
   return window;
@@ -198,6 +198,13 @@ export class AppStateProvider {
    */
   isRunningOnRealDevice() : boolean {
     return this.platform.is('cordova');
+  }
+
+  /**
+   * True if running on iOS platform.
+   */
+  isIOS() : boolean {
+    return this.platform.is('ios');
   }
 
   getAppBuildTime() : string {

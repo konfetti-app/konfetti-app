@@ -1,6 +1,23 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage,  ModalController, Modal, ToastController, LoadingController, Events } from 'ionic-angular';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { 
+  Component, 
+  ViewChild, 
+  ElementRef 
+} from '@angular/core';
+import { 
+  IonicPage,  
+  ModalController, 
+  Modal, 
+  ToastController, 
+  LoadingController, 
+  Events 
+} from 'ionic-angular';
+import { 
+  trigger, 
+  state, 
+  style, 
+  transition, 
+  animate 
+} from '@angular/animations';
 import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
@@ -119,7 +136,13 @@ export class MainPage {
   moduleConfig : Array<string>;
 
   // this one just for dummy testing
-  notificationModuleA : boolean = true;
+  notificationModuleA : boolean = false;
+
+  // flag is running on iOS
+  isIOS: boolean;
+
+  // flag show NEW fab button
+  showFabButton: boolean = true;
 
   constructor(
     private modalCtrl: ModalController,
@@ -132,6 +155,8 @@ export class MainPage {
     private state: AppStateProvider
   ) {
     this.showModuleFocus = "";
+
+    this.isIOS = this.state.isIOS();
 
     this.eventMarkers = leaflet.featureGroup();
 
@@ -177,6 +202,10 @@ export class MainPage {
     return this.stateModulePanel === 'showModules';
   }
 
+  buttonNew():void {
+    this.events.publish('new:'+this.showModuleFocus, Date.now());
+  }
+
   buttonModule(moduleName: string) {
 
     if (moduleName===this.showModuleFocus) {
@@ -185,6 +214,13 @@ export class MainPage {
       this.transformShowMap();
 
     } else {
+
+      // show NEW fab button on action modules
+      if (moduleName!='news') {
+        if (!this.showKonfettiTour) this.showFabButton = true;
+      } else {
+        this.showFabButton = false;
+      }
 
       // deactivate notification bubble on module
       if (moduleName==='groupchats') this.notificationModuleA = false;
@@ -348,6 +384,8 @@ export class MainPage {
       return;
     }
 
+    this.showFabButton = false;
+
     this.setStateModulePanel(false);
 
     this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
@@ -367,6 +405,7 @@ export class MainPage {
 
     this.setStateModulePanel(true);
     if (this.showModuleFocus.length<1) this.showModuleFocus='news';
+    if (this.showModuleFocus!='news') this.showFabButton = true;
 
     this.map.flyTo({lon: this.lon, lat: this.lat-0.0025}, this.zoom);
     this.map.removeLayer(this.eventMarkers);

@@ -49,6 +49,9 @@ export class ProfilePage {
    */
   dataChanged : boolean = false;
 
+  // flag is running on iOS
+  isIOS: boolean;
+
   /*
    *
    */
@@ -67,6 +70,9 @@ export class ProfilePage {
     private translateService: TranslateService,
     private actionSheetCtrl: ActionSheetController
   ) {
+
+    this.isIOS = appState.isIOS();
+
   }
 
   ionViewDidLoad() {
