@@ -2,7 +2,9 @@ import {
   Component,
   ViewChild
   } from '@angular/core';
+
 import { DatePipe } from '@angular/common';
+
 import { 
   IonicPage, 
   NavController, 
@@ -12,8 +14,11 @@ import {
   ModalController,
   Modal,
   ToastController,
-  AlertController
+  AlertController,
+  Platform
 } from 'ionic-angular';
+
+import { Subscription } from 'rxjs';
 
 import { ChatEditPage } from '../chat-edit/chat-edit';
 import { ProfilePage } from '../profile/profile';
@@ -59,6 +64,9 @@ export class ChatPage {
   // TODO: i18n
   pageTitel:string = "";
 
+  private onPauseSubscription: Subscription;
+  private onResumeSubscription: Subscription;
+
   constructor(
     private navCtrl: NavController, 
     private api: ApiProvider,
@@ -68,12 +76,14 @@ export class ChatPage {
     private modalCtrl: ModalController,
     private persistence: AppPersistenceProvider,
     private navParams: NavParams,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private platform: Platform
   ) {
 
     // browser needs some extra space on the panel
     this.showFootRoom = !state.isRunningOnRealDevice();
     this.chat = this.navParams.get("chat") as Chat;
+
   }
 
   /*
@@ -81,10 +91,26 @@ export class ChatPage {
   */
 
   ionViewWillEnter() {
+    console.log("ionViewWillEnter ChatPage");
     this.showInfoHeader = (this.chat!=null);
+
+    // register when app gets paused on OS and set into background
+    this.onPauseSubscription = this.platform.pause.subscribe(()=>{
+      console.log("onPauseSubscription");
+      if (this.chat!=null) this.api.closeChatSocket();
+    });
+    
+    // register when app comes back from the OS background
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      console.log("onResumeSubscription");
+      if (this.chat!=null) this.initChatMessages();
+    }); 
+
   }
 
   ionViewDidEnter() {
+
+    console.log("ionViewDidEnter ChatPage");
 
     if (this.chat==null) {
 
@@ -110,9 +136,21 @@ export class ChatPage {
   }
 
   ionViewWillLeave() {
-    console.log("Leaving Chat");
-    this.api.closeChatSocket();
+
+    console.log("ionViewWillLeave ChatPage");
     this.showEnterMessageFooter = false;
+
+    if (this.chat!=null) {
+
+      // make sure chat socket is closed
+      this.api.closeChatSocket();
+
+      // unsubscribe from platform events
+      this.onResumeSubscription.unsubscribe();
+      this.onPauseSubscription.unsubscribe();
+
+    }
+
   }
 
   ionViewDidLoad() {
@@ -126,6 +164,7 @@ export class ChatPage {
         GET OLD CHAT MESSAGES FROM API
       */
 
+      this.messages = [];
       this.api.getChatMessages(this.chat, 0).subscribe((messages:Array<Message>)=>{
         this.loading = false;
         messages.forEach( (message:Message) => {
@@ -401,7 +440,8 @@ export class ChatPage {
     console.error("TODO: Update subscribe with server ("+this.isSubscribed+")");
   }
 
-  focusMessageImput(gotFocus:boolean) : void {
+  focusMessageInput(gotFocus:boolean) : void {
+    console.log("focusMessageInput");
     setTimeout(() => {
       this.messagescroll.scrollToBottom(100);
     },200);

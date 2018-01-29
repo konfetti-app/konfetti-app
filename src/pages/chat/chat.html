@@ -181,7 +181,7 @@
             type="text" 
             [(ngModel)]="messageInput"
             placeholder="Nachricht eingeben"
-            (focus)="focusMessageImput(true)" (focusout)="focusMessageImput(false)"
+            (ionFocus)="focusMessageInput(true)" (focusout)="focusMessageInput(false)"
             (keyup.enter)="sendMessage()"
             style="
               background-color: white;
