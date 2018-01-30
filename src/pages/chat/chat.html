@@ -43,6 +43,9 @@
         <!-- keep head room -->  
         <div style="height:65px;">&nbsp;</div>
 
+        <!-- extra headroom when on iOS keyboard is open -->
+        <div *ngIf="(keyboardIsOpen && isIOS )" style="height:110px;">&nbsp;</div>
+
         <ion-spinner *ngIf="loading"></ion-spinner>
 
         <div *ngIf="(messages.length==0) && (!loading)" style="color:grey; font-style: italic;">
@@ -122,9 +125,6 @@
 
         </div>
 
-        <!-- keep food room 
-        <div *ngIf="showFootRoom" style="height:62px;">&nbsp;</div>-->  
-
 </ion-content>
 
 <div *ngIf="showInfoHeader" (click)="showDialogEditChat()" style="
@@ -182,7 +182,8 @@ margin-top: -17px;
         <tr>
           <td style="
             text-align: end;
-          "><ion-input class="message-input-field"
+          ">
+          <ion-input id="messageinput" class="message-input-field"
             type="text" 
             [(ngModel)]="messageInput"
             placeholder="Nachricht eingeben"
@@ -195,7 +196,8 @@ margin-top: -17px;
               font-size: 120%;
               padding-top: 2px;
             "
-            ></ion-input></td>
+            ></ion-input>
+          </td>
           <td style="
             width: 10%;
             text-align: start;

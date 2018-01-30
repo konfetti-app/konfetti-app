@@ -75,6 +75,9 @@ export class ChatPage {
   private onKeyboardShowSubscription: Subscription;
   private onKeyboardHideSubscription: Subscription;
 
+  // to work around a iOS bug
+  firstTimeKeyboardiOS:boolean = true;
+
   constructor(
     private navCtrl: NavController, 
     private api: ApiProvider,
@@ -93,9 +96,9 @@ export class ChatPage {
     this.showFootRoom = !state.isRunningOnRealDevice();
     this.chat = this.navParams.get("chat") as Chat;
 
-
     // flag for fixing some iOS quirks
     this.isIOS = this.state.isIOS();
+    if (!this.isIOS) this.firstTimeKeyboardiOS = false;
 
   }
 
@@ -123,10 +126,19 @@ export class ChatPage {
     // register on mobile keyboard event show
     this.onKeyboardShowSubscription = this.keyboard.onKeyboardShow().subscribe(()=>{
       console.log("Keyboard Show");
+
+      // fix iOS strange first time keyboard bug
+      if (this.firstTimeKeyboardiOS) {
+        this.firstTimeKeyboardiOS=false;
+        this.keyboard.close();
+        return;
+      }
+
       this.keyboardIsOpen = true;
       setTimeout(() => {
         if (this.messagescroll) this.messagescroll.scrollToBottom(100);
       },300);
+
     });
 
     // register on mobile keyboard event show
@@ -137,6 +149,7 @@ export class ChatPage {
 
     // init keyboard state
     this.keyboardIsOpen = false;
+    //this.keyboard.hideKeyboardAccessoryBar(true);
     this.keyboard.close();
 
   }
@@ -427,14 +440,14 @@ export class ChatPage {
           text: 'DELETE Chat',
           handler: () => {
             
-            // show loading spinner
-            this.loadingSpinner = this.loadingCtrl.create({
-              content: ''
-            });
-            this.loadingSpinner.present().then();
+              // show loading spinner
+              this.loadingSpinner = this.loadingCtrl.create({
+                content: ''
+              });
+              this.loadingSpinner.present().then();
 
-            // delete on backend (sets disabled = true)
-            this.api.deleteChat(this.chat).subscribe(()=>{
+              // delete on backend (sets disabled = true)
+              this.api.deleteChat(this.chat).subscribe(()=>{
               
               // WIN
 
@@ -457,6 +470,7 @@ export class ChatPage {
   }
 
   buttonSubscribe() : void {
+
     this.isSubscribed = !this.isSubscribed;
 
     if (this.isSubscribed) {
