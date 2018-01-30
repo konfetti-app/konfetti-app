@@ -38,7 +38,8 @@ import { AppStateProvider } from '../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../providers/app-persistence/app-persistence';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+// https://github.com/konfetti-app/konfetti-app/issues/20
+// import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { MainPageModule } from '../pages/main/main.module'
 
@@ -88,7 +89,7 @@ import { MainPageModule } from '../pages/main/main.module'
     Keyboard,
     AppPersistenceProvider,
     AppStateProvider,
-    BarcodeScanner,
+    //BarcodeScanner,
     ParticlesProvider
   ]
 })

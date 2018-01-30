@@ -14,8 +14,8 @@ import { ApiProvider, UserCredentials, Code } from "../../providers/api/api";
 import { AppStateProvider } from '../../providers/app-state/app-state';
 import { AppPersistenceProvider } from '../../providers/app-persistence/app-persistence';
 
-// https://ionicframework.com/docs/native/barcode-scanner/
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+// https://github.com/konfetti-app/konfetti-app/issues/20
+// import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 @IonicPage()
 @Component({
@@ -41,7 +41,7 @@ export class CodeRedeemPage {
     private params: NavParams,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    private barcodeScanner: BarcodeScanner,
+    //private barcodeScanner: BarcodeScanner,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private translateService: TranslateService,
@@ -61,6 +61,8 @@ export class CodeRedeemPage {
     if (this.loadingSpinner!=null) this.loadingSpinner.dismissAll();
   }
 
+
+  /* https://github.com/konfetti-app/konfetti-app/issues/20
   buttonScanCode() :void {
 
     // simulate on browser for now
@@ -69,10 +71,6 @@ export class CodeRedeemPage {
       return;
     }
 
-    /*
-    * BARCODE SCANNER
-    * https://ionicframework.com/docs/native/barcode-scanner/
-    */
     const loading = this.loadingCtrl.create({
       showBackdrop: true
     });
@@ -101,6 +99,7 @@ export class CodeRedeemPage {
     }, 500);
 
   }
+  */
 
   processScannedCode(text: string) : void {
 
