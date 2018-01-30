@@ -57,7 +57,11 @@
 
           <ion-item style="width:95%; top: -10px;">
             <ion-label color="primary" floating>{{ 'PROFILE_FIRSTNAME' | translate }}</ion-label>
-            <ion-input type="text" (keyup)="onChangeNickname()" [(ngModel)]="nickname" ></ion-input>
+            <ion-input type="text" 
+              (keyup)="onChangeNickname()" 
+              (keyup.enter)="closeKeyboard()"
+              [(ngModel)]="nickname" 
+            ></ion-input>
           </ion-item>
 
         </ion-list>
@@ -70,7 +74,12 @@
 
     <ion-item>
       <ion-label color="primary" id="profile-aboutme-lable" stacked>{{ 'PROFILE_ABOUTME' | translate }}</ion-label>
-      <ion-input type="text" (keyup)="onChangeAbout()" [(ngModel)]="aboutme" placeholder="{{ 'PROFILE_ABOUTME_DEFAULT' | translate }}"></ion-input>
+      <ion-input type="text" 
+        (keyup)="onChangeAbout()" 
+        (keyup.enter)="closeKeyboard()"
+        [(ngModel)]="aboutme" 
+        placeholder="{{ 'PROFILE_ABOUTME_DEFAULT' | translate }}"
+      ></ion-input>
     </ion-item>
 
   </ion-list>
@@ -88,7 +97,7 @@
         <ion-label>{{langInfo.displayname}}</ion-label>
       </ion-chip>
 
-      <button ion-button small (click)="buttonEditSpokenLangs()" style="margin-top: -6px;">
+      <br><button ion-button small (click)="buttonEditSpokenLangs()" style="margin-top: 8px;">
         {{ 'PROFILE_LANGUAGES_CHANGE' | translate }}
       </button>
 

@@ -127,16 +127,29 @@ export class ChatPage {
     this.onKeyboardShowSubscription = this.keyboard.onKeyboardShow().subscribe(()=>{
       console.log("Keyboard Show");
 
+      /*
       // fix iOS strange first time keyboard bug
       if (this.firstTimeKeyboardiOS) {
         this.firstTimeKeyboardiOS=false;
         this.keyboard.close();
         return;
       }
+      */
+
+      /*
+      if (this.isIOS) {
+        try {
+          console.log("CSS Fix wrong positioned iOS keyboard - ON");
+          let ionNavHTMLCollection:any = document.getElementsByTagName("ion-nav"); 
+          let ionNavElement:any = Array.prototype.slice.call(ionNavHTMLCollection)[0];
+          ionNavElement.classList.add("ion-nav-ios-keyboardopen");
+        } catch (e) {}  
+      }*/
 
       this.keyboardIsOpen = true;
       setTimeout(() => {
         if (this.messagescroll) this.messagescroll.scrollToBottom(100);
+        this.keyboard.disableScroll(true);
       },300);
 
     });
@@ -144,12 +157,24 @@ export class ChatPage {
     // register on mobile keyboard event show
     this.onKeyboardShowSubscription = this.keyboard.onKeyboardHide().subscribe(()=>{
       console.log("Keyboard Hide");
+
+      /*
+      if (this.isIOS) {
+        try {
+          console.log("CSS Fix wrong positioned iOS keyboard - OFF");
+          let ionNavHTMLCollection:any = document.getElementsByTagName("ion-nav"); 
+          let ionNavElement:any = Array.prototype.slice.call(ionNavHTMLCollection)[0];
+          ionNavElement.classList.remove("ion-nav-ios-keyboardopen");
+        } catch (e) {}  
+      }
+      */
+
       this.keyboardIsOpen = false;
+      this.keyboard.disableScroll(false);
     });
 
     // init keyboard state
     this.keyboardIsOpen = false;
-    //this.keyboard.hideKeyboardAccessoryBar(true);
     this.keyboard.close();
 
   }
@@ -392,6 +417,10 @@ export class ChatPage {
 
   sendMessage(): void {
 
+    if (this.messageInput.trim().length==0) {
+      return;
+    }
+
     if (!this.state.isMinimalUserInfoSet()) {
 
       // user needs to set profile namen and photo first
@@ -420,7 +449,7 @@ export class ChatPage {
       SEND NEW CHAT MESSAGE OVER SOCKET
     */
 
-    this.api.sendChatSocket(this.messageInput);
+    this.api.sendChatSocket(this.messageInput.trim());
 
     this.messageInput = "";
     if (this.messagescroll) this.messagescroll.scrollToBottom(300);

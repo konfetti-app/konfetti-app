@@ -10,6 +10,8 @@ import {
   ActionSheetController
 } from 'ionic-angular';
 
+import { Keyboard } from '@ionic-native/keyboard';
+
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 import { ApiProvider, User, UserUpdate } from '../../providers/api/api';
@@ -68,7 +70,8 @@ export class ProfilePage {
     private toastCtrl: ToastController,
     private camera: Camera,
     private translateService: TranslateService,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private keyboard: Keyboard
   ) {
 
     this.isIOS = appState.isIOS();
@@ -105,7 +108,13 @@ export class ProfilePage {
     }
   }
 
+  ionViiwWillLeave() {
+    this.keyboard.disableScroll(false);
+  }
+
   ionViewWillEnter() {
+
+    this.keyboard.disableScroll(true);
 
     // parse parameters when profile is opened
     if ((this.params!=null) && (this.params.data!=null)) {
@@ -173,10 +182,14 @@ export class ProfilePage {
     this.dataChanged = true;
   }
 
-  onChangeFile(event) {
+  onChangeFile(event) : void {
     let files = event.srcElement.files;
     console.dir(files);
     this.uploadImageToServer(files[0]);
+  }
+
+  closeKeyboard() : void {
+    this.keyboard.close();
   }
 
   uploadImageToServer(file:any) : void {
