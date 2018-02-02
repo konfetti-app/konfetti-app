@@ -321,6 +321,70 @@ export class ApiProvider {
     });
   }
 
+  subscribeChat(chatId:string) : Observable<void> {
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+        
+        this.http.post<any>(
+          this.apiUrlBase + 'api/subscriptions/', 
+          '{"type": "chatChannel","id" : "'+chatId+'"}',
+          { headers: headers }).subscribe( resp => {
+
+          observer.next();
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "subscribeChat", () => {
+            this.subscribeChat(chatId).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
+  unsubscribeChat(chatId:string) : Observable<void> {
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+        
+        this.http.post<any>(
+          this.apiUrlBase + 'api/subscriptions/unsubscribe/'+chatId, 
+          '',
+          { headers: headers }).subscribe( resp => {
+
+          observer.next();
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "unsubscribeChat", () => {
+            this.unsubscribeChat(chatId).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
   getChats(groupId:String, context:String) : Observable<Array<Chat>> {
 
   return Observable.create((observer) => {

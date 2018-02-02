@@ -314,8 +314,6 @@ export class ChatPage {
       msg.displayTime = datePipe.transform(new Date(msg.date * 1000), 'shortTime');
     }
 
-    // console.log("PROCESSED CHAT MESSAGE",msg);
-
     // push message to list
     this.messages.push(msg);
   }
@@ -439,10 +437,13 @@ export class ChatPage {
       
     } 
 
+    // subscribe to notifications, so that user gets info about answers
     if (!this.isSubscribed) {
-      // TODO: subscribe to chat if posting a message
-      this.isSubscribed = true;
-      console.error("TODO: Update with server that user is now subscribed on chat.");
+      this.api.subscribeChat(this.chat._id).subscribe(()=>{
+        this.isSubscribed = true;
+      },(error)=>{
+        console.log("FAIL subscribeChat: "+error);
+      });
     }
 
     /*
@@ -500,22 +501,42 @@ export class ChatPage {
 
   buttonSubscribe() : void {
 
-    this.isSubscribed = !this.isSubscribed;
+    if (!this.isSubscribed) {
 
-    if (this.isSubscribed) {
-      this.toastCtrl.create({
-        message: "Du erhälst jetzt Benachrichtingungen",
-        cssClass: 'toast',
-        duration: 3000
-      }).present().then();
+      // subscribe to notifications
+      this.api.subscribeChat(this.chat._id).subscribe(()=>{
+
+        this.isSubscribed = true;
+
+        this.toastCtrl.create({
+          message: "Du erhälst jetzt Benachrichtingungen",
+          cssClass: 'toast',
+          duration: 3000
+        }).present().then();
+  
+      },(error)=>{
+        console.log("FAIL subscribeChat: "+error);
+      });
+
     } else {
-      this.toastCtrl.create({
-        message: "Benachrichtingungen deaktiviert",
-        cssClass: 'toast',
-        duration: 3000
-      }).present().then();
+
+      // unsubscribe from notifications
+      this.api.unsubscribeChat(this.chat._id).subscribe(()=>{
+
+        this.isSubscribed = false;
+
+        this.toastCtrl.create({
+          message: "Benachrichtingungen deaktiviert",
+          cssClass: 'toast',
+          duration: 3000
+        }).present().then();
+
+      }, (error) => {
+        console.log("FAIL unsubscribeChat: "+error);
+      });
+
     }
-    console.error("TODO: Update subscribe with server ("+this.isSubscribed+")");
+
   }
 
   focusMessageInput(gotFocus:boolean) : void {
