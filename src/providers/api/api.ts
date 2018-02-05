@@ -325,7 +325,11 @@ export class ApiProvider {
     return Observable.create((observer) => {
 
       this.getJWTAuthHeaders().subscribe(headers => {
+
+        // prepare header for json body data
+        headers = headers.append('Content-Type', 'application/json');
         
+        // make post request
         this.http.post<any>(
           this.apiUrlBase + 'api/subscriptions/', 
           '{"type": "chatChannel","id" : "'+chatId+'"}',
@@ -358,9 +362,8 @@ export class ApiProvider {
 
       this.getJWTAuthHeaders().subscribe(headers => {
         
-        this.http.post<any>(
-          this.apiUrlBase + 'api/subscriptions/unsubscribe/'+chatId, 
-          '',
+        this.http.delete<any>(
+          this.apiUrlBase + 'api/subscriptions/'+chatId,
           { headers: headers }).subscribe( resp => {
 
           observer.next();
@@ -462,6 +465,7 @@ export class ApiProvider {
           /*
            * WIN
            */
+          chat.subscribed = resp.data.subscribed;
           observer.next(resp.data.chatMessages as Array<Message>);
           observer.complete();
 
@@ -873,6 +877,7 @@ export class Chat {
   userIsAdmin?:boolean;
   displayImage?:string;
   displayName?:string;
+  subscribed?:boolean;
 }
 
 export interface Message {

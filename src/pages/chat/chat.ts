@@ -54,10 +54,7 @@ export class ChatPage {
 
   // chat data
   chat:Chat = null;
-
   messages: Array<Message> = [];
-  isSubscribed:boolean = false;
-
   messageInput:string = "";
 
   loading:boolean = true;
@@ -95,6 +92,9 @@ export class ChatPage {
     // browser needs some extra space on the panel
     this.showFootRoom = !state.isRunningOnRealDevice();
     this.chat = this.navParams.get("chat") as Chat;
+
+    // set some default vaules that get filled later
+    this.chat.subscribed = false;
 
     // flag for fixing some iOS quirks
     this.isIOS = this.state.isIOS();
@@ -438,9 +438,9 @@ export class ChatPage {
     } 
 
     // subscribe to notifications, so that user gets info about answers
-    if (!this.isSubscribed) {
+    if (!this.chat.subscribed) {
       this.api.subscribeChat(this.chat._id).subscribe(()=>{
-        this.isSubscribed = true;
+        this.chat.subscribed = true;
       },(error)=>{
         console.log("FAIL subscribeChat: "+error);
       });
@@ -501,12 +501,12 @@ export class ChatPage {
 
   buttonSubscribe() : void {
 
-    if (!this.isSubscribed) {
+    if (!this.chat.subscribed) {
 
       // subscribe to notifications
       this.api.subscribeChat(this.chat._id).subscribe(()=>{
 
-        this.isSubscribed = true;
+        this.chat.subscribed = true;
 
         this.toastCtrl.create({
           message: "Du erhälst jetzt Benachrichtingungen",
@@ -523,7 +523,7 @@ export class ChatPage {
       // unsubscribe from notifications
       this.api.unsubscribeChat(this.chat._id).subscribe(()=>{
 
-        this.isSubscribed = false;
+        this.chat.subscribed = false;
 
         this.toastCtrl.create({
           message: "Benachrichtingungen deaktiviert",

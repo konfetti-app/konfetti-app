@@ -18,8 +18,8 @@
           <i class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
         </button>
         <button ion-button icon-only (click)="buttonSubscribe()" style="width:40px;">
-          <i *ngIf="isSubscribed" class="fa fa-bell" aria-hidden="true"></i>
-          <i *ngIf="!isSubscribed" class="fa fa-bell-slash-o" aria-hidden="true"></i>
+          <i *ngIf="chat.subscribed" class="fa fa-bell" aria-hidden="true"></i>
+          <i *ngIf="!chat.subscribed" class="fa fa-bell-slash-o" aria-hidden="true"></i>
         </button>
       </ion-buttons>
 
