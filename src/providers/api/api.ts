@@ -205,6 +205,45 @@ export class ApiProvider {
     this.socketChat = null;
   }
 
+  /*
+   * Subscribe with deviceId at PushNotification Service.
+   */
+  subscribePushNotificationService(playerId:string) : Observable<void> {
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        // prepare header for json body data
+        headers = headers.append('Content-Type', 'application/json');
+        
+        // make post request
+        this.http.post<any>(
+          this.apiUrlBase + 'api/posts/', 
+          '{"playerId" : "'+playerId+'"}',
+          { headers: headers }).subscribe( resp => {
+
+          observer.next();
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "subscribePushNotificationService", () => {
+            this.subscribePushNotificationService(playerId).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
   /**
    * SignUp and join a group by sending a code token to he server.
    * @param {string} code number code

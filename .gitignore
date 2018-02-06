@@ -30,6 +30,8 @@ plugins/ios.json
 www/
 $RECYCLE.BIN/
 src/assets/js/versionInfo.js
+config.prod.js
+src/assets/js/config.js
 
 .DS_Store
 Thumbs.db

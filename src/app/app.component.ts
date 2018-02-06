@@ -29,6 +29,8 @@ import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
 
 import { AppPersistenceProvider, AppData } from "../providers/app-persistence/app-persistence";
 import { AppStateProvider, LanguageInfo } from "../providers/app-state/app-state";
+import { AppConfigProvider } from "../providers/app-config/app-config";
+
 import { 
   ApiProvider, 
   JsonWebToken, 
@@ -81,7 +83,8 @@ export class MyApp implements OnInit{
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private api: ApiProvider,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private config: AppConfigProvider
   ) {
 
     // set API to real server, when running in real device or not on localhost in browser
@@ -95,7 +98,9 @@ export class MyApp implements OnInit{
         connectToRealServer = true;
       }
     }
-    if (connectToRealServer) this.api.setApiBaseUrl('https://konfettiapp.de:3000/');
+
+    // set API base url - if defined above or when forced by config
+    if (connectToRealServer || this.config.isForceRealServer()) this.api.setApiBaseUrl(this.config.getRealServer());
 
     // on beginning disable side menu
     this.menuController.enable(false);
@@ -238,7 +243,7 @@ export class MyApp implements OnInit{
         console.log("AccessTokenListener - Got informed about a new token -> persiting", webToken);
         this.appPersistence.setJsonWebToken(webToken);
       });
-
+      
     });
 
     // async --> load i18n data

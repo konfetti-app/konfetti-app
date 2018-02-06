@@ -42,6 +42,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { MainPageModule } from '../pages/main/main.module'
+import { AppConfigProvider } from '../providers/app-config/app-config';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,9 @@ import { MainPageModule } from '../pages/main/main.module'
     AppPersistenceProvider,
     AppStateProvider,
     //BarcodeScanner,
-    ParticlesProvider
+    ParticlesProvider,
+    AppConfigProvider,
+    AppConfigProvider
   ]
 })
 export class AppModule {}

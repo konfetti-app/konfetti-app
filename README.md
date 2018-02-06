@@ -28,6 +28,17 @@ $ ionic serve
 
 Happy development ... more info soon.
 
+### Building the App for iOS and Android 
+
+Still in dev ... but to get Pushnotifications with OneSignal running for iOS on OSX:
+
+```sudo gem install cocoapods
+pod repo update```
+
+see further documentation: https://documentation.onesignal.com/docs/ionic-sdk-setup
+
+Important Note for iOS: Be sure that you open .xcworkspace, not .xcodeproj - that the only way you get the cocoapods things running, otherwise there will be missing libs.
+
 ### Managing Multi-Language Translation
 
 The Konfetti app uses the ngx-translate framework as recommended by the IONIC project.

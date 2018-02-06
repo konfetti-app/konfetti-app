@@ -25,6 +25,7 @@ import { CodeRedeemPage } from '../code-redeem/code-redeem';
 import { ApiProvider, Code, User } from '../../providers/api/api';
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 import { AppStateProvider } from "../../providers/app-state/app-state";
+import { AppConfigProvider } from "../../providers/app-config/app-config";
 
 /**
  *
@@ -152,7 +153,8 @@ export class MainPage {
     private api: ApiProvider,
     private events: Events,
     private persistence: AppPersistenceProvider,
-    private state: AppStateProvider
+    private state: AppStateProvider,
+    private config: AppConfigProvider
   ) {
     this.showModuleFocus = "";
 
@@ -179,6 +181,65 @@ export class MainPage {
       console.log("Eventbus: Update focused group/hood");
       this.updateData();
     });
+
+    /*
+     * OneSingnal Pushnotifivations 
+     * https://documentation.onesignal.com/docs/cordova-sdk
+     */
+
+    // Enable to debug issues:
+    // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+
+    let notificationOpenedCallback = function(jsonData) {
+      alert('OneSignal notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    };
+
+    if (this.config.getOneSignalAppId().length>0) {
+
+      if (typeof window["plugins"] != "undefined") {
+        try {
+
+          window["plugins"].OneSignal
+            .startInit(this.config.getOneSignalAppId(), this.config.getGoogleProjectNumber())
+            .handleNotificationOpened(notificationOpenedCallback)
+            .endInit();
+
+          console.log("OneSignal: Done Init ... check for PlayerId update.");
+
+          window["plugins"].OneSignal.addSubscriptionObserver(function (state) {
+              if (!state.from.subscribed && state.to.subscribed) {
+
+                console.log("OneSignal: Got Player ID", state);
+
+                // got player ID
+                this.api.subscribePushNotificationService(state.to.userId).subscribe(()=>{
+
+                  // WIN
+                  console.log("OneSignal: Reported PlayerID to Konfetti-Server");
+                  this.toastCtrl.create({
+                    message: 'DEBUG: Pushnotification OK',
+                    duration: 2000
+                  }).present().then();
+
+                },(error)=>
+                {
+                  // FAIL
+                  alert("FAIL on subscribePushNotificationService: "+JSON.stringify(error));
+
+                });
+              }
+              console.log("Push Subscription state changed: " + JSON.stringify(state));
+          });
+
+        } catch (e) {
+          alert("FAIL on OneSignal init ... missing Cordova Plugin?");
+        }
+  
+      } else {
+        alert("FAIL on OneSignal init ... missing PLUGINS at all?");
+      }
+
+     }
 
   }
 
