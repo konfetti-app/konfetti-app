@@ -218,7 +218,7 @@ export class ApiProvider {
         
         // make post request
         this.http.post<any>(
-          this.apiUrlBase + 'api/posts/', 
+          this.apiUrlBase + 'api/users/addToken',
           '{"playerId" : "'+playerId+'"}',
           { headers: headers }).subscribe( resp => {
 
@@ -370,8 +370,8 @@ export class ApiProvider {
         
         // make post request
         this.http.post<any>(
-          this.apiUrlBase + 'api/subscriptions/', 
-          '{"type": "chatChannel","id" : "'+chatId+'"}',
+          this.apiUrlBase + 'api/chats/subscriptions/',
+          '{"id" : "'+chatId+'"}',
           { headers: headers }).subscribe( resp => {
 
           observer.next();
@@ -402,7 +402,7 @@ export class ApiProvider {
       this.getJWTAuthHeaders().subscribe(headers => {
         
         this.http.delete<any>(
-          this.apiUrlBase + 'api/subscriptions/'+chatId,
+          this.apiUrlBase + 'api/chats/subscriptions/'+chatId,
           { headers: headers }).subscribe( resp => {
 
           observer.next();

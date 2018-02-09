@@ -2,7 +2,6 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, ToastController, ViewController, Platform} from 'ionic-angular';
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
-import { AppVersion } from "@ionic-native/app-version";
 
 import { ParticlesProvider } from '../../providers/particles/particles';
 
@@ -28,7 +27,6 @@ export class SettingsPage {
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    private appVersion: AppVersion,
     private toastCtrl: ToastController,
     private _PARTICLE: ParticlesProvider,
     private platform: Platform
@@ -38,6 +36,7 @@ export class SettingsPage {
 
       // get version strings
       this.versionString = this.appState.getAppBuildTime();
+      /*
       if (this.appState.isRunningOnRealDevice()) {
         try {
           this.appVersion.getVersionNumber().then((number) => {
@@ -47,6 +46,7 @@ export class SettingsPage {
           console.log("App-Version not Available");
         }
      }
+     */
 
     this.actualLanguage = this.appState.getActualAppLanguageInfo();
 

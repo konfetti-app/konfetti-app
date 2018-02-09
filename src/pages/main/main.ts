@@ -191,6 +191,7 @@ export class MainPage {
     // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
     let notificationOpenedCallback = function(jsonData) {
+      console.log("OneSignal Notification",JSON.stringify(jsonData));
       alert('OneSignal notificationOpenedCallback: ' + JSON.stringify(jsonData));
     };
 
@@ -206,10 +207,10 @@ export class MainPage {
 
           console.log("OneSignal: Done Init ... check for PlayerId update.");
 
-          window["plugins"].OneSignal.addSubscriptionObserver(function (state) {
+          window["plugins"].OneSignal.addSubscriptionObserver((state)=>{
               if (!state.from.subscribed && state.to.subscribed) {
 
-                console.log("OneSignal: Got Player ID", state);
+                console.log("OneSignal: Got Player ID", state.to.userId);
 
                 // got player ID
                 this.api.subscribePushNotificationService(state.to.userId).subscribe(()=>{

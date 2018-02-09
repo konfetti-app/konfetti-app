@@ -16,7 +16,6 @@ import { LengthBreakPipe } from "../pipes/length-break/length-break";
 
 import { ApiProvider } from '../providers/api/api';
 
-import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpClientModule } from '@angular/common/http';
@@ -42,6 +41,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { MainPageModule } from '../pages/main/main.module'
+//import { ChatPageModule } from '../pages/chat/chat.module'
+//import { ChatEditPageModule } from '../pages/chat-edit/chat-edit.module'
+//import { CodeRedeemPageModule } from '../pages/code-redeem/code-redeem.module'
+
 import { AppConfigProvider } from '../providers/app-config/app-config';
 
 @NgModule({
@@ -63,8 +66,9 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     TranslateModule.forRoot(),
     IonicModule.forRoot(MyApp),
     BrowserAnimationsModule,
-    MainPageModule
-
+    MainPageModule,
+    //ChatPageModule,
+    //ChatEditPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -80,7 +84,6 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     SettingsPage
   ],
   providers: [
-    AppVersion,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
