@@ -61,7 +61,6 @@ export class CodeRedeemPage {
     if (this.loadingSpinner!=null) this.loadingSpinner.dismissAll();
   }
 
-
   /* https://github.com/konfetti-app/konfetti-app/issues/20
   buttonScanCode() :void {
 

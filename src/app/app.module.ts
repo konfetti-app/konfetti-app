@@ -12,7 +12,6 @@ import { ChatPage } from '../pages/chat/chat';
 import { ChatEditPage } from '../pages/chat-edit/chat-edit';
 import { SettingsPage } from '../pages/settings/settings';
 import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
-import { LengthBreakPipe } from "../pipes/length-break/length-break";
 
 import { ApiProvider } from '../providers/api/api';
 
@@ -41,24 +40,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { MainPageModule } from '../pages/main/main.module'
-//import { ChatPageModule } from '../pages/chat/chat.module'
-//import { ChatEditPageModule } from '../pages/chat-edit/chat-edit.module'
-//import { CodeRedeemPageModule } from '../pages/code-redeem/code-redeem.module'
+import { ChatPageModule } from '../pages/chat/chat.module'
+import { ChatEditPageModule } from '../pages/chat-edit/chat-edit.module'
+import { CodeRedeemPageModule } from '../pages/code-redeem/code-redeem.module'
+import { IntroPageModule } from '../pages/intro/intro.module'
+import { ProfilePageModule } from '../pages/profile/profile.module'
+import { SettingsPageModule } from '../pages/settings/settings.module'
+import { LoginPageModule } from '../pages/login/login.module'
+import { InitPageModule } from '../pages/init/init.module'
 
 import { AppConfigProvider } from '../providers/app-config/app-config';
 
 @NgModule({
   declarations: [
-    MyApp,
-    InitPage,
-    IntroPage,
-    LoginPage,
-    ProfilePage,
-    SettingsPage,
-    ChatPage,
-    ChatEditPage,
-    CodeRedeemPage,
-    LengthBreakPipe
+    MyApp
   ],
   imports: [
     BrowserModule,
@@ -67,8 +62,14 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     IonicModule.forRoot(MyApp),
     BrowserAnimationsModule,
     MainPageModule,
-    //ChatPageModule,
-    //ChatEditPageModule
+    CodeRedeemPageModule,
+    IntroPageModule,
+    ChatPageModule,
+    ChatEditPageModule,
+    ProfilePageModule,
+    SettingsPageModule, 
+    LoginPageModule,
+    InitPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
