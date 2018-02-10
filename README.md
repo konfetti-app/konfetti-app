@@ -32,8 +32,10 @@ Happy development ... more info soon.
 
 Still in dev ... but to get Pushnotifications with OneSignal running for iOS on OSX:
 
-```sudo gem install cocoapods
-pod repo update```
+```bash
+sudo gem install cocoapods
+pod repo update
+```
 
 see further documentation: https://documentation.onesignal.com/docs/ionic-sdk-setup
 
