@@ -32,6 +32,8 @@ $RECYCLE.BIN/
 src/assets/js/versionInfo.js
 config.prod.js
 src/assets/js/config.js
+konfetti.keystore
+*.apk
 
 .DS_Store
 Thumbs.db
