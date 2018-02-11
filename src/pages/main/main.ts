@@ -9,7 +9,8 @@ import {
   Modal, 
   ToastController, 
   LoadingController, 
-  Events 
+  Events,
+  Platform
 } from 'ionic-angular';
 import { 
   trigger, 
@@ -145,6 +146,8 @@ export class MainPage {
   // flag show NEW fab button
   showFabButton: boolean = true;
 
+  backButtonUnregister:Function = null;
+
   constructor(
     private modalCtrl: ModalController,
     private translateService: TranslateService,
@@ -154,7 +157,8 @@ export class MainPage {
     private events: Events,
     private persistence: AppPersistenceProvider,
     private state: AppStateProvider,
-    private config: AppConfigProvider
+    private config: AppConfigProvider,
+    private platform: Platform
   ) {
     this.showModuleFocus = "";
 
@@ -232,6 +236,16 @@ export class MainPage {
 
      }
 
+     /*
+      * Register on Hardware Hardware Button
+      * https://ionicframework.com/docs/api/platform/Platform/#registerBackButtonAction
+      * Main Menu has priority 1 - TODO: use higher priority on modal dialogs to close them  
+      */
+    this.backButtonUnregister = this.platform.registerBackButtonAction(()=>{
+      if (this.showModuleFocus!='news') this.buttonModule('news');
+      return;
+    }, 1); 
+
     /*
      * Event Bus
      * https://ionicframework.com/docs/api/util/Events/
@@ -253,6 +267,7 @@ export class MainPage {
   ngOnDestroy() {
     this.events.unsubscribe("main:update");
     this.events.unsubscribe("notification:process");
+    if (this.backButtonUnregister!=null) this.backButtonUnregister();
   }
 
   // take action on a notification from newsfeed or push notification
