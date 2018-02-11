@@ -4,6 +4,7 @@ import {
 } from 'ionic-angular';
 
 import { AppStateProvider } from "../../providers/app-state/app-state";
+import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
 import { ApiProvider, Post, PushNotification } from '../../providers/api/api';
 
@@ -24,13 +25,20 @@ export class ModuleNewsfeedComponent {
     // flag is running on iOS
     isIOS: boolean;
 
+    // the neighborhoodId the newsfeed is working on
+    activeGroupId: string;
+
   constructor(
     private api: ApiProvider,
     private state: AppStateProvider,
     private events: Events,
+    private persistence: AppPersistenceProvider
   ) {
 
     this.isIOS = this.state.isIOS();
+
+    // get the actual neighborhood
+    this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
 
     /*
      * Event Bus
@@ -60,8 +68,19 @@ export class ModuleNewsfeedComponent {
   private refreshData() : void {
 
     this.loading = true;
-    setTimeout(()=>{
-      this.posts = [];
+
+    this.api.getNewsFeedPosts(this.activeGroupId).subscribe((posts:Array<Post>)=>{
+      // WIN
+
+      // fake posts for now
+      // TODO: use results from API
+      this.posts = posts;
+      this.loading = false;
+
+    }, (error) => {
+      this.loading = false;
+      console.error("FAIL: Was not able to load newsfeed - using fake data");
+
       this.posts.push({
         _id: "xxx0",
         type: "notification",
@@ -77,7 +96,11 @@ export class ModuleNewsfeedComponent {
           subID: null
         }
       } as Post);
-      this.loading = false;
+
+    });
+
+    setTimeout(()=>{
+
     },2000);
 
   }
@@ -87,7 +110,22 @@ export class ModuleNewsfeedComponent {
   }
 
   public closePost(post:Post) : void {
-    this.posts = [];
+
+    alert("TODO: Activate Real Delete once no simulated content anymore");
+    /*
+    this.api.deleteNewsFeedPost(post._id).subscribe(
+      () => {
+        // WIN
+      }, (error) => {
+        // FAIL
+      }
+    );*/
+
+    // find post and delete from array
+    this.posts = this.posts.filter((arrayPost)=>{
+      return arrayPost._id!=post._id;
+    })
+
   }
 
 }

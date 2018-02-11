@@ -11,14 +11,15 @@
   </div>
   
   <div *ngIf="(!loading)">
-  <ion-card *ngFor="let post of posts" style="
-    width:100%; 
-    margin:0px;
-    border-color: #f1f1f1;
-    border-width: 1px;
-    border-style: solid;
-    margin-bottom: 14px;
-    ">
+
+  <div *ngFor="let post of posts" >
+  <ion-card *ngIf="post.type=='notification'" style="
+  width:100%; 
+  margin:0px;
+  border-color: #f1f1f1;
+  border-width: 1px;
+  border-style: solid;
+  margin-bottom: 14px;">
       <ion-card-content style="padding: 5px 10px 5px;">
         <table style="width:100%;">
           <tr>
@@ -41,42 +42,8 @@
         <div>
         </div>  
       </ion-card-content>  
-        
-        <!--
-        <ion-card-content (click)="selectCard(post)" style="padding: 5px 10px 5px;">
-        <table style="width:100%;">
-          <tr>
-            <td style="width:60px;">
-                <img 
-                  [src]="chat.displayImage" 
-                  style="
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 60px;
-                    border-width: 1px;
-                    border-color: #f1f1f1;
-                    border-style: solid;
-                  "
-                />
-            </td>
-            <td style="
-              text-align: start;
-              -webkit-padding-start: 10px;
-            ">
-              <div class="card-text-overline">{{chat.displayName}}</div>
-              <div class="card-text-main">{{chat.name}}</div>
-              <div class="card-text-underline">{{(chat.members.length+1)}} Personen</div>
-            </td>
-            <td style="width:50px; font-size: 200%;">
-                {{chat.description}}
-            </td>
-          </tr>
-        </table>  
-        </ion-card-content> 
-        -->
-
-
     </ion-card>
+  </div>
   </div>
   
     </div>

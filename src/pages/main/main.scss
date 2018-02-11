@@ -6,7 +6,7 @@ page-main {
   transform: skew(-8deg) rotate(-5deg);
   text-transform: uppercase;
   position: fixed;
-  top: 68px;
+  top: 74px;
   right: 10px;
   background-color: color($colors, primary);
   color: white;
@@ -15,6 +15,26 @@ page-main {
   padding-left: 8px;
   padding-right: 8px;
   z-index: 10010;
+  transition-property: font-size;
+  transition-duration: 0.5s;
+  pointer-events: none;
+}
+
+.main-group-subtitle {
+  transform: skew(-8deg) rotate(-5deg);
+  text-transform: uppercase;
+  position: fixed;
+  top: 105px;
+  right: 11px;
+  background-color: color($colors, primary);
+  color: white;
+  font-size: 28px;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  z-index: 10010;
+  transition: font-size 0.5s, top 0.5s;
+  pointer-events: none;
 }
 
 #content-overlay .fixed-content {

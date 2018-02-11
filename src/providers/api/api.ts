@@ -613,6 +613,76 @@ export class ApiProvider {
     });
   }
 
+  // get the newsfeed for logged in user for one neighborhood
+  getNewsFeedPosts(groupID:string) :  Observable<Array<Post>> {
+
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        this.http.get<any>(this.apiUrlBase + 'api/newsfeed/' +groupID
+        , {
+          headers: headers
+        }).subscribe((resp) => {
+
+          if (resp.data.newsfeed == null) {
+            observer.error("Got 200 - but resp.data.newsfeed is null")
+            observer.complete();
+          } else {
+            observer.next(resp.data.newsfeed.posts as Array<Post>);
+            observer.complete();
+          }
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "getNewsFeedPosts", () => {
+            this.getNewsFeedPosts(groupID).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
+  deleteNewsFeedPost(id: string) : Observable<void> {
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+        
+        this.http.delete<any>(
+          this.apiUrlBase + 'api/newsfeed/'+id,
+          { headers: headers }).subscribe( resp => {
+
+          observer.next();
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "deleteNewsFeedPost", () => {
+            this.deleteNewsFeedPost(id).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
   getUser(id: string) : Observable<User> {
 
     return Observable.create((observer) => {

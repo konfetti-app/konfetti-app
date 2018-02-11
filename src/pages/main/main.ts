@@ -131,6 +131,7 @@ export class MainPage {
 
   // headline of group
   title = "";
+  subtitle = "";
 
   eventMarkers : any;
   zoomControl : any;
@@ -317,6 +318,10 @@ export class MainPage {
     this.events.publish('new:'+this.showModuleFocus, Date.now());
   }
 
+  setSubTitleAccordingToModule(moduleName:string) : void {
+    this.subtitle = this.translateService.instant("SUBTITLE_"+moduleName.toUpperCase());
+  }
+
   buttonModule(moduleName: string) {
 
     if (moduleName===this.showModuleFocus) {
@@ -325,6 +330,8 @@ export class MainPage {
       this.transformShowMap();
 
     } else {
+
+      this.setSubTitleAccordingToModule(moduleName);
 
       // show NEW fab button on action modules
       if (moduleName!='news') {
@@ -496,6 +503,8 @@ export class MainPage {
     }
 
     this.showFabButton = false;
+    //alert(this.stateModulePanel + " / "+this.showModuleFocus);
+    if (this.showModuleFocus!="") this.setSubTitleAccordingToModule('map');
 
     this.setStateModulePanel(false);
 
@@ -507,6 +516,8 @@ export class MainPage {
     setTimeout(() => {
       if (this.stateModulePanel==='showMap') {
         this.showModuleFocus="";
+      } else {
+        this.setSubTitleAccordingToModule(this.showModuleFocus);
       }
     }, 500);
 
@@ -593,9 +604,6 @@ export class MainPage {
         this.eventMarkers.addLayer(marker);
       }
 
-      // TODO: later Newsfeed?
-
-      // TODO: setup Modules?
       this.showModuleOverlay = true;
 
       // show intro if flag is not set for this group

@@ -33,8 +33,10 @@
     background-size: 100%;
   "></div>
 
-  <span *ngIf="title.length>0" class="main-group-title">{{title}}</span>
-
+  <span *ngIf="title.length>0" class="main-group-title" [ngStyle]="{ 'font-size' : showModuleFocus==='news' ? '200%' : '100%' }" >{{title}}</span>
+  <span *ngIf="subtitle.length>0" class="main-group-subtitle" [ngStyle]="{ 'font-size' : showModuleFocus==='news' ? '100%' : '200%', 'top' : showModuleFocus==='news' ? '118px' : '110px'  }" >
+    {{ subtitle }}
+  </span>
 
 </ion-content>
 

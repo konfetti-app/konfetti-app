@@ -12,6 +12,11 @@
         "PIPE_SINCE_DAY" : "day",
         "PIPE_SINCE_DAYS" : "days",
 
+        "SUBTITLE_MAP" : "Explore Map",
+        "SUBTITLE_NEWS" : "⇦ go to map",
+        "SUBTITLE_IDEAS" : "Community Ideas",
+        "SUBTITLE_GROUPCHATS" : "Chatgroups",
+
         "REFRESH": "Refresh",
 
         "INTRO_SLIDE1_BANNER" : "Your Hood",
@@ -303,6 +308,11 @@
         "PIPE_SINCE_DAY" : "Tag",
         "PIPE_SINCE_DAYS" : "Tagen",
 
+        "SUBTITLE_MAP" : "Umgebung entdecken",
+        "SUBTITLE_NEWS" : "⇦ zur Karte",
+        "SUBTITLE_IDEAS" : "Konfetti Ideen",
+        "SUBTITLE_GROUPCHATS" : "Chatgruppen",
+
         "REFRESH": "Aktualisieren",
 
         "INTRO_SLIDE1_BANNER" : "Dein Kiez",
@@ -593,6 +603,11 @@
         "PIPE_SINCE_HOURS" : "ساعات",
         "PIPE_SINCE_DAY" : "يوم - نهار",
         "PIPE_SINCE_DAYS" : "اجتماع",
+
+        "SUBTITLE_MAP" : "استكشاف الخريطة",
+        "SUBTITLE_NEWS" : "انتقل إلى الخريطة",
+        "SUBTITLE_IDEAS" : "أفكار المجتمع",
+        "SUBTITLE_GROUPCHATS" : "دردشة جماعية",
 
         "REFRESH": "تحديث",
 
