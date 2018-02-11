@@ -1,14 +1,16 @@
 <div style="min-height: 400px;padding-bottom: 35px;">
 
-  <ion-spinner *ngIf="loading"></ion-spinner>
+  <ion-spinner *ngIf="loading" style="margin-top:20px;"></ion-spinner>
   
   <div *ngIf="((!loading) && (posts.length==0))" style="
   padding-top: 10px;
   color: grey;
   ">
-    No News today.
+    <div style="margin-top:10px">{{'NEWSFEED_NONEWS' | translate}}</div>
+    <div style="margin-top:30px">{{'NEWSFEED_PULLTOREFRESH' | translate}}</div>
   </div>
   
+  <div *ngIf="(!loading)">
   <ion-card *ngFor="let post of posts" style="
     width:100%; 
     margin:0px;
@@ -75,5 +77,6 @@
 
 
     </ion-card>
+  </div>
   
     </div>

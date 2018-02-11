@@ -22,7 +22,7 @@ import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
 import { CodeRedeemPage } from '../code-redeem/code-redeem';
-import { ApiProvider, Code, User } from '../../providers/api/api';
+import { ApiProvider, Code, User, PushNotification } from '../../providers/api/api';
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppConfigProvider } from "../../providers/app-config/app-config";
@@ -173,16 +173,6 @@ export class MainPage {
     this.moduleConfig.push('news');
 
     /*
-     * Event Bus
-     * https://ionicframework.com/docs/api/util/Events/
-     */
-
-    this.events.subscribe("main:update", () => {
-      console.log("Eventbus: Update focused group/hood");
-      this.updateData();
-    });
-
-    /*
      * OneSingnal Pushnotifivations 
      * https://documentation.onesignal.com/docs/cordova-sdk
      */
@@ -242,11 +232,50 @@ export class MainPage {
 
      }
 
+    /*
+     * Event Bus
+     * https://ionicframework.com/docs/api/util/Events/
+     */
+
+    this.events.subscribe("main:update", () => {
+      console.log("Eventbus: Update focused group/hood");
+      this.updateData();
+    });
+
+    this.events.subscribe("notification:process", (notification:PushNotification) => {
+      console.log("Eventbus: Process Notification");
+      this.processNotification(notification);
+    });
+
+  }
+
+  // unsubscribe from event bus when page gets destroyed
+  ngOnDestroy() {
+    this.events.unsubscribe("main:update");
+    this.events.unsubscribe("notification:process");
+  }
+
+  // take action on a notification from newsfeed or push notification
+  processNotification(notification:PushNotification) {
+
+    // open module referenced on screen 
+    this.buttonModule(notification.module);
+
+    // wait 500ms (module needs to run constructor first)
+    setTimeout(()=>{
+
+      // forward notification to module thru event bus
+      let eventName = 'push:'+notification.module;
+      console.log("Forwarding Notification on Eventbus: "+eventName);
+      this.events.publish(eventName, notification);
+
+    },500);
   }
 
   pullToRefreshModule(refresher) {
     console.log('Begin async operation', refresher);
     refresher.complete();
+    this.events.publish('refresh:'+this.showModuleFocus, Date.now());
   }
 
   setStateKonfettiNotice(show: boolean) : void{

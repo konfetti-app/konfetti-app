@@ -5,6 +5,9 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { PipesModule } from '../pipes/pipes.module';
 
+// http://ionicframework.com/docs/developer-resources/ng2-translate/
+import { TranslateModule } from '@ngx-translate/core';
+
 @NgModule({
 	declarations: [
 		ModuleNewsfeedComponent,
@@ -13,6 +16,7 @@ import { PipesModule } from '../pipes/pipes.module';
 	imports: [
 		IonicPageModule.forChild(ModuleGroupchatsComponent),
 		IonicPageModule.forChild(ModuleNewsfeedComponent),
+		TranslateModule.forChild(),
 		PipesModule
 	],
 	exports: [

@@ -32,6 +32,9 @@
         "PROFILE_TOAST_NICKNAME" : "First name is needed.",
         "PROFILE_TOAST_PHOTO" : "Profile image is needed.",
 
+        "NEWSFEED_NONEWS": "No News",
+        "NEWSFEED_PULLTOREFRESH": "Pull to Refresh",
+
         "INTRO_REGISTERED":"I already have an account",
         "CODEREDEEM_SEND" : "redeem",
         "CODEREDEEM_ASK" : "Enter number code",
@@ -320,6 +323,9 @@
         "PROFILE_TOAST_NICKNAME" : "Bitte Vorname eingeben.",
         "PROFILE_TOAST_PHOTO" : "Bitte ein Profilfoto hinzufügen.",
 
+        "NEWSFEED_NONEWS": "Keine Neuigkeiten aus deiner Nachbarschaft.",
+        "NEWSFEED_PULLTOREFRESH": ".. zum Aktualisieren ziehen ..",
+
         "INTRO_REGISTERED":"Ich bin bereits bei Konfetti angemeldet",
         "CODEREDEEM_SEND" : "eingeben",
         "CODEREDEEM_ASK" : "Zahlencode eingeben",
@@ -607,6 +613,9 @@
         "CHATEDIT_TOAST_ENTERTITLE" : "تحتاج الدردشة إلى عنوان.",
         "PROFILE_TOAST_NICKNAME" : "الرجاء إدخال اسمك الأول.",
         "PROFILE_TOAST_PHOTO" : "الرجاء إضافة صورة ملف شخصي.",
+
+        "NEWSFEED_NONEWS": "لا أخبار",
+        "NEWSFEED_PULLTOREFRESH": "سحب لتحديث",
 
         "INTRO_REGISTERED":"لدي حساب بالفعل",
         "CODEREDEEM_SEND" : "استرداد القسيمة",

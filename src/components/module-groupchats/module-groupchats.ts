@@ -6,7 +6,7 @@ import {
   Events
 } from 'ionic-angular';
 
-import { ApiProvider, Chat } from '../../providers/api/api';
+import { ApiProvider, Chat, PushNotification } from '../../providers/api/api';
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 
@@ -43,6 +43,9 @@ export class ModuleGroupchatsComponent {
   // flag is running on iOS
   isIOS: boolean;
 
+  // for internal debugs
+  creationTS:number;
+
   constructor(
     private navCtrl: NavController,
     private api: ApiProvider,
@@ -52,6 +55,7 @@ export class ModuleGroupchatsComponent {
     private events: Events
   ) {
 
+    this.creationTS = Date.now();
     this.isIOS = this.state.isIOS();
 
     // get the actual neighborhood
@@ -70,6 +74,51 @@ export class ModuleGroupchatsComponent {
       this.buttonNew();
     });
 
+    this.events.subscribe("refresh:groupchats", () => {
+      console.log("Eventbus: Refresh GroupChat");
+      if (!this.loading) {
+        console.log("Refreshing chat list ...");
+        this.refreshData();
+      } else {
+        console.log("Ignore refresh ... because still in loading process.");
+      }
+    });
+
+    this.events.subscribe("push:groupchats", (notification:PushNotification) => {
+      console.log("Eventbus: Notification on GroupChat",this.creationTS);
+      this.processNotification(notification);
+    });
+
+  }
+
+  // unsubscribe from event bus when component gets destroyed
+  ngOnDestroy() {
+    this.events.unsubscribe("new:groupchats");
+    this.events.unsubscribe("refresh:groupchats");
+    this.events.unsubscribe("push:groupchats");
+  }
+
+  // react on push notification
+  private processNotification(notification:PushNotification): void {
+
+    // TODO: trigger fresh data load when older than x minutes
+
+    //if module is in the process of refreshing data - wait and retry in 200ms
+    if (this.loading) {
+      setTimeout(()=>{
+        this.processNotification(notification);
+      },200);
+      return;
+    }
+
+    // get matching chat from list
+    this.chats.forEach((chat:Chat)=>{
+      if (chat._id==notification.itemID) {
+        console.log("processNotification: open Chat");
+        this.selectCard(chat);
+      }
+    });
+  
   }
 
   private refreshData(): void {

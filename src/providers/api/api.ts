@@ -955,6 +955,17 @@ export interface Post {
   ts: number; // for sorting
 }
 
+// all notification data for opening a special 
+// could come from a notification within newsfeed or thru a push notification
+export interface PushNotification {
+  pushIDs: Array<String>; // one notification can be related to multiple push messages
+  groupId?: string; // the neighborhood 
+  module: string; // the module 
+  itemID: string; // item within module
+  subID?: string;  // a sub item within that item
+  data?: any; // optional extending data
+}
+
 export interface Code {
   actionType: string; // newNeighbour
   neighbourhood: string;
