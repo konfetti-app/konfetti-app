@@ -435,6 +435,7 @@ export class MainPage {
     setTimeout(() => {
       this.stateKonfettiTourFocus = 'show';
       setTimeout(() => {
+        this.setSubTitleAccordingToModule('map');
         this.konfettiTourText = this.translateService.instant('TOUR_TEXT_MAP');
         this.langKeyTourNext = 'TOUR_CONTINUE';
       }, 800);
@@ -455,6 +456,7 @@ export class MainPage {
       if (this.konfettiTourStep===1) {
         this.classKonfettiTourFocus = 'konfetti-tour-focus-module3';
         this.transformShowModules();
+        this.setSubTitleAccordingToModule('news');
         setTimeout(()=>{
           this.stateKonfettiTourFocus = 'show';
           setTimeout(()=>{
@@ -503,7 +505,6 @@ export class MainPage {
     }
 
     this.showFabButton = false;
-    //alert(this.stateModulePanel + " / "+this.showModuleFocus);
     if (this.showModuleFocus!="") this.setSubTitleAccordingToModule('map');
 
     this.setStateModulePanel(false);
