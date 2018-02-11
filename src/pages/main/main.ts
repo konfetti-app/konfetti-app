@@ -244,6 +244,11 @@ export class MainPage {
 
   }
 
+  pullToRefreshModule(refresher) {
+    console.log('Begin async operation', refresher);
+    refresher.complete();
+  }
+
   setStateKonfettiNotice(show: boolean) : void{
     if (!this.showKonfettiNotice) this.showKonfettiNotice=true;
     this.stateKonfettiNotice = show ? 'show' : 'hide';

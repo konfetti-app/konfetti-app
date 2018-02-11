@@ -1,3 +1,20 @@
 module-newsfeed {
 
 }
+
+.notification-text {
+    text-align: start;
+    font-size: 15px;
+}
+
+.notification-close {
+    vertical-align: top;
+    padding-top: 3px;
+    font-size: 14px;
+    color: #999;
+}
+
+.notification-underline {
+    color: #999;
+    text-align: start;
+}

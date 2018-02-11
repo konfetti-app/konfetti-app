@@ -5,6 +5,15 @@
       "direction": "ltr",
       "translations": {
 
+        "PIPE_SINCE_SINCE" : "since",
+        "PIPE_SINCE_MINUTES" : "minutes",
+        "PIPE_SINCE_HOUR" : "hour",
+        "PIPE_SINCE_HOURS" : "hours",
+        "PIPE_SINCE_DAY" : "day",
+        "PIPE_SINCE_DAYS" : "days",
+
+        "REFRESH": "Refresh",
+
         "INTRO_SLIDE1_BANNER" : "Your Hood",
         "INTRO_SLIDE1_MAINTEXT" : "Shape Your Neighborhood",
         "INTRO_SLIDE1_SUBTEXT" : "Activities with neighbors enrich your living together in the neighborhood.",
@@ -284,6 +293,15 @@
       "direction": "ltr",
       "translations": {
 
+        "PIPE_SINCE_SINCE" : "vor",
+        "PIPE_SINCE_MINUTES" : "Minuten",
+        "PIPE_SINCE_HOUR" : "Stunde",
+        "PIPE_SINCE_HOURS" : "Stunden",
+        "PIPE_SINCE_DAY" : "Tag",
+        "PIPE_SINCE_DAYS" : "Tagen",
+
+        "REFRESH": "Aktualisieren",
+
         "INTRO_SLIDE1_BANNER" : "Dein Kiez",
         "INTRO_SLIDE1_MAINTEXT" : "Gestalte Deinen Kiez",
         "INTRO_SLIDE1_SUBTEXT" : "Aktivitäten mit Nachbarn bereichern euer Zusammenleben im Kiez.",
@@ -562,6 +580,15 @@
       "displayname": "عربى",
       "direction": "rtl",
       "translations": {
+
+        "PIPE_SINCE_SINCE" : "قبل",
+        "PIPE_SINCE_MINUTES" : "دقائق",
+        "PIPE_SINCE_HOUR" : "ساعة",
+        "PIPE_SINCE_HOURS" : "ساعات",
+        "PIPE_SINCE_DAY" : "يوم - نهار",
+        "PIPE_SINCE_DAYS" : "اجتماع",
+
+        "REFRESH": "تحديث",
 
         "INTRO_SLIDE1_BANNER" : "حي الخاص بك",
         "INTRO_SLIDE1_MAINTEXT" : "شكل الجوار الخاص بك",

@@ -105,6 +105,19 @@
 
   <ion-content>
 
+    <ion-refresher 
+    pullMax="80"
+    pullMin="40"
+    (ionRefresh)="pullToRefreshModule($event)">
+      <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="{{ 'REFRESH' | translate }}"
+            refreshingSpinner=""
+
+            refreshingText="">
+      </ion-refresher-content>
+    </ion-refresher>
+
     <!-- Dynamic Module Content Panels-->
 
     <div *ngFor="let id of moduleConfig"  [ngSwitch]="id" style="text-align: center; font-size: 16px; position: relative;" [@animateModuleSwitch]="stateModuleSwitch">

@@ -936,6 +936,25 @@ export interface Message {
   displayTime?:string;
 }
 
+export interface Thread {
+  _id: string;
+  parentNeighbourhood : string;
+  context: string
+  author: string;
+  data: any; 
+  meta: any;
+  ts: number; // for sorting
+}
+
+export interface Post {
+  _id: string;
+  parentThread: string;
+  type: string; 
+  data: any;
+  meta: any;
+  ts: number; // for sorting
+}
+
 export interface Code {
   actionType: string; // newNeighbour
   neighbourhood: string;

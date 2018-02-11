@@ -219,3 +219,19 @@ ion-title {
 .leaflet-top .leaflet-control {
   margin-top: 64px !important;
 }
+
+page-main .refresher-pulling-icon {
+  width: 20px;
+  text-align: left !important;
+  margin-left: 20px;
+  color: grey;
+}
+
+page-main .refresher-pulling-text {
+  text-align: left !important;
+  margin-top: -6px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: grey;
+  font-size: 90%;
+}

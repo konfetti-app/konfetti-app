@@ -26,10 +26,8 @@ export class IntroPage {
 
   constructor(
     private navCtrl: NavController,
-    //private navParams: NavParams,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    //private menuController : MenuController,
     private alertCtrl: AlertController,
     private translateService: TranslateService,
     private modalCtrl: ModalController

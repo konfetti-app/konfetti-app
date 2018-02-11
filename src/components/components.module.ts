@@ -3,6 +3,8 @@ import { ModuleNewsfeedComponent } from './module-newsfeed/module-newsfeed';
 import { ModuleGroupchatsComponent } from './module-groupchats/module-groupchats';
 import { IonicPageModule } from 'ionic-angular';
 
+import { PipesModule } from '../pipes/pipes.module';
+
 @NgModule({
 	declarations: [
 		ModuleNewsfeedComponent,
@@ -11,6 +13,7 @@ import { IonicPageModule } from 'ionic-angular';
 	imports: [
 		IonicPageModule.forChild(ModuleGroupchatsComponent),
 		IonicPageModule.forChild(ModuleNewsfeedComponent),
+		PipesModule
 	],
 	exports: [
 		ModuleNewsfeedComponent,
