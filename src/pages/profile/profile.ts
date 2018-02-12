@@ -45,6 +45,8 @@ export class ProfilePage {
   nickname : string = "";
   aboutme : string = "";
   avatarUrl : string = "";
+  username: string = "";
+  password: string = "";
 
   /*
    * flag if data git changed
@@ -91,6 +93,10 @@ export class ProfilePage {
     this.nickname = user.nickname;
     this.aboutme = user.description;
     this.spokenLangs = this.appState.fromLocaleArrayToLanguageInfos(user.spokenLanguages);
+
+    this.username = this.appPersistence.getAppDataCache().username;
+    if (this.username.startsWith('konfettiUser-')) this.username = '';
+    this.password = "";
 
     // data in sync with API
     this.dataChanged = false;
@@ -180,6 +186,15 @@ export class ProfilePage {
   onChangeAbout() : void {
     if ( this.aboutme === this.appState.getUserInfo().description ) return;
     this.dataChanged = true;
+  }
+
+  onChangeUsername() : void {
+    if ( this.username === this.appPersistence.getAppDataCache().username ) return;
+    this.dataChanged = true;
+  }
+
+  onChangePassword() : void {
+    if (this.password.trim().length>0) this.dataChanged = true;
   }
 
   onChangeFile(event) : void {
@@ -400,6 +415,8 @@ export class ProfilePage {
     userUpdate.nickname = this.nickname;
     userUpdate.description = this.aboutme;
     userUpdate.spokenLanguages = this.appState.getUserInfo().spokenLanguages;
+    userUpdate.email = this.username.trim();
+    if (this.password.trim().length>0) userUpdate.password = this.password.trim();
     let loadingModal = this.loadingCtrl.create({});
     loadingModal.present().then();
     this.api.updateUserInfo(this.appPersistence.getAppDataCache().userid,userUpdate).subscribe(

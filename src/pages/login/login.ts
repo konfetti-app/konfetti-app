@@ -1,6 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavParams, ToastController} from 'ionic-angular';
+import { 
+  IonicPage, 
+  ViewController, 
+  NavParams, 
+  ToastController,
+  LoadingController, 
+} from 'ionic-angular';
 import { AppStateProvider } from "../../providers/app-state/app-state";
+
+import { TranslateService } from "@ngx-translate/core";
+import { ApiProvider } from '../../providers/api/api';
 
 @IonicPage()
 @Component({
@@ -8,6 +17,9 @@ import { AppStateProvider } from "../../providers/app-state/app-state";
   templateUrl: 'login.html',
 })
 export class LoginPage {
+
+  username:string = "";
+  password:string = "";
 
   modus : string = null;
   allowRegister: boolean = false;
@@ -17,7 +29,10 @@ export class LoginPage {
     private params: NavParams = null,
     private viewCtrl: ViewController,
     private toastCtrl: ToastController,
-    private appState: AppStateProvider
+    private appState: AppStateProvider,
+    private api: ApiProvider,
+    private translate: TranslateService,
+    private loading: LoadingController
   ) {
 
     // get version strings
@@ -53,8 +68,42 @@ export class LoginPage {
   }
 
   buttonLogin() : void {
-    // TODO login against API
-    this.viewCtrl.dismiss({ success: true } ).then();
+
+    // show loading spinner
+    let loadingSpinner = this.loading.create({
+          content: ''
+    });
+    loadingSpinner.present().then();
+
+    this.api.refreshAccessToken(this.username, this.password).subscribe(
+      (win)=>{
+
+        loadingSpinner.dismiss().then();
+
+        this.toastCtrl.create({
+          message: this.translate.instant('OK'),
+          cssClass: 'toast-valid',
+          duration: 1500
+        }).present().then();
+
+        setTimeout(()=>{
+          // close and signal success to underlying frame 
+          this.viewCtrl.dismiss({ success: true } ).then();
+        },1500);
+
+    },
+      (error)=>{
+
+        loadingSpinner.dismiss().then();
+
+        this.toastCtrl.create({
+          message: this.translate.instant('LOGIN_FAIL'),
+          cssClass: 'toast-invalid',
+          duration: 3000
+        }).present().then();
+
+    });
+
   }
 
   buttonRegister() : void {
@@ -65,12 +114,40 @@ export class LoginPage {
     }).present().then();
   }
 
-  buttonRecover() : void {
-    // TODO recover password for given email
-    this.toastCtrl.create({
-      message: 'TODO',
-      duration: 5000
-    }).present().then();
+  buttonRecover(): void {
+
+    // show loading spinner
+    let loadingSpinner = this.loading.create({
+      content: ''
+    });
+    loadingSpinner.present().then();
+
+    this.api.resetPassword(this.username).subscribe(
+      (win) => {
+
+        loadingSpinner.dismiss().then();
+
+        this.modus = "login";
+
+        this.toastCtrl.create({
+          message: this.translate.instant('RECOVER_WIN'),
+          cssClass: 'toast-valid',
+          duration: 4000
+        }).present().then();
+
+      },
+      (error) => {
+
+        loadingSpinner.dismiss().then();
+
+        this.toastCtrl.create({
+          message: this.translate.instant('RECOVER_FAIL'),
+          cssClass: 'toast-invalid',
+          duration: 3000
+        }).present().then();
+
+      });
+
   }
 
   dismiss() {

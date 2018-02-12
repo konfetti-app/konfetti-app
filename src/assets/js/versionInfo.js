@@ -1,1 +1,1 @@
-window.appBuildTime='2018-02-12 00:27:24';
+window.appBuildTime='2018-02-12 00:30:00';

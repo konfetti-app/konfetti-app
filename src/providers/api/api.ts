@@ -147,9 +147,52 @@ export class ApiProvider {
           }
         } catch (e) {}
 
-        // unknown
-        observer.error('UNKNOWN');
-        return;
+        // default error handling
+        this.defaultHttpErrorHandling(error, observer, "refreshAccessToken", () => {
+          this.refreshAccessToken(user, pass).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
+            observer.error(error);
+          });
+        });
+
+      });
+
+    });
+
+  }
+
+  // trigger the password reset process
+  resetPassword(user:string) : Observable<void> {
+
+    return Observable.create((observer) => {
+
+      // Basic Auth with username and password
+      let headers =  new HttpHeaders();
+
+      // get new JWT token
+      this.http.post<JsonWebTokenResponse>(this.apiUrlBase+'api/users/'+user+'/resetPassword','', {
+        headers: headers
+      }).subscribe( data => {
+
+        /*
+         * SUCCESS
+         */
+
+        // return success
+        observer.next(null);
+        observer.complete();
+
+      }, (error) => {
+
+        /*
+         * ERROR
+         */
+
+        // default error handling
+        this.defaultHttpErrorHandling(error, observer, "resetPassword", () => {
+          this.resetPassword(user).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
+            observer.error(error);
+          });
+        });
 
       });
 

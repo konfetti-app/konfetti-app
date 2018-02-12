@@ -35,7 +35,7 @@ export class ModuleNewsfeedComponent {
     private state: AppStateProvider,
     private events: Events,
     private persistence: AppPersistenceProvider,
-    private translateService : TranslateService
+    private translateService : TranslateService // needed in template as parameter for pipe since
   ) {
 
     this.isIOS = this.state.isIOS();

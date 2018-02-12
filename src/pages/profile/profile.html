@@ -108,12 +108,37 @@
       <input #fileInput type="file" (change)="onChangeFile($event)"/>
     </div>
 
-    <!--
-    <button *ngIf="showAccountLink" (click)="buttonPasswordAndAccount()" ion-button clear style="margin-top: 24px;">
-      <i class="fa fa-key" aria-hidden="true"></i>&nbsp;
-      {{ 'PROFILE_CHANGEACCOUNT' | translate }}
-    </button>
-    -->
+
+    <!-- User & Passwort Section - just show when user opens profile on side menu (no notice) -->
+    <div *ngIf="notice.length==0" style="margin-top: 24px;">
+
+          <div class="label label-md label-md-primary" style="    
+          -webkit-padding-start: 16px;
+          font-size: 16px;
+          margin-top: 30px;
+          margin-bottom: 4px;">
+            Dein Konfetti-Konto 
+          </div>
+
+          <ion-item>
+          <ion-input type="email" 
+          (keyup)="onChangeUsername()" 
+          (keyup.enter)="closeKeyboard()"
+          [(ngModel)]="username" 
+          placeholder="{{ 'EMAIL' | translate }}"
+        ></ion-input>
+        </ion-item>
+
+        <ion-item>
+        <ion-input type="password" 
+        (keyup)="onChangePassword()" 
+        (keyup.enter)="closeKeyboard()"
+        [(ngModel)]="password" 
+        placeholder="{{ 'PASSWORD' | translate }}"
+      ></ion-input>
+          </ion-item>
+  
+    </div>
 
     <!-- This button only when user did not opened profile from side menu -->
     <button *ngIf="notice.length>0" ion-button block color="primary" (click)="buttonContinue()" style="margin-top: 38px;">
