@@ -3,6 +3,8 @@ import {
   Events
 } from 'ionic-angular';
 
+import { TranslateService } from "@ngx-translate/core";
+
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
@@ -32,7 +34,8 @@ export class ModuleNewsfeedComponent {
     private api: ApiProvider,
     private state: AppStateProvider,
     private events: Events,
-    private persistence: AppPersistenceProvider
+    private persistence: AppPersistenceProvider,
+    private translateService : TranslateService
   ) {
 
     this.isIOS = this.state.isIOS();
