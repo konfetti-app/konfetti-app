@@ -135,7 +135,7 @@
 
         <div *ngSwitchCase="'ideas'">
           <div *ngIf="showModuleFocus==='ideas'" style="padding: 8px; padding-top: 48px;">
-            <img src="./assets/imgs/mockup-ideas.png" />
+            <module-ideas [config]="getModuleConfig(id)"></module-ideas>
           </div>
         </div>
 

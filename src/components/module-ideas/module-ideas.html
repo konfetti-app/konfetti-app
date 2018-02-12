@@ -1,0 +1,25 @@
+<div style="min-height: 400px; padding-bottom: 35px; margin-top: -28px;">
+    <ion-spinner *ngIf="loading" style="margin-top:20px;"></ion-spinner>
+
+    <div padding>
+            <ion-segment [(ngModel)]="tab">
+              <ion-segment-button value="all">
+                Alle Ideen
+              </ion-segment-button>
+              <ion-segment-button value="mine">
+                Meine Ideen
+              </ion-segment-button>
+            </ion-segment>
+          </div>
+          
+          <div [ngSwitch]="tab">
+            <ion-list *ngSwitchCase="'all'">
+                <img src="./assets/imgs/mockup-ideas.png" />
+            </ion-list>
+          
+            <ion-list *ngSwitchCase="'mine'">
+                
+            </ion-list>
+          </div>
+
+</div>
