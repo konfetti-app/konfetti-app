@@ -529,6 +529,7 @@ export class MainPage {
     this.setStateModulePanel(true);
     if (this.showModuleFocus.length<1) this.showModuleFocus='news';
     if (this.showModuleFocus!='news') this.showFabButton = true;
+    this.setSubTitleAccordingToModule(this.showModuleFocus);
 
     this.map.flyTo({lon: this.lon, lat: this.lat-0.0025}, this.zoom);
     this.map.removeLayer(this.eventMarkers);
