@@ -17,7 +17,7 @@
         <button *ngIf="((chat!=null) && (chat.userIsAdmin))" ion-button icon-only (click)="showDialogEditChat()" style="width:40px;">
           <i class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
         </button>
-        <button ion-button icon-only (click)="buttonSubscribe()" style="width:40px;">
+        <button ion-button icon-only *ngIf="chat" (click)="buttonSubscribe()" style="width:40px;">
           <i *ngIf="chat.subscribed" class="fa fa-bell" aria-hidden="true"></i>
           <i *ngIf="!chat.subscribed" class="fa fa-bell-slash-o" aria-hidden="true"></i>
         </button>
@@ -46,7 +46,9 @@
         <!-- extra headroom when on iOS keyboard is open -->
         <div *ngIf="(keyboardIsOpen && isIOS )" style="height:110px;">&nbsp;</div>
 
-        <ion-spinner *ngIf="loading"></ion-spinner>
+        <div *ngIf="loading" style="text-align: center;">
+            <ion-spinner ></ion-spinner>
+        </div>  
 
         <div *ngIf="(messages.length==0) && (!loading)" style="color:grey; font-style: italic;">
           <span *ngIf="chat.userIsAdmin">

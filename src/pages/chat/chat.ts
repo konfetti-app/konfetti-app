@@ -93,8 +93,9 @@ export class ChatPage {
     this.showFootRoom = !state.isRunningOnRealDevice();
     this.chat = this.navParams.get("chat") as Chat;
 
+
     // set some default vaules that get filled later
-    this.chat.subscribed = false;
+    if (this.chat) this.chat.subscribed = false;
 
     // flag for fixing some iOS quirks
     this.isIOS = this.state.isIOS();
