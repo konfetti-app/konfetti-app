@@ -2,7 +2,7 @@
     <ion-spinner *ngIf="loading" style="margin-top:20px;"></ion-spinner>
 
     <div padding>
-            <ion-segment [(ngModel)]="tab">
+            <ion-segment [(ngModel)]="tab" mode="md">
               <ion-segment-button value="all">
                 Alle Ideen
               </ion-segment-button>
@@ -19,6 +19,74 @@
           
             <ion-list *ngSwitchCase="'mine'">
                 
+                    <ion-card  style="
+                    width:100%; 
+                    margin:0px;
+                    border-color: #f1f1f1;
+                    border-width: 1px;
+                    border-style: solid;
+                    margin-bottom: 14px;
+                    ">
+                      <ion-card-content style="padding: 5px 10px 5px;">
+                        <table style="width:100%;">
+                          <tr>
+                            <td style="width:60px;">
+                                <img 
+                                  [src]="'dd'" 
+                                  onerror="this.src = './assets/imgs/icon.png';"
+                                  style="
+                                    width: 60px;
+                                    height: 60px;
+                                    border-radius: 60px;
+                                    border-width: 1px;
+                                    border-color: #f1f1f1;
+                                    border-style: solid;
+                                  "
+                                />
+                            </td>
+                            <td style="
+                              text-align: start;
+                              -webkit-padding-start: 10px;
+                            ">
+                              <div class="card-text-overline">Overline</div>
+                              <div class="card-text-main">Name</div>
+                              <div class="card-text-underline">Underline</div>
+                            </td>
+                            <td style="width:50px; font-size: 200%;">
+
+                                    <div (click)="vote()" style="
+                                    margin-top: -3px;
+                                    width: 60px;
+                                    height: 60px;
+                                    padding-top: 2px;
+                                    text-align: center;
+                                    border-radius: 30px;
+                                    box-shadow: 2px 3px 5px lightgrey;
+                                    background: -webkit-linear-gradient(top, #299a0b 46%,#f3f3f3 40%); 
+                                    font-size:18px;
+                                    font-weight: bold;
+                                    ">
+                                    <div style="
+                                        color: white;
+                                    "
+                                     >{{votecount}}</div>
+                                    <div *ngIf="!voted"  style="padding-top: 1px;"
+                                     >🎉</div>
+                                    <div *ngIf="voted" style="    
+                                    color: green;
+                                    font-size: 30px;
+                                    font-weight: 400;
+                                    margin-top: -7px;
+                                    margin-left: 1px;">
+                                       <ion-icon name="checkmark"></ion-icon>
+                                    </div>
+                                </div>    
+                            </td>
+                          </tr>
+                        </table>  
+                      </ion-card-content>
+                    </ion-card>
+
             </ion-list>
           </div>
 

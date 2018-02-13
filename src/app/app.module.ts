@@ -59,7 +59,10 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     BrowserModule,
     HttpClientModule,
     TranslateModule.forRoot(),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      iconMode: 'md',
+      mode: 'md'
+    }),
     BrowserAnimationsModule,
     MainPageModule,
     CodeRedeemPageModule,

@@ -28,6 +28,8 @@ import { AppPersistenceProvider } from './../../providers/app-persistence/app-pe
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppConfigProvider } from "../../providers/app-config/app-config";
 
+import { ParticlesProvider } from '../../providers/particles/particles';
+
 /**
  *
  * Map Integration see tutorial:
@@ -149,6 +151,10 @@ export class MainPage {
 
   backButtonUnregister:Function = null;
 
+  // for the particle test
+  @ViewChild('canvasObj') canvasElement : ElementRef;
+  public isPlaying : boolean = false;
+
   constructor(
     private modalCtrl: ModalController,
     private translateService: TranslateService,
@@ -159,7 +165,8 @@ export class MainPage {
     private persistence: AppPersistenceProvider,
     private state: AppStateProvider,
     private config: AppConfigProvider,
-    private platform: Platform
+    private platform: Platform,
+    private konfettiRain: ParticlesProvider
   ) {
     this.showModuleFocus = "";
 
@@ -262,12 +269,18 @@ export class MainPage {
       this.processNotification(notification);
     });
 
+    this.events.subscribe("main:konfettirain", (notification:PushNotification) => {
+      console.log("Eventbus: Konfettirain");
+      this.startAnimation();
+    });
+
   }
 
   // unsubscribe from event bus when page gets destroyed
   ngOnDestroy() {
     this.events.unsubscribe("main:update");
     this.events.unsubscribe("notification:process");
+    this.events.unsubscribe("main:konfettirai");
     if (this.backButtonUnregister!=null) this.backButtonUnregister();
   }
 
@@ -635,8 +648,20 @@ export class MainPage {
 
   }
 
+  public startAnimation() : void
+  {
+     this.isPlaying = true;
+     this.konfettiRain.startAnimation(100, 5000, ()=>{
+      this.isPlaying = false;
+     });
+
+  }
+
   ionViewDidLoad() {
     this.initMap();
+    setTimeout(() => {
+      this.konfettiRain.initialiseCanvas(this.canvasElement.nativeElement, this.platform.width(), this.platform.height());
+    }, 500);
   }
 
   ionViewWillEnter() {

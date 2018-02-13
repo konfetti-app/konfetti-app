@@ -33,6 +33,9 @@ export class ModuleIdeasComponent {
   // selected tab
   tab:string = 'all';
 
+  votecount:number = 10;
+  voted:boolean = false;
+
   constructor(
     private api: ApiProvider,
     private state: AppStateProvider,
@@ -46,6 +49,12 @@ export class ModuleIdeasComponent {
     // get the actual neighborhood
     this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
 
+  }
+
+  vote() {
+    this.votecount++;
+    this.voted = true;
+    this.events.publish("main:konfettirain", null);
   }
 
 }

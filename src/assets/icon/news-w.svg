@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1539 671 31.5 27.66">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-5 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke: #fff;
+      }
+
+      .cls-1 {
+        stroke-width: 3px;
+      }
+
+      .cls-2 {
+        stroke-width: 6px;
+      }
+
+      .cls-3 {
+        stroke-width: 2px;
+      }
+
+      .cls-4 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="newsfeed_weiß" transform="translate(1356 419)">
+    <g id="Rechteck_87" data-name="Rechteck 87" class="cls-1" transform="translate(183 252)">
+      <rect class="cls-4" width="31.5" height="27.66" rx="3"/>
+      <rect class="cls-5" x="1.5" y="1.5" width="28.5" height="24.66" rx="1.5"/>
+    </g>
+    <line id="Linie_21" data-name="Linie 21" class="cls-2" x2="21.05" transform="translate(188.226 260.75)"/>
+    <line id="Linie_22" data-name="Linie 22" class="cls-3" x2="21.05" transform="translate(188.226 268.823)"/>
+    <line id="Linie_27" data-name="Linie 27" class="cls-3" x2="21.05" transform="translate(188.226 272.823)"/>
+  </g>
+</svg>

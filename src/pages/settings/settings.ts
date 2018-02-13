@@ -3,8 +3,6 @@ import { IonicPage, ToastController, ViewController, Platform} from 'ionic-angul
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
-import { ParticlesProvider } from '../../providers/particles/particles';
-
 @IonicPage()
 @Component({
   selector: 'page-settings',
@@ -16,10 +14,6 @@ export class SettingsPage {
   actualLanguage: LanguageInfo;
   versionString: string = "Browser";
 
-  // for the particle test
-  @ViewChild('canvasObj') canvasElement : ElementRef;
-  public isPlaying : boolean = false;
-
   // flag is running on iOS
   isIOS: boolean;
 
@@ -28,7 +22,6 @@ export class SettingsPage {
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
     private toastCtrl: ToastController,
-    private _PARTICLE: ParticlesProvider,
     private platform: Platform
     ) {
 
@@ -54,23 +47,7 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
-    this.prepareCanvas();
   }
-
-     /**
-    *
-    * Programmatically link to the HTML5 Canvas object and define
-    * the necessary width and height for the Canvas
-    *
-    * @public
-    * @method prepareCanvas
-    * @return {None}
-    */
-    prepareCanvas() : void
-    {
-       this._PARTICLE.initialiseCanvas(this.canvasElement.nativeElement, this.platform.width(), this.platform.height());
-    }
-
 
   ionViewWillEnter() {
     this.availableLanguages = this.appState.getAllAvailableLanguages();
@@ -100,16 +77,6 @@ export class SettingsPage {
 
   compareLangs(lang1:LanguageInfo, lang2:LanguageInfo) : boolean {
     return lang1.locale === lang2.locale;
-  }
-
-  public startAnimation() : void
-  {
-     this.isPlaying = true;
-     this._PARTICLE.startAnimation(100, 5000, ()=>{
-      // callback when done 
-      this.isPlaying = false;
-     });
-
   }
 
 }
