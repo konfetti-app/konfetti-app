@@ -663,7 +663,7 @@ export class ApiProvider {
 
       this.getJWTAuthHeaders().subscribe(headers => {
 
-        this.http.get<any>(this.apiUrlBase + 'api/newsfeed/' +groupID
+        this.http.get<any>(this.apiUrlBase + 'api/newsfeed/' //+groupID
         , {
           headers: headers
         }).subscribe((resp) => {
@@ -1065,7 +1065,7 @@ export interface Post {
   type: string; 
   data: any;
   meta: any;
-  ts: number; // for sorting
+  crreated: any; // ts = created.date
 }
 
 // all notification data for opening a special 

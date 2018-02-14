@@ -287,6 +287,8 @@ export class MainPage {
   // take action on a notification from newsfeed or push notification
   processNotification(notification:PushNotification) {
 
+    if (notification.module=='moduleGroupChat') notification.module = 'groupchats';
+
     // open module referenced on screen 
     this.buttonModule(notification.module);
 
@@ -660,8 +662,12 @@ export class MainPage {
   ionViewDidLoad() {
     this.initMap();
     setTimeout(() => {
-      this.konfettiRain.initialiseCanvas(this.canvasElement.nativeElement, this.platform.width(), this.platform.height());
-    }, 500);
+      try {
+        this.konfettiRain.initialiseCanvas(this.canvasElement.nativeElement, this.platform.width(), this.platform.height());
+      } catch (e) {
+        alert("FAILED to init this.canvasElement.nativeElement");
+      }
+    }, 3000);
   }
 
   ionViewWillEnter() {

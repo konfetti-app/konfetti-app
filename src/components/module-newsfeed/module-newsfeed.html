@@ -25,7 +25,7 @@
           <tr>
             <td (click)="selectCard(post)" >
                 <div class="notification-text">
-                    {{post.data.text}}
+                    {{post.content.text}}
                   </div>
             </td>
             <td width="12px" class="notification-close" (click)="closePost(post)">
@@ -34,7 +34,7 @@
           </tr>
           <tr class="notification-underline" (click)="selectCard(post)" >
             <td>
-                {{post.ts | since: translateService}}
+                {{post.created.date | since: translateService}}
             </td> 
           </tr>  
         </table>      

@@ -26,7 +26,7 @@ export class SincePipe implements PipeTransform {
     }
 
     // timestamp diff to now
-    let timediff = Date.now()-Number(value);
+    let timediff = Math.round(Date.now()/1000)-Number(value);
 
     // just in case something is off
     if (timediff<0) return "vor kurzem";

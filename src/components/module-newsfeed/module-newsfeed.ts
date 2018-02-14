@@ -84,12 +84,13 @@ export class ModuleNewsfeedComponent {
       this.loading = false;
       console.error("FAIL: Was not able to load newsfeed - using fake data");
 
+      /*
       this.posts.push({
         _id: "xxx0",
         type: "notification",
         ts: Date.now() - (60 * 60 * 2 * 1000),
         parentThread: "xxx1",
-        data: {
+        content: {
           text: "Katja hat den Beitrag 'Katze gesucht' im Chat kommentiert."
         },
         meta: {
@@ -99,6 +100,7 @@ export class ModuleNewsfeedComponent {
           subID: null
         }
       } as Post);
+      */
 
     });
 

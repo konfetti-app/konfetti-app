@@ -5,8 +5,8 @@
     config.prod --> will be used when you make a 'ionic build' or a 'ionic cordova build'
  */
 window.appConfig = {
-    forceRealServer: false,
-    realServer: '',
+    forceRealServer: true,
+    realServer: 'https://konfettiapp.de:3000/',
     oneSignalAppId: '',
     googleProjectNumber: ''
 };
