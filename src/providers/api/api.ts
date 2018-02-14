@@ -663,7 +663,7 @@ export class ApiProvider {
 
       this.getJWTAuthHeaders().subscribe(headers => {
 
-        this.http.get<any>(this.apiUrlBase + 'api/newsfeed/' //+groupID
+        this.http.get<any>(this.apiUrlBase + 'api/newsfeed/neighbourhood/' + groupID
         , {
           headers: headers
         }).subscribe((resp) => {
