@@ -169,7 +169,7 @@ export class ApiProvider {
       let headers =  new HttpHeaders();
 
       // get new JWT token
-      this.http.post<JsonWebTokenResponse>(this.apiUrlBase+'api/users/'+user+'/resetPassword','', {
+      this.http.get<any>(this.apiUrlBase+'api/users/'+user+'/resetPassword', {
         headers: headers
       }).subscribe( data => {
 
@@ -1065,7 +1065,7 @@ export interface Post {
   type: string; 
   data: any;
   meta: any;
-  crreated: any; // ts = created.date
+  crreated: any; // ts =
 }
 
 // all notification data for opening a special 
