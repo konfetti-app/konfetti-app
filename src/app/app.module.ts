@@ -9,6 +9,7 @@ import { IntroPage } from '../pages/intro/intro';
 import { ProfilePage } from '../pages/profile/profile';
 import { LoginPage } from '../pages/login/login';
 import { ChatPage } from '../pages/chat/chat';
+import { IdeaPage } from '../pages/idea/idea';
 import { ChatEditPage } from '../pages/chat-edit/chat-edit';
 import { SettingsPage } from '../pages/settings/settings';
 import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
@@ -41,6 +42,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MainPageModule } from '../pages/main/main.module'
 import { ChatPageModule } from '../pages/chat/chat.module'
+import { IdeaPageModule } from '../pages/idea/idea.module'
 import { ChatEditPageModule } from '../pages/chat-edit/chat-edit.module'
 import { CodeRedeemPageModule } from '../pages/code-redeem/code-redeem.module'
 import { IntroPageModule } from '../pages/intro/intro.module'
@@ -69,6 +71,7 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     IntroPageModule,
     ChatPageModule,
     ChatEditPageModule,
+    IdeaPageModule,
     ProfilePageModule,
     SettingsPageModule, 
     LoginPageModule,
@@ -84,6 +87,7 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     CodeRedeemPage,
     LoginPage,
     ChatPage,
+    IdeaPage,
     ChatEditPage,
     SettingsPage
   ],

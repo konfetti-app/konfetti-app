@@ -28,10 +28,12 @@
                     {{post.content.text}}
                   </div>
             </td>
+            <!--
             <td width="12px" class="notification-close" (click)="closePost(post)">
                 <ion-icon name="md-close-circle"></ion-icon>
             </td>
-          </tr>
+          -->          
+        </tr>
           <tr class="notification-underline" (click)="selectCard(post)" >
             <td>
                 {{post.created.date | since: translateService}}

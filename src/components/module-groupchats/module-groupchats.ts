@@ -14,13 +14,10 @@ import { ChatPage } from '../../pages/chat/chat';
 import { ProfilePage } from '../../pages/profile/profile';
 
 /*
-
   Dev Notes:
-
   Would be great to add emojis to group chat. Here is a DB JSON with
   all basic emojis we could put to display and select.
   https://github.com/AnteWall/angular2-emoji/tree/master/src/lib/db
-
 */
 
 @Component({
