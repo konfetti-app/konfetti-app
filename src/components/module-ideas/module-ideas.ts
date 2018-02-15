@@ -14,9 +14,10 @@ import { TranslateService } from "@ngx-translate/core";
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
-import { ApiProvider } from '../../providers/api/api';
+import { ApiProvider, Post } from '../../providers/api/api';
 
 import { IdeaPage } from '../../pages/idea/idea';
+import { IdeaEditPage } from '../../pages/idea-edit/idea-edit';
 import { ProfilePage } from '../../pages/profile/profile';
 
 @Component({
@@ -80,6 +81,10 @@ export class ModuleIdeasComponent {
     this.events.publish("main:konfettirain", null);
   }
 
+  public openIdea(idea: Post) {
+    this.navCtrl.push(IdeaPage, idea);
+  }
+
   // user wants to create a new group chat
   public buttonNew() : void {
 
@@ -115,7 +120,7 @@ export class ModuleIdeasComponent {
         }
 
       } else {
-        this.navCtrl.push(IdeaPage, {});
+        this.navCtrl.push(IdeaEditPage, {});
       }
   }
 
