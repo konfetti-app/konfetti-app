@@ -14,7 +14,7 @@
 
         "SUBTITLE_MAP" : "Explore Map",
         "SUBTITLE_NEWS" : "⇦ go to map",
-        "SUBTITLE_IDEAS" : "Community Ideas",
+        "SUBTITLE_IDEAS" : "Community Events",
         "SUBTITLE_GROUPCHATS" : "Chatgroups",
 
         "REFRESH": "Refresh",
@@ -310,7 +310,7 @@
 
         "SUBTITLE_MAP" : "Umgebung entdecken",
         "SUBTITLE_NEWS" : "⇦ zur Karte",
-        "SUBTITLE_IDEAS" : "Konfetti Ideen",
+        "SUBTITLE_IDEAS" : "Nachbarschaftstreffen",
         "SUBTITLE_GROUPCHATS" : "Chatgruppen",
 
         "REFRESH": "Aktualisieren",

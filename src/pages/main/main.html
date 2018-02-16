@@ -37,7 +37,7 @@
     [ngStyle]="{ 'font-size' : (showModuleFocus==='news' || showKonfettiNotice) ? '200%' : '100%' }" >
     {{title}}</span>
   <span *ngIf="subtitle.length>0" class="main-group-subtitle" 
-    [ngStyle]="{ 'font-size' : showModuleFocus==='news' ? '100%' : '175%', 'top' : showModuleFocus==='news' ? '113px' : '105px'  }" >
+    [ngStyle]="{ 'font-size' : showModuleFocus==='news' ? '100%' : '155%', 'top' : showModuleFocus==='news' ? '113px' : (95 + (subtitle.length/2))+'px' }" >
     {{ subtitle }}
   </span>
 

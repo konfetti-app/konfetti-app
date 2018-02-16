@@ -83,25 +83,6 @@ export class ModuleNewsfeedComponent {
     }, (error) => {
       this.loading = false;
       console.error("FAIL: Was not able to load newsfeed - using fake data");
-
-      /*
-      this.posts.push({
-        _id: "xxx0",
-        type: "notification",
-        ts: Date.now() - (60 * 60 * 2 * 1000),
-        parentThread: "xxx1",
-        content: {
-          text: "Katja hat den Beitrag 'Katze gesucht' im Chat kommentiert."
-        },
-        meta: {
-          pushIDs: ['xxxx1', 'xxxx2'],
-          module: 'groupchats',
-          itemID: '5a61d10d11adf00fcb7c3452',
-          subID: null
-        }
-      } as Post);
-      */
-
     });
 
     setTimeout(()=>{

@@ -235,3 +235,7 @@ page-main .refresher-pulling-text {
   color: grey;
   font-size: 90%;
 }
+
+ion-textarea textarea {
+  -webkit-margin-start: 5px !important;
+}

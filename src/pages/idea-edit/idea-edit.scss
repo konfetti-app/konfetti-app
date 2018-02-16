@@ -1,3 +1,34 @@
 page-idea-edit {
 
 }
+
+.datetime-placeholder {
+    left: 44px;
+    position: absolute;
+    top: 14px;
+}
+
+.datetime-text {
+    left: 44px;
+    position: absolute;
+    top: 14px;
+}
+
+.datetime-placeholder[dir=rtl] {
+    right: 44px;
+    position: absolute;
+    top: 14px;
+}
+
+.datetime-text[dir=rtl] {
+    right: 44px;
+    position: absolute;
+    top: 14px;
+}
+
+.enablePulsate {
+    transition-property: opacity;
+    transition-duration: 0.5s;
+}
+
+
