@@ -12,6 +12,9 @@
         "PIPE_SINCE_DAY" : "day",
         "PIPE_SINCE_DAYS" : "days",
 
+        "IDEA_ALL" : "All Ideas",
+        "IDEA_MINE" : "My Ideas",
+
         "IDEAEDIT_HEADLINE" : "Create Community Event",
         "IDEAEDIT_TITLE" : "title",
         "IDEAEDIT_DESCRIPTION" : "description",
@@ -321,6 +324,9 @@
         "PIPE_SINCE_DAY" : "Tag",
         "PIPE_SINCE_DAYS" : "Tagen",
 
+        "IDEA_ALL" : "Alle Ideen",
+        "IDEA_MINE" : "Meine Ideen",
+
         "IDEAEDIT_HEADLINE" : "Nachbarschaftstreffen erstellen",
         "IDEAEDIT_TITLE" : "Titel",
         "IDEAEDIT_DESCRIPTION" : "Beschreibung",
@@ -629,6 +635,9 @@
         "PIPE_SINCE_HOURS" : "ساعات",
         "PIPE_SINCE_DAY" : "يوم - نهار",
         "PIPE_SINCE_DAYS" : "اجتماع",
+
+        "IDEA_ALL" : "جميع الأفكار",
+        "IDEA_MINE" : "أفكاري",
 
         "IDEAEDIT_HEADLINE" : "إنشاء حدث المجتمع",
         "IDEAEDIT_TITLE" : "عنوان",
