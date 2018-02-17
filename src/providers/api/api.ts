@@ -817,6 +817,27 @@ export class ApiProvider {
     });
   }
 
+  getKonfettiIdeas(groupId:string) : Observable<any> {
+    return Observable.create((observer) => {
+      setTimeout(()=>{
+        let simulatedResults = [];
+        simulatedResults.push(JSON.parse(
+          `{
+            "title":"Vogelhaus bauen",
+            "description":"Am Spielplatz am Beispielplatz wollen wir ein oder mehrere Vogelhäuser bauen. Wer ist dabei?",
+            "address":"Beipsielplatz 3",
+            "gps":null,
+            "date":1521559800000,
+            "wantsHelper":true,
+            "helpDescription":"Jeder der einen Hammer Schwingen will. Wer eine kleine Motorstichsäge hat - das wäre super.",
+            "wantsGuest":false
+          }`));
+          observer.next(simulatedResults);
+          observer.complete();
+      },1000);
+    });
+  }
+
   setUserAvatarImage(file:any) : Observable<any> {
     return Observable.create((observer) => {
 
@@ -1047,6 +1068,18 @@ export interface Message {
   displayName?:string;
   displayImage?:string;
   displayTime?:string;
+}
+
+export interface Idea {
+  _id:string;
+  title:string;
+  description:string;
+  address:string;
+  gps:any;
+  date:number;
+  wantsHelper:boolean;
+  helpDescription:string;
+  wantsGuest:boolean;
 }
 
 export interface Thread {

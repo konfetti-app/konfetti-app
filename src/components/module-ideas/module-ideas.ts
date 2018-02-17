@@ -14,7 +14,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
-import { ApiProvider, Post } from '../../providers/api/api';
+import { ApiProvider, Post, PushNotification, Idea } from '../../providers/api/api';
 
 import { IdeaPage } from '../../pages/idea/idea';
 import { IdeaEditPage } from '../../pages/idea-edit/idea-edit';
@@ -43,6 +43,13 @@ export class ModuleIdeasComponent {
   votecount:number = 10;
   voted:boolean = false;
 
+  // sorted categories
+  allIdeasOpen:Array<Idea> = [];
+  allIdeasDone:Array<Idea> = [];
+  myIdeasAdmin:Array<Idea> = [];
+  myIdeasHelp:Array<Idea> = [];
+  hiddenIdeasAll:Array<Idea> = [];
+
   constructor(
     private api: ApiProvider,
     private state: AppStateProvider,
@@ -58,6 +65,9 @@ export class ModuleIdeasComponent {
     // get the actual neighborhood
     this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
 
+    // get fresh data
+    this.refreshData();
+
     /*
      * Event Bus
      * https://ionicframework.com/docs/api/util/Events/
@@ -68,12 +78,78 @@ export class ModuleIdeasComponent {
       this.buttonNew();
     });
 
+    this.events.subscribe("refresh:ideas", () => {
+      console.log("Eventbus: Refresh Ideas");
+      if (!this.loading) {
+        console.log("Refreshing idea list ...");
+        this.refreshData();
+      } else {
+        console.log("Ignore refresh ... because still in loading process.");
+      }
+    });
+
+    this.events.subscribe("push:ideas", (notification:PushNotification) => {
+      console.log("Eventbus: Notification on Idea");
+      this.processNotification(notification);
+    });
+
   }
 
   // unsubscribe from event bus when component gets destroyed
   ngOnDestroy() {
-      this.events.unsubscribe("new:ideas");
+    this.events.unsubscribe("new:ideas");
+    this.events.unsubscribe("refresh:ideas");
+    this.events.unsubscribe("push:ideas");
   }
+
+  private refreshData(): void {
+   
+    this.loading = true;
+
+    this.api.getKonfettiIdeas(this.activeGroupId).subscribe((ideas:Array<Ideas>) => {
+
+      // sort into category
+      this.hiddenIdeasAll = ideas;
+      this.allIdeasOpen = [];
+      this.allIdeasDone = [];
+      this.myIdeasAdmin = [];
+      this.myIdeasHelp = [];
+      ideas.forEach((idea:Idea)=>{
+        this.allIdeasDone.push(idea);
+      });
+
+      this.loading = false;
+
+    }, (error) => {
+      this.loading = false;
+      alert("TODO: Error on getting idealist");
+    });
+
+  }
+
+    // react on push notification
+    private processNotification(notification:PushNotification): void {
+
+      // TODO: trigger fresh data load when older than x minutes
+  
+      //if module is in the process of refreshing data - wait and retry in 200ms
+      if (this.loading) {
+        setTimeout(()=>{
+          this.processNotification(notification);
+        },200);
+        return;
+      }
+  
+      // get matching chat from list
+      this.hiddenIdeasAll.forEach((idea:Idea)=>{
+        if (idea._id==notification.itemID) {
+          console.log("processNotification: open Idea");
+          // TODO: What if the caht is to open?
+          this.openIdea(idea);
+        }
+      });
+    
+    }
 
   vote() {
     this.votecount++;
@@ -81,7 +157,7 @@ export class ModuleIdeasComponent {
     this.events.publish("main:konfettirain", null);
   }
 
-  public openIdea(idea: Post) {
+  public openIdea(idea: Idea) {
     this.navCtrl.push(IdeaPage, idea);
   }
 

@@ -58,7 +58,7 @@ export class ModuleGroupchatsComponent {
     // get the actual neighborhood
     this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
 
-    // TODO: refresh data everytime user comes back to module later (event?)
+    // get fresh data
     this.refreshData();
 
     /*
