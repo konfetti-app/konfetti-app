@@ -8,12 +8,14 @@ import { PipesModule } from '../pipes/pipes.module';
 
 // http://ionicframework.com/docs/developer-resources/ng2-translate/
 import { TranslateModule } from '@ngx-translate/core';
+import { KonfettiButtonComponent } from './konfetti-button/konfetti-button';
 
 @NgModule({
 	declarations: [
 		ModuleNewsfeedComponent,
 		ModuleGroupchatsComponent,
-    	ModuleIdeasComponent
+    	ModuleIdeasComponent,
+        KonfettiButtonComponent
 	],
 	imports: [
 		IonicPageModule.forChild(ModuleGroupchatsComponent),
@@ -25,7 +27,8 @@ import { TranslateModule } from '@ngx-translate/core';
 	exports: [
 		ModuleNewsfeedComponent,
 		ModuleGroupchatsComponent,
-   	 	ModuleIdeasComponent
+   	 	ModuleIdeasComponent,
+        KonfettiButtonComponent
 	]
 })
 export class ComponentsModule {}

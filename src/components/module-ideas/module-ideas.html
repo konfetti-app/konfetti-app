@@ -55,34 +55,7 @@
                               <div class="card-text-underline">Underline</div>
                             </td>
                             <td style="width:50px; font-size: 200%;">
-
-                                    <div (click)="vote()" style="
-                                    margin-top: -3px;
-                                    width: 55px;
-                                    height: 55px;
-                                    padding-top: 0px;
-                                    text-align: center;
-                                    border-radius: 30px;
-                                    box-shadow: 2px 3px 5px lightgrey;
-                                    background: -webkit-linear-gradient(top, #299a0b 46%,#f3f3f3 40%); 
-                                    font-size:18px;
-                                    font-weight: bold;
-                                    ">
-                                    <div style="
-                                        color: white;
-                                    "
-                                     >{{votecount}}</div>
-                                    <div *ngIf="!voted"  style="padding-top: 1px;"
-                                     >🎉</div>
-                                    <div *ngIf="voted" style="    
-                                    color: green;
-                                    font-size: 30px;
-                                    font-weight: 400;
-                                    margin-top: -7px;
-                                    margin-left: 1px;">
-                                       <ion-icon name="checkmark"></ion-icon>
-                                    </div>
-                                </div>    
+                              <konfetti-button [count]="votecount" (click)="vote()"></konfetti-button>
                             </td>
                           </tr>
                         </table>  

@@ -106,7 +106,7 @@ export class ModuleIdeasComponent {
    
     this.loading = true;
 
-    this.api.getKonfettiIdeas(this.activeGroupId).subscribe((ideas:Array<Ideas>) => {
+    this.api.getKonfettiIdeas(this.activeGroupId).subscribe((ideas:Array<Idea>) => {
 
       // sort into category
       this.hiddenIdeasAll = ideas;
