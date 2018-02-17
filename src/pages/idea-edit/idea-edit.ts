@@ -1,14 +1,14 @@
 import {
   Component
 } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { 
+  IonicPage, 
+  NavController, 
+  ToastController, 
+  NavParams 
+} from 'ionic-angular';
 
-/**
- * Generated class for the IdeaEditPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
 @Component({
@@ -26,17 +26,23 @@ export class IdeaEditPage {
   address: string = "";
   addressOpacity: number = 1;
 
-  date: Date;
+  date: Date = new Date(0);
   dateOpacity: number = 1;
 
   wantsHelper: boolean = false;
   wantsGuest: boolean = false;
   helpDescription: string = "";
+  selectOpacity: number = 1;
 
   minDate:string = new Date().toISOString();
-  maxDate:string = new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)).toISOString();
+  maxDate:string = new Date(Date.now() + (184 * 24 * 60 * 60 * 1000)).toISOString();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    private toastCtrl: ToastController,
+    private translateService: TranslateService
+  ) {
   }
 
   ionViewDidLoad() {
@@ -76,7 +82,7 @@ export class IdeaEditPage {
     }
 
     // check date filled out
-    if (this.date == null) {
+    if ((this.date == null) || (new Date(this.date).getTime()==0)) {
       this.dateOpacity = 0;
       setTimeout(() => {
         this.dateOpacity = 1;
@@ -86,7 +92,41 @@ export class IdeaEditPage {
 
     // check date is in the future
     if (new Date(this.date).getTime() < Date.now()) {
-      alert("Date is in Past");
+      this.toastCtrl.create({
+        message: this.translateService.instant('IDEAEDIT_DATEINPAST'),
+        cssClass: 'toast-invalid',
+        duration: 4000
+      }).present().then();
+      return;
+    }
+
+    // check if checkmarks are set
+    if ((!this.wantsGuest) && (!this.wantsHelper)) {
+   
+      setTimeout(()=>{
+        this.selectOpacity = 0;
+        setTimeout(() => {
+          this.selectOpacity = 1;
+        }, 500);
+      },1000);
+
+      this.toastCtrl.create({
+        message: this.translateService.instant('IDEAEDIT_CHOOSEAUDIENCE'),
+        cssClass: 'toast-invalid',
+        duration: 5000
+      }).present().then();
+      return;
+
+    }
+
+    // when help description is needed
+    this.helpDescription = this.helpDescription.trim();
+    if ((this.wantsHelper) && (this.helpDescription.length==0)) {
+      this.toastCtrl.create({
+        message: this.translateService.instant('IDEAEDIT_HELPDETAIL'),
+        cssClass: 'toast-invalid',
+        duration: 4000
+      }).present().then();
       return;
     }
 

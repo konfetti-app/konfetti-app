@@ -15,7 +15,7 @@
 <ion-content padding>
 
     <h3 style="text-align: start; -webkit-padding-start: 14px;">
-        Nachbarschaftstreffen erstellen
+       {{ 'IDEAEDIT_HEADLINE' | translate }}
     </h3>
 
   <div class="enablePulsate" [style.opacity]='titleOpacity'>
@@ -23,7 +23,7 @@
     <ion-label>
       <ion-icon name="md-pricetag"></ion-icon>
     </ion-label>
-    <ion-input placeholder="title" type="text" [(ngModel)]="title"></ion-input>
+    <ion-input placeholder="{{ 'IDEAEDIT_TITLE' | translate }}" type="text" [(ngModel)]="title"></ion-input>
   </ion-item>
   </div>
 
@@ -32,7 +32,7 @@
     <ion-label>
       <ion-icon name="md-text"></ion-icon>
     </ion-label>
-    <ion-textarea placeholder="description" type="text" rows="3" [(ngModel)]="description"></ion-textarea>
+    <ion-textarea placeholder="{{ 'IDEAEDIT_DESCRIPTION' | translate }}" type="text" rows="3" [(ngModel)]="description"></ion-textarea>
   </ion-item>
   </div>
 
@@ -41,7 +41,7 @@
     <ion-label>
       <ion-icon name="md-pin"></ion-icon>
     </ion-label>
-    <ion-input placeholder="location (address)" type="text" [(ngModel)]="address"></ion-input>
+    <ion-input placeholder="{{ 'IDEAEDIT_ADDRESS' | translate }}" type="text" [(ngModel)]="address"></ion-input>
   </ion-item>
   </div>
 
@@ -50,30 +50,32 @@
       <ion-label>
         <ion-icon name="md-calendar"></ion-icon>
       </ion-label>
-      <ion-datetime placeholder="date & time" displayFormat="DD.MM.YYYY HH:mm" [(ngModel)]="date" min="{{minDate}}" max="{{maxDate}}"></ion-datetime>
+      <ion-datetime placeholder="{{ 'IDEAEDIT_DATE' | translate }}" displayFormat="DD.MM.YYYY HH:mm" [(ngModel)]="date" min="{{minDate}}" max="{{maxDate}}"></ion-datetime>
   </ion-item>
   </div>
 
+  <div class="enablePulsate" [style.opacity]='selectOpacity'>
   <div style="margin-top: 24px;
   margin-bottom: 7px;
-  font-size: 17px;">Ich suche ..</div>
+  font-size: 17px;">{{ 'IDEAEDIT_ISEARCH' | translate }}</div>
 
   <ion-item class="enablePulsate">
-      <ion-label>Helfer</ion-label>
+      <ion-label>{{ 'IDEAEDIT_WANTSHELP' | translate }}</ion-label>
       <ion-checkbox [(ngModel)]="wantsHelper"></ion-checkbox>
   </ion-item>
 
   <ion-item *ngIf="wantsHelper">
-      <ion-textarea placeholder="describe on what tasks or things you need help" type="text" rows="3" [(ngModel)]="helpDescription"></ion-textarea>
+      <ion-textarea placeholder="{{ 'IDEAEDIT_HELPDETAIL' | translate }}" type="text" rows="3" [(ngModel)]="helpDescription"></ion-textarea>
   </ion-item>
 
   <ion-item>
-      <ion-label>Teilnehmer / Gäste</ion-label>
+      <ion-label>{{ 'IDEAEDIT_WANTSGUESTS' | translate }}</ion-label>
       <ion-checkbox [(ngModel)]="wantsGuests"></ion-checkbox>
   </ion-item>
+  </div>
 
   <button ion-button block color="primary" (click)="buttonContinue()" style="margin-top: 36px;">
-      Weiter
+      {{ 'IDEAEDIT_CONTINUE' | translate }}
   </button>
 
 </ion-content>
