@@ -9,16 +9,7 @@ color: grey;
   Noch keine Chats vorhanden.
 </div>
 
-<ion-card *ngFor="let chat of chats" style="
-  width:100%; 
-  margin:0px;
-  border-color: #f1f1f1;
-  border-width: 1px;
-  border-style: solid;
-  margin-bottom: 14px;
-  border-radius: 8px;
-  background-color: #fcfffc;
-  ">
+<ion-card *ngFor="let chat of chats" class="module-card">
     <ion-card-content (click)="selectCard(chat)" style="padding: 5px 10px 5px;">
       <table style="width:100%;">
         <tr>

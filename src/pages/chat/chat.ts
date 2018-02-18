@@ -190,7 +190,7 @@ export class ChatPage {
         CREATE NEW CHAT
       */
 
-      this.chat = new Chat();
+      this.chat = {} as Chat;
       this.chat.name = "";
       this.chat.description = "";
       this.showDialogEditChat();
@@ -361,19 +361,17 @@ export class ChatPage {
           // make API request
           this.chat.parentNeighbourhood = this.persistence.getAppDataCache().lastFocusGroupId;
           this.chat.context = "moduleGroupChat";
-          this.api.createChat(data.chat).subscribe((chat:Chat)=>{
+          this.api.createChat(
+            data.chat,
+            this.persistence.getAppDataCache().userid,
+            this.state.getUserInfo().nickname,
+            this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
+          ).subscribe((chat:Chat)=>{
 
             // WIN
-
             this.chat = chat;
             this.showInfoHeader = true;
             this.showEnterMessageFooter = true;
-            this.chat = this.api.addDisplayInfoToChat(
-              this.chat, 
-              this.persistence.getAppDataCache().userid,
-              this.state.getUserInfo().nickname,
-              this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
-           )
 
             // hide spinner
             this.loadingSpinner.dismiss().then();
@@ -382,15 +380,36 @@ export class ChatPage {
             this.initChatMessages();
 
           }, (error)=>{
+            console.log("ERR",error);
 
             // FAIL
+            // TODO: i18n
+            try {
 
-            this.toastCtrl.create({
-              message: "Failed to create Chat",
-              duration: 3000
-            }).present().then(()=>{
-              this.navCtrl.pop();
-            });
+              let err = JSON.parse(error.error);
+              console.log("ERR2",err);
+
+              if (err.errors[0].err.code==11000) {
+                this.toastCtrl.create({
+                  message: "Chat with this title already exists.",
+                  cssClass: 'toast-invalid',
+                  duration: 5000
+                }).present().then(()=>{
+                  this.navCtrl.pop();
+                });
+
+              } else throw "unkown";
+            
+            } catch (e) {
+
+              this.toastCtrl.create({
+                message: "Failed to create Chat",
+                duration: 3000
+              }).present().then(()=>{
+                this.navCtrl.pop();
+              });
+
+            }
 
             // hide spinner
             this.loadingSpinner.dismiss().then();

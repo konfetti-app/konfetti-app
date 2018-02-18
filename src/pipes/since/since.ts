@@ -29,7 +29,7 @@ export class SincePipe implements PipeTransform {
     let timediff = Math.round(Date.now()/1000)-Number(value);
 
     // just in case something is off
-    if (timediff<0) return "vor kurzem";
+    if (timediff<0) return "-";
 
     // to minutes and return if not an hour yet
     let minutes = Math.floor(timediff / (60 * 1000));

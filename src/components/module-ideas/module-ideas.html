@@ -1,7 +1,7 @@
 <div style="min-height: 400px; padding-bottom: 35px; margin-top: -28px;">
     <ion-spinner *ngIf="loading" style="margin-top:20px;"></ion-spinner>
 
-    <div padding>
+    <div *ngIf="!loading" padding>
             <ion-segment [(ngModel)]="tab" mode="md">
               <ion-segment-button value="all">
                 {{ 'IDEA_ALL' | translate }}
@@ -10,57 +10,176 @@
                 {{ 'IDEA_MINE' | translate }}
               </ion-segment-button>
             </ion-segment>
-          </div>
+     </div>
           
-          <div [ngSwitch]="tab">
+          <div [ngSwitch]="tab" *ngIf="!loading">
+
+            <!-- TAB: ALL -->
+
             <ion-list *ngSwitchCase="'all'">
-                <img src="./assets/imgs/mockup-ideas.png" />
-            </ion-list>
-          
-            <ion-list *ngSwitchCase="'mine'">
-                
-                    <ion-card style="
-                    width:100%; 
-                    margin:0px;
-                    border-color: #f1f1f1;
-                    border-width: 1px;
-                    border-style: solid;
-                    margin-bottom: 14px;
-                    border-radius: 8px;
-                    background-color: #fcfffc;
-                    ">
-                      <ion-card-content style="padding: 5px 10px 5px;">
+
+                <div *ngIf="allIdeasOpen.length==0" style=" color: grey;">
+                    {{ 'IDEA_EVENTALLNO' | translate}}
+                </div>
+
+                <ion-card class="module-card"  *ngFor="let idea of allIdeasOpen">
+                    <ion-card-content class="votingcard">
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="width:60px;">
+                              <img 
+                                class="user-image"
+                                [src]="idea.displayImage" 
+                                onerror="this.src = './assets/imgs/icon.png';"
+                              />
+                          </td>
+                          <td  (click)="openIdea(idea)" class="content-cell">
+                            <div class="card-text-overline">{{idea.displayName}}</div>
+                            <div class="card-text-main">{{idea.title}}</div>
+                            <div class="card-text-underline">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</div>
+                          </td>
+                          <td style="width:50px; font-size: 200%;">
+                            <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                          </td>
+                        </tr>
+                      </table>  
+                    </ion-card-content>
+                  </ion-card>
+
+                  <div class="seperator" *ngIf="allIdeasDone.length>0" >
+                      {{'IDEA_EVENTSPAST' | translate}}
+                  </div>  
+
+                  <ion-card class="module-card"  *ngFor="let idea of allIdeasDone">
+                      <ion-card-content class="votingcard">
+
                         <table style="width:100%;">
                           <tr>
-                            <td style="width:60px;">
-                                <img 
-                                  [src]="'dd'" 
-                                  onerror="this.src = './assets/imgs/icon.png';"
-                                  style="
-                                    width: 60px;
-                                    height: 60px;
-                                    border-radius: 60px;
-                                    border-width: 1px;
-                                    border-color: #f1f1f1;
-                                    border-style: solid;
-                                  "
-                                />
-                            </td>
-                            <td  (click)="openIdea(null)" style="
-                              text-align: start;
-                              -webkit-padding-start: 10px;
-                            ">
-                              <div class="card-text-overline">Overline</div>
-                              <div class="card-text-main">Name</div>
-                              <div class="card-text-underline">Underline</div>
-                            </td>
-                            <td style="width:50px; font-size: 200%;">
-                              <konfetti-button [count]="votecount" (click)="vote()"></konfetti-button>
-                            </td>
+                              <td style="width:60px;">
+                                  <img 
+                                    class="user-image"
+                                    [src]="idea.displayImage" 
+                                    onerror="this.src = './assets/imgs/icon.png';"
+                                  />
+                              </td>
+                              <td  (click)="openIdea(idea)" class="content-cell">
+                                <div class="card-text-overline">{{idea.displayName}}</div>
+                                <div class="card-text-main">{{idea.title}}</div>
+                                <div class="card-text-underline">{{idea.date | since : translate}}</div>
+                              </td>
+                              <td style="width:50px; font-size: 200%;">
+                                <konfetti-button state="done" [count]="idea.konfettiTotal"></konfetti-button>
+                              </td>
                           </tr>
                         </table>  
                       </ion-card-content>
                     </ion-card>
+
+            </ion-list>
+          
+            <!-- TAB: MINE -->
+
+            <ion-list *ngSwitchCase="'mine'">
+
+
+                <div *ngIf="(myIdeasAdmin.length==0) && (myIdeasHelp.length==0) && (myIdeasVisit.length==0)"  style="color: grey; padding: 4px;">
+                    <div>{{ 'IDEA_EVENTMYNO1' | translate}}</div><br/>
+                    <div>{{ 'IDEA_EVENTMYNO2' | translate}}</div>
+                </div>
+                
+                <ion-card class="module-card"  *ngFor="let idea of myIdeasAdmin">
+                    <ion-card-content class="votingcard">
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="width:60px;">
+                              <img 
+                                class="user-image"
+                                [src]="idea.displayImage" 
+                                onerror="this.src = './assets/imgs/icon.png';"
+                              />
+                          </td>
+                          <td  (click)="openIdea(idea)" class="content-cell">
+                            <div class="card-text-overline">Administrator</div>
+                            <div class="card-text-main">{{idea.title}}</div>
+                            <div class="card-text-underline">
+                              <span *ngIf="idea.reviewStatus=='WAIT'" style="color:darkgoldenrod;">Warte auf Frei countdown: translategabe</span>
+                              <span *ngIf="idea.reviewStatus=='REJECTED'" style="color:red;">Warte auf Freigabe</span>
+                              <span *ngIf="idea.reviewStatus=='OK'" style="color:green;">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</span>
+                            </div>
+                          </td>
+                          <td style="width:50px; font-size: 200%;">
+                            <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                          </td>
+                        </tr>
+                      </table>  
+                    </ion-card-content>
+                  </ion-card>
+
+                  <div class="seperator" *ngIf="myIdeasHelp.length>0" >
+                      {{'IDEA_EVENTSHELP' | translate}}
+                  </div>  
+
+                  <ion-card class="module-card"  *ngFor="let idea of myIdeasHelp">
+                      <ion-card-content class="votingcard">
+
+                        <table style="width:100%;">
+                          <tr>
+                              <td style="width:60px;">
+                                  <img 
+                                    class="user-image"
+                                    [src]="idea.displayImage" 
+                                    onerror="this.src = './assets/imgs/icon.png';"
+                                  />
+                              </td>
+                              <td  (click)="openIdea(idea)" class="content-cell">
+                                <div class="card-text-overline">{{'IDEA_EVENTSHELP' | translate}}</div>
+                                <div class="card-text-main">{{idea.title}}</div>
+                                <div class="card-text-underline">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</div>
+                              </td>
+                              <td style="width:50px; font-size: 200%;">
+                                <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                              </td>
+                          </tr>
+                        </table>  
+                      </ion-card-content>
+                    </ion-card>
+
+                    <div class="seperator" *ngIf="myIdeasVisit.length>0" >
+                        {{'IDEA_EVENTSGUEST' | translate}}
+                    </div>  
+  
+                    <ion-card class="module-card"  *ngFor="let idea of myIdeasVisit">
+                        <ion-card-content class="votingcard">
+  
+                          <table style="width:100%;">
+                            <tr>
+                                <td style="width:60px;">
+                                    <img 
+                                      class="user-image"
+                                      [src]="idea.displayImage" 
+                                      onerror="this.src = './assets/imgs/icon.png';"
+                                    />
+                                </td>
+                                <td  (click)="openIdea(idea)" class="content-cell">
+                                  <div class="card-text-overline">{{'IDEA_EVENTSGUEST' | translate}}</div>
+                                  <div class="card-text-main">{{idea.title}}</div>
+                                  <div class="card-text-underline">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</div>
+                                </td>
+                                <td style="width:50px; font-size: 200%;">
+                                  <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                                </td>
+                            </tr>
+                          </table>  
+                        </ion-card-content>
+                      </ion-card>
+
+                      <div>
+                          <button ion-button clear (click)="buttonNew()" style="
+                          padding-top: 14px;
+                        ">
+                        {{ 'IDEA_EVENTCREATE' | translate}}
+                        </button>
+                      </div>
 
             </ion-list>
           </div>

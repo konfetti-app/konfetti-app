@@ -100,7 +100,7 @@ export class ChatEditPage {
     }
 
     // set chat data and return and make callback (which will close dialog)
-    if (this.chat==null) this.chat = new Chat();
+    if (this.chat==null) this.chat = {} as Chat;
     this.chat.name = this.chatTitle.trim();
     this.chat.name = this.chat.name.charAt(0).toUpperCase() + this.chat.name.slice(1);
     this.chat.description = this.emojiMap[this.slides.getActiveIndex()];

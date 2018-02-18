@@ -470,7 +470,7 @@ export class ApiProvider {
     });
   }
 
-  getChats(groupId:String, context:String) : Observable<Array<Chat>> {
+  getChats(groupId:String, context:String, userId:string=null, userName:string=null, avatarFilename:string=null) : Observable<Array<Chat>> {
 
   return Observable.create((observer) => {
 
@@ -483,8 +483,16 @@ export class ApiProvider {
         /*
          * WIN
          */
+        
+        // client side process 
+        let input:Array<Chat> = resp.data.chatChannels as Array<Chat>;
+        let results:Array<Chat> = [];
+        input.forEach(element => {
+          results.push(this.addDisplayData(element, userId, userName, avatarFilename));
+        });
 
-        observer.next(resp.data.chatChannels as Array<Chat>);
+        // return results
+        observer.next(results);
         observer.complete();
 
       }, error => {
@@ -504,35 +512,6 @@ export class ApiProvider {
 
   });
  } 
-
- addDisplayInfoToChat(chat:Chat, userId:string, userName:string, avatarFilename:string) : Chat {
-
-  // check if user is admin
-  chat.userIsAdmin = false;
-  if (chat.created.byUser._id==userId) chat.userIsAdmin = true;
-
-  // set author image & name
-  if (chat.userIsAdmin) {
-    chat.displayName = userName;
-    if (avatarFilename) {
-      // user image
-      chat.displayImage = this.buildImageURL(avatarFilename);
-    } else {
-      // default image
-      chat.displayImage = "./assets/imgs/default-user.jpg";
-    }
-  } else {
-    // set when other user
-    chat.displayName = chat.created.byUser.nickname;
-    if (chat.created.byUser.avatar) {
-      chat.displayImage = this.buildImageURL(chat.created.byUser.avatar.filename);
-    } else {
-      chat.displayImage = "./assets/imgs/default-user.jpg";
-    }
-  }
-
-  return chat;
-}
 
  getChatMessages(chat:Chat, timestamp:number) : Observable<Array<Message>> {
 
@@ -578,7 +557,7 @@ export class ApiProvider {
     });
    }
 
-   createChat(chat:Chat) : Observable<Chat> {
+   createChat(chat:Chat, userId:string=null, userName:string=null, avatarFilename:string=null) : Observable<Chat> {
 
     return Observable.create((observer) => {
 
@@ -595,7 +574,12 @@ export class ApiProvider {
            * WIN
            */
 
-          observer.next(resp.data.chatChannel as Chat);
+          // client side process 
+          let newChat = resp.data.chatChannel as Chat;
+          newChat = this.addDisplayData(newChat, userId, userName, avatarFilename);
+
+          // return
+          observer.next(newChat);
           observer.complete();
 
         }, error => {
@@ -817,10 +801,12 @@ export class ApiProvider {
     });
   }
 
-  getKonfettiIdeas(groupId:string) : Observable<any> {
+  getKonfettiIdeas(groupId:string, userId:string=null, userName:string=null, avatarFilename:string=null) : Observable<Array<Idea>> {
     return Observable.create((observer) => {
       setTimeout(()=>{
-        let simulatedResults = [];
+
+        // simulate server response
+        let simulatedResults:Array<Idea> = [];
         simulatedResults.push(JSON.parse(
           `{
             "title":"Vogelhaus bauen",
@@ -830,11 +816,72 @@ export class ApiProvider {
             "date":1521559800000,
             "wantsHelper":true,
             "helpDescription":"Jeder der einen Hammer Schwingen will. Wer eine kleine Motorstichsäge hat - das wäre super.",
-            "wantsGuest":false
-          }`));
-          observer.next(simulatedResults);
+            "wantsGuest":false,
+            "reviewStatus":"OK",
+            "konfettiTotal": 11,
+            "konfettiUser": 0,
+            "userIsHelping": false,
+            "userIsAttending": false,
+            "created": { 
+              "byUser" : {
+                "nickname" : "Christian",
+                "avatar" : {
+                  "filename" : "avatar-416c2727ae4fce156081d24b31fb3ada.jpg"
+                }
+              },
+              "ts" : 1516981457
+            }
+          }`) as Idea);
+
+          simulatedResults.push(JSON.parse(
+            `{
+              "title":"Kinderfussball",
+              "description":"Kinder. Fussball. 90 Minuten.",
+              "address":"Beipsielplatz 3",
+              "gps": { "lat": 52.519839, "lon": 13.408893 },
+              "date":1521561800000,
+              "wantsHelper":false,
+              "helpDescription":"",
+              "wantsGuest":true,
+              "reviewStatus":"OK",
+              "konfettiTotal": 8,
+              "konfettiUser": 0,
+              "userIsHelping": false,
+              "userIsAttending": false,
+              "created": { 
+                "byUser" : {
+                  "nickname" : "Christian",
+                  "avatar" : {
+                    "filename" : "avatar-416c2727ae4fce156081d24b31fb3ada.jpg"
+                  }
+                },
+                "ts" : 1517081457
+              }
+            }`) as Idea);
+
+          // client side process 
+          let input:Array<Idea> = simulatedResults;
+          let results:Array<Idea> = [];
+          input.forEach(element => {
+            results.push(this.addDisplayData(element, userId, userName, avatarFilename));
+          });
+
+          observer.next(results);
           observer.complete();
+
       },1000);
+    });
+  }
+
+  voteKonfettiIdea(ideaID:string, count:number) : Observable<VoteResult> {
+    return Observable.create((observer) => {
+      setTimeout(()=>{
+          let result:VoteResult = {} as VoteResult;
+          result.konfettiIdea = 1;
+          result.konfettiWallet = 0;
+          observer.next(result);
+          observer.complete();
+      },200);
     });
   }
 
@@ -995,6 +1042,35 @@ export class ApiProvider {
     });
   }
 
+  private addDisplayData(post:DisplayData, userId:string, userName:string, avatarFilename:string) : any {
+
+    // check if user is admin
+    post.userIsAdmin = false;
+    if (post.created.byUser._id==userId) post.userIsAdmin = true;
+  
+    // set author image & name
+    if (post.userIsAdmin) {
+      post.displayName = userName;
+      if (avatarFilename) {
+        // user image
+        post.displayImage = this.buildImageURL(avatarFilename);
+      } else {
+        // default image
+        post.displayImage = "./assets/imgs/default-user.jpg";
+      }
+    } else {
+      // set when other user
+      post.displayName = post.created.byUser.nickname;
+      if (post.created.byUser.avatar) {
+        post.displayImage = this.buildImageURL(post.created.byUser.avatar.filename);
+      } else {
+        post.displayImage = "./assets/imgs/default-user.jpg";
+      }
+    }
+  
+    return post;
+  }
+
 }
 
 /***************************************
@@ -1033,26 +1109,6 @@ export class User {
   avatar: Avatar;
 }
 
-// TODO: sync with backend
-// "created":{"byUser":"5a5bf3e0c92b890c3761bd4f","date":1516052079},
-// "disabled":false,"members":[],"chatMessages":[],"type":"chatChannel"}
-export class Chat {
-
-  _id?: string;
-  name: string;
-  description: string;
-  created:any;
-  members:Array<any>;
-  parentNeighbourhood:string;
-  context:string;
-
-  // local field (not part of backend data)
-  userIsAdmin?:boolean;
-  displayImage?:string;
-  displayName?:string;
-  subscribed?:boolean;
-}
-
 export interface Message {
 
   // data from backend
@@ -1070,7 +1126,20 @@ export interface Message {
   displayTime?:string;
 }
 
-export interface Idea {
+export interface Chat extends DisplayData {
+  _id?: string;
+  name: string;
+  description: string;
+  created:any;
+  members:Array<any>;
+  parentNeighbourhood:string;
+  context:string;
+
+  // local field (not part of backend data)
+  subscribed?:boolean;
+}
+
+export interface Idea extends DisplayData {
   _id:string;
   title:string;
   description:string;
@@ -1080,6 +1149,23 @@ export interface Idea {
   wantsHelper:boolean;
   helpDescription:string;
   wantsGuest:boolean;
+  reviewStatus:string;
+  konfettiTotal:number;
+  konfettiUser:number;
+  userIsHelping:boolean;
+  userIsAttending:boolean;
+}
+
+export interface VoteResult {
+  konfettiIdea:number;    // the new balance on idea
+  konfettiWallet:number;  // the new balance on user
+}
+
+export interface DisplayData {
+  created:any;              // comes from server 
+  userIsAdmin?:boolean;     // will get culculated on client side
+  displayImage?:string;     // will get culculated on client side
+  displayName?:string;      // will get culculated on client side
 }
 
 export interface Thread {

@@ -14,7 +14,16 @@
 
         "IDEA_ALL" : "All Ideas",
         "IDEA_MINE" : "My Ideas",
-
+        "IDEA_ONTIME" : "on",
+        "IDEA_EVENTSPAST" : "Archive",
+        "IDEA_EVENTSHELP" : "Helping",
+        "IDEA_EVENTSGUEST" : "Attending",
+        "IDEA_EVENTALLNO" : "Nothing upcomming.",
+        "IDEA_EVENTMYNO1" : "Take an active role in the neighborhood.",
+        "IDEA_EVENTMYNO2" : "Attent a community event, lend a helping hand or or create your own idea for the neighborhood.",
+        "IDEA_EVENTCREATE" : "My idea for the neighborhood",
+        "IDEA_EVENTVOTE1" : "You support this idea with 1 konfetti. Thanks 😀",
+ 
         "IDEAEDIT_HEADLINE" : "Create Community Event",
         "IDEAEDIT_TITLE" : "title",
         "IDEAEDIT_DESCRIPTION" : "description",
@@ -326,6 +335,15 @@
 
         "IDEA_ALL" : "Alle Ideen",
         "IDEA_MINE" : "Meine Ideen",
+        "IDEA_ONTIME" : "am",
+        "IDEA_EVENTSPAST" : "Archiv",
+        "IDEA_EVENTSHELP" : "Mithilfe",
+        "IDEA_EVENTSGUEST" : "Teilnahme",
+        "IDEA_EVENTALLNO" : "Keine aktuellen Ideen",
+        "IDEA_EVENTMYNO1" : "Bring dich aktiv in die Nachbarschaft ein.",
+        "IDEA_EVENTMYNO2" : "Nimm an Ideen anderer teil, helft mit bei der Umsetzung oder erstell deine eigene Idee für die Nachbarschaft.",
+        "IDEA_EVENTCREATE" : "Meine Idee für die Nachbarschaft",
+        "IDEA_EVENTVOTE1" : "Du unterstützt diese Idee jetzt mit 1 Konfetti. Danke 😀",
 
         "IDEAEDIT_HEADLINE" : "Nachbarschaftstreffen erstellen",
         "IDEAEDIT_TITLE" : "Titel",
@@ -638,6 +656,15 @@
 
         "IDEA_ALL" : "جميع الأفكار",
         "IDEA_MINE" : "أفكاري",
+        "IDEA_ONTIME" : "",
+        "IDEA_EVENTSPAST" : "أرشيف",
+        "IDEA_EVENTSHELP" : "مساعدة",
+        "IDEA_EVENTSGUEST" : "حضور",
+        "IDEA_EVENTALLNO" : "لا شيء قادم.",
+        "IDEA_EVENTMYNO1" : "القيام بدور نشط في الحي.",
+        "IDEA_EVENTMYNO2" : "احرص على تنظيم حدث مجتمعي، أو تقديم يد العون أو إنشاء فكرتك الخاصة للحي.",
+        "IDEA_EVENTCREATE" : "فكرتي للحي",
+        "IDEA_EVENTVOTE1" : "دو ونتيرستوتز دييز إيدي جيتست ميت 1 كونفيتي.",
 
         "IDEAEDIT_HEADLINE" : "إنشاء حدث المجتمع",
         "IDEAEDIT_TITLE" : "عنوان",

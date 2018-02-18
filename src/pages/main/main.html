@@ -128,19 +128,19 @@
     <div *ngFor="let id of moduleConfig"  [ngSwitch]="id" style="text-align: center; font-size: 16px; position: relative;" [@animateModuleSwitch]="stateModuleSwitch">
 
         <div *ngSwitchCase="'news'">
-          <div *ngIf="showModuleFocus==='news'" style="padding: 8px; padding-top: 48px;">
+          <div *ngIf="showModuleFocus==='news'" style="padding: 6px; padding-top: 48px;">
             <module-newsfeed [config]="getModuleConfig(id)"></module-newsfeed>
           </div>
         </div>
 
         <div *ngSwitchCase="'ideas'">
-          <div *ngIf="showModuleFocus==='ideas'" style="padding: 8px; padding-top: 48px;">
+          <div *ngIf="showModuleFocus==='ideas'" style="padding: 6px; padding-top: 48px;">
             <module-ideas [config]="getModuleConfig(id)"></module-ideas>
           </div>
         </div>
 
         <div *ngSwitchCase="'groupchats'">
-          <div *ngIf="showModuleFocus==='groupchats'" style="padding: 8px; padding-top: 48px;">
+          <div *ngIf="showModuleFocus==='groupchats'" style="padding: 6px; padding-top: 48px;">
             <module-groupchats [config]="getModuleConfig(id)"></module-groupchats>
           </div>
         </div>

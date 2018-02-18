@@ -121,17 +121,14 @@ export class ModuleGroupchatsComponent {
   private refreshData(): void {
 
     this.loading = true;
-    this.api.getChats(this.activeGroupId,"moduleGroupChat").subscribe((chats:Array<Chat>) => {
-      this.chats = [];
-      chats.forEach((chat:Chat) => {
-        chat = this.api.addDisplayInfoToChat(
-          chat, 
-          this.persistence.getAppDataCache().userid,
-          this.state.getUserInfo().nickname,
-          this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
-        );
-        this.chats.push(chat);
-      });
+    this.api.getChats(
+      this.activeGroupId,
+      "moduleGroupChat",
+      this.persistence.getAppDataCache().userid,
+      this.state.getUserInfo().nickname,
+      this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
+    ).subscribe((chats:Array<Chat>) => {
+      this.chats = chats;
       this.loading = false;
     }, (error) => {
       this.loading = false;

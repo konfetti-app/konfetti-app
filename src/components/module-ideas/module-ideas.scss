@@ -1,3 +1,37 @@
 module-ideas {
+}
 
+.user-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    border-width: 1px;
+    border-color: #f1f1f1;
+    border-style: solid;
+}
+
+.content-cell {
+    text-align: start;
+    -webkit-padding-start: 10px;
+}
+
+.seperator {
+    text-align: start;
+    padding: 4px;
+    border-top: 1px;
+    border-color: lightgrey;
+    border-top-style: solid;
+    margin-top: 13px;
+    margin-left: 3px;
+    margin-right: 3px;
+    -webkit-padding-start: 0px;
+    margin-bottom: 1px;
+    color: grey;
+    font-size: 12px;
+    padding-top: 6px;
+}
+
+.votingcard {
+    padding: 5px 10px 5px !important;
+    -webkit-padding-end: 7px !important;
 }

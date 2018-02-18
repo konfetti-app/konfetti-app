@@ -6,7 +6,9 @@ import {
   Events,
   ModalController,
   Modal,
-  NavController
+  LoadingController,
+  NavController,
+  ToastController,
 } from 'ionic-angular';
 
 import { TranslateService } from "@ngx-translate/core";
@@ -14,7 +16,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
-import { ApiProvider, Post, PushNotification, Idea } from '../../providers/api/api';
+import { ApiProvider, PushNotification, Idea } from '../../providers/api/api';
 
 import { IdeaPage } from '../../pages/idea/idea';
 import { IdeaEditPage } from '../../pages/idea-edit/idea-edit';
@@ -40,14 +42,12 @@ export class ModuleIdeasComponent {
   // selected tab
   tab:string = 'all';
 
-  votecount:number = 10;
-  voted:boolean = false;
-
   // sorted categories
   allIdeasOpen:Array<Idea> = [];
   allIdeasDone:Array<Idea> = [];
   myIdeasAdmin:Array<Idea> = [];
   myIdeasHelp:Array<Idea> = [];
+  myIdeasVisit:Array<Idea> = [];
   hiddenIdeasAll:Array<Idea> = [];
 
   constructor(
@@ -55,9 +55,11 @@ export class ModuleIdeasComponent {
     private state: AppStateProvider,
     private events: Events,
     private persistence: AppPersistenceProvider,
-    private translateService : TranslateService,
+    public translate : TranslateService,
     private navCtrl: NavController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
   ) {
 
     this.isIOS = this.state.isIOS();
@@ -106,16 +108,67 @@ export class ModuleIdeasComponent {
    
     this.loading = true;
 
-    this.api.getKonfettiIdeas(this.activeGroupId).subscribe((ideas:Array<Idea>) => {
+    this.api.getKonfettiIdeas(
+      this.activeGroupId,
+      this.persistence.getAppDataCache().userid,
+      this.state.getUserInfo().nickname,
+      this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
+    ).subscribe((ideas:Array<Idea>) => {
 
-      // sort into category
+      // clear categories
       this.hiddenIdeasAll = ideas;
       this.allIdeasOpen = [];
       this.allIdeasDone = [];
       this.myIdeasAdmin = [];
       this.myIdeasHelp = [];
-      ideas.forEach((idea:Idea)=>{
-        this.allIdeasDone.push(idea);
+      this.myIdeasVisit= [];
+
+      // sort into category
+      ideas.forEach((idea:Idea)=> {
+        // ALL TABS
+        let ideaTS:number = new Date(idea.date).getTime();
+        let nowTS:number = Date.now();
+        if ( ideaTS > nowTS ) {
+          // A) upcomming
+          this.allIdeasOpen.push(idea);
+        } else {
+          // B) happend
+          this.allIdeasDone.push(idea);
+        }
+        // MY TABS
+        if (idea.userIsAdmin) {
+          // A) Admin
+          this.myIdeasAdmin.push(idea);
+        } else
+        if (idea.userIsHelping) {
+          //B) Helper
+          this.myIdeasHelp.push(idea);
+        } else 
+        if (idea.userIsAttending) {
+          // C) Attending
+          this.myIdeasVisit.push(idea);
+        }
+      });
+
+      // TODO: sort single cards by creation or last active TS
+      
+      // sort all open by most konfetti on top
+      this.allIdeasOpen.sort((a:Idea, b:Idea)=> {
+        return b.konfettiTotal-a.konfettiTotal;
+      });
+
+      // sort the rest by created ts
+      this.allIdeasDone.sort((a:Idea, b:Idea) => {
+        return b.created.ts-a.created.ts;
+      });
+      this.myIdeasAdmin.sort((a:Idea, b:Idea) => {
+        return b.created.ts-a.created.ts;
+      });
+      this.myIdeasHelp.sort((a:Idea, b:Idea) => {
+        return b.created.ts-a.created.ts;
+      });
+      this.myIdeasVisit.sort((a:Idea, b:Idea) => {
+        return b.created.ts-a.created.ts;
       });
 
       this.loading = false;
@@ -148,13 +201,46 @@ export class ModuleIdeasComponent {
           this.openIdea(idea);
         }
       });
-    
+
     }
 
-  vote() {
-    this.votecount++;
-    this.voted = true;
-    this.events.publish("main:konfettirain", null);
+  vote(idea:Idea) {
+
+    if (idea.konfettiUser>0) {
+      // TODO: allow vote from user budget later on
+      console.log("User already voted free vote - TODO: allow more than one vote if user has konfetti");
+      return;
+    }
+
+    let loadingSpinner = this.loadingCtrl.create({
+      content: ''
+    });
+    loadingSpinner.present().then();
+
+    this.api.voteKonfettiIdea(idea._id, 1).subscribe(
+      (win)=>{
+
+        loadingSpinner.dismiss().then();
+
+        // TODO: server
+        idea.konfettiUser++;
+        idea.konfettiTotal++;
+        this.events.publish("main:konfettirain", null);
+        // TODO: update user konfetti
+
+        this.toastCtrl.create({
+          message: this.translate.instant('IDEA_EVENTVOTE1'),
+          cssClass: 'toast-valid',
+          duration: 5000
+        }).present().then();
+
+      },
+      (error)=>{
+        console.log("FAILED VOTE: ",error);
+        loadingSpinner.dismiss().then();
+      }
+    );
+
   }
 
   public openIdea(idea: Idea) {
@@ -172,7 +258,7 @@ export class ModuleIdeasComponent {
           // user needs to set profile namen and photo first
           let modal: Modal = this.modalCtrl.create(ProfilePage, {
             showAccountLink: false,
-            photoNeeded: true,
+            photoNeeded: true, // TODO: i18n
             notice: 'Wir brauchen noch Name und Foto von dir, bevor du eine Idee anlegen kannst.'
           });
           modal.onDidDismiss(data => {
@@ -185,7 +271,7 @@ export class ModuleIdeasComponent {
           // user has name set but is missing still photo
           let modal: Modal = this.modalCtrl.create(ProfilePage, {
             showAccountLink: false,
-            photoNeeded: true,
+            photoNeeded: true, // TODO: i18n
             notice: 'Wir brauchen noch ein Foto von dir, bevor du einen neue Idee anlegen kannst.'
           });
           modal.onDidDismiss(data => {

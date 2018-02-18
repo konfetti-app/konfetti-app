@@ -1,25 +1,22 @@
-<div style="
-                                    margin-top: -3px;
-                                    width: 55px;
-                                    height: 55px;
-                                    padding-top: 0px;
-                                    text-align: center;
-                                    border-radius: 30px;
-                                    box-shadow: 2px 3px 5px lightgrey;
-                                    background: -webkit-linear-gradient(top, #299a0b 46%,#f3f3f3 40%); 
-                                    font-size:18px;
-                                    font-weight: bold;
-                                    ">
+<div class="button-div" [ngClass]="{ 'inactive' : (state=='done' || state=='cancel') }">
   <div style="
-                                        color: white;
-                                    ">{{count}}</div>
+        color: white;
+  ">{{count}}</div>
   <div *ngIf="state=='vote'" style="padding-top: 1px;">🎉</div>
-  <div *ngIf="state=='voted'" style="    
-                                    color: green;
-                                    font-size: 30px;
-                                    font-weight: 400;
-                                    margin-top: -7px;
-                                    margin-left: 1px;">
+  <div *ngIf="state=='voted'" style="
+        color: green;
+        font-size: 30px;
+        font-weight: 400;
+        margin-top: -7px;
+        margin-left: 1px;">
     <ion-icon name="checkmark"></ion-icon>
   </div>
+  <div *ngIf="state=='done'" style="
+      color: green;
+      font-size: 23px;
+      font-weight: 400;
+      margin-top: -1px;
+      margin-left: 1px;">
+<ion-icon name="md-done-all"></ion-icon>
+</div>
 </div>
