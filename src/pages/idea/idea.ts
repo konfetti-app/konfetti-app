@@ -60,15 +60,15 @@ export class IdeaPage {
 
   buttonJoin() : void {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Als Helfer oder Teilnehmer?',
+      title: this.translateService.instant('IDEA_JOINQUEST'),
       buttons: [
         {
-          text: 'Ich will helfen, dass die Idee stattfindet und umgesetzt werden kann.',
+          text: this.translateService.instant('IDEA_JOINHELP'),
           handler: () => {
             this.buttonHelping(true);
           }
         },{
-          text: 'Ich will lediglich teilnehmen, wenn die Idee dann stattfindet.',
+          text: this.translateService.instant('IDEA_JOINATTEND'),
           handler: () => {
             this.buttonAttent(true);
           }
@@ -88,6 +88,12 @@ export class IdeaPage {
         this.idea.userIsHelping = result.isHelping;
         this.idea.userIsAttending = result.isAttending;
         loadingSpinner.dismiss().then();
+        this.toastCtrl.create({
+          message: this.translateService.instant('OK'),
+          cssClass: 'toast-valid',
+          duration: 2000
+        }).present().then();
+        return;
       }, 
       (error)=>{
         loadingSpinner.dismiss().then();
@@ -105,6 +111,12 @@ export class IdeaPage {
         this.idea.userIsHelping = result.isHelping;
         this.idea.userIsAttending = result.isAttending;
         loadingSpinner.dismiss().then();
+        this.toastCtrl.create({
+          message: this.translateService.instant('OK'),
+          cssClass: 'toast-valid',
+          duration: 2000
+        }).present().then();
+        return;
       }, 
       (error)=>{
         loadingSpinner.dismiss().then();

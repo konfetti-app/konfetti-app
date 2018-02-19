@@ -11,7 +11,7 @@
 
   <table width="100%">
     <tr>
-      <td style="">
+      <td>
         <h3>{{idea.title}}</h3>
       </td>
       <td style="width:60px; text-align: end;">
@@ -68,7 +68,7 @@
           {{idea.displayName}}
         </div>
         <div>
-          Idee &amp; Organisation
+          {{ 'IDEA_AUTORUNDERLINE' | translate }}
         </div>
       </td>
     </tr>
@@ -79,7 +79,7 @@
     </tr>
     <tr>
       <td *ngIf="idea.wantsHelper" colspan="2" style="padding-top: 12px; font-size: 120%; font-weight: bold;">
-        Es wird noch Hilfe benötigt:
+        {{ 'IDEA_NEEDHELP' | translate }}
       </td>
     </tr>
     <tr>
@@ -96,7 +96,7 @@
             <ion-icon name="md-checkmark"></ion-icon> 
           </td>
           <td style="-webkit-padding-start: 8px;">
-            Du hast deine Mithilfe angeboten. Sprech dich mit {{idea.displayName}} im Organisations-Chat ab.
+            {{ 'IDEA_NOTEHELP' | translate }}
           </td>
         </tr>
       </table>  
@@ -110,38 +110,38 @@
               <ion-icon name="md-calendar"></ion-icon> 
             </td>
             <td style="-webkit-padding-start: 8px;">
-                Du hast deine Teilnahme angemeldet. Trag dir den Termin in den Kalender ein.
+                {{ 'IDEA_NOTEATTEND' | translate }}
             </td>
           </tr>
         </table> 
   </div>
 
   <button (click)="buttonJoin()" *ngIf="((!idea.userIsHelping) && (!idea.userIsAttending)  && (idea.wantsHelper))" ion-button block color="primary" style="margin-top: 24px;">
-      Mitmachen
+      {{ 'IDEA_JOIN' | translate }}
   </button>
 
-  <button (click)="buttonJoin()" *ngIf="((!idea.userIsHelping) && (!idea.userIsAttending)  && (!idea.wantsHelper))" ion-button block color="primary" style="margin-top: 24px;">
-      Teilnahme anmelden
+  <button (click)="buttonAttent(true)" *ngIf="((!idea.userIsHelping) && (!idea.userIsAttending)  && (!idea.wantsHelper))" ion-button block color="primary" style="margin-top: 24px;">
+      {{ 'IDEA_ATTEND' | translate }}
   </button>
 
   <button (click)="buttonOrgaChat()" *ngIf="idea.userIsHelping" ion-button block color="primary" style="margin-top: 24px;">
-      Organisations-Chat
+      {{ 'IDEA_ORGACHAT' | translate }}
   </button>
 
   <button (click)="vote()" *ngIf="calculatesState=='vote'"  ion-button clear class="additionalOption">
-      Konfetti als Dankeschön werfen 🎉
+      {{ 'IDEA_VOTEKONFETTI' | translate }} 🎉
   </button>
 
   <button (click)="buttonHelping(true)" *ngIf="((!idea.userIsHelping) && (idea.userIsAttending) && (idea.wantsHelper))" ion-button clear class="additionalOption">
-      Zusätzlich Hilfe anbieten
+      {{ 'IDEA_PLUSHELP' | translate }}
   </button>
 
   <button (click)="buttonAttent(false)" *ngIf="((!idea.userIsHelping) && (idea.userIsAttending))" ion-button clear class="additionalOption">
-      Meine Teilnahme wieder abmelden
+      {{ 'IDEA_REMOVEATTEND' | translate }}
   </button>
 
   <button (click)="buttonHelping(false)" *ngIf="idea.userIsHelping" ion-button clear class="additionalOption">
-      Meine Mithilfe wieder abmelden
+      {{ 'IDEA_REMOVEHELP' | translate }}
   </button>
 
 </ion-content>
