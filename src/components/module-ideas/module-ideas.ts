@@ -244,7 +244,8 @@ export class ModuleIdeasComponent {
   }
 
   public openIdea(idea: Idea) {
-    this.navCtrl.push(IdeaPage, idea);
+    console.log("idea",idea);
+    this.navCtrl.push(IdeaPage, { idea: idea});
   }
 
   // user wants to create a new group chat

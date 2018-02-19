@@ -1,18 +1,143 @@
-<!--
-  Generated template for the IdeaPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>idea</ion-title>
+    <ion-title>
+    </ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+
+  <table width="100%">
+    <tr>
+      <td style="">
+        <h3>{{idea.title}}</h3>
+      </td>
+      <td style="width:60px; text-align: end;">
+        <konfetti-button [state]="calculatesState" [count]="idea.konfettiTotal" (click)="vote()"></konfetti-button>
+      </td>
+    </tr>
+    <tr>
+      <ion-icon name="md-pin"></ion-icon>&nbsp;
+      <span style="font-size:120%;">
+        {{idea.address}}
+      </span>
+    </tr>
+  </table>
+
+  <div style="
+  border-style: solid;
+  border-color: grey;
+  border-width: 0px;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  ">
+    <div style="margin-bottom: 6px;">
+      <ion-icon name="md-calendar"></ion-icon>&nbsp;
+      <span style="font-size:120%;">
+        {{idea.date | date: 'dd.MM.yyyy'}}
+      </span>
+    </div>
+    <div>
+      <ion-icon name="md-time"></ion-icon>&nbsp;
+      <span style="font-size:120%;">
+        {{idea.date | date: 'HH:mm'}}
+      </span>
+    </div>
+  </div>
+
+  <table style="margin-bottom: 14px;">
+    <tr>
+      <td style="width: 75px;">
+          <img 
+          class="user-image"
+          [src]="idea.displayImage" 
+          onerror="this.src = './assets/imgs/icon.png';"
+        />
+      </td>
+      <td>
+        <div style="
+          font-weight: bold;
+          font-size: 150%;
+        ">
+          {{idea.displayName}}
+        </div>
+        <div>
+          Idee &amp; Organisation
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding-top: 12px; font-size: 120%;">
+        {{idea.description}}
+      </td>
+    </tr>
+    <tr>
+      <td *ngIf="idea.wantsHelper" colspan="2" style="padding-top: 12px; font-size: 120%; font-weight: bold;">
+        Es wird noch Hilfe benötigt:
+      </td>
+    </tr>
+    <tr>
+      <td *ngIf="idea.wantsHelper" colspan="2" style="padding-top: 12px; font-size: 120%;">
+          {{idea.helpDescription}}
+      </td>
+    </tr>
+  </table>
+
+  <div *ngIf="idea.userIsHelping" class="dashbox"> 
+      <table style="color: green;padding:4px;">
+        <tr>
+          <td style="font-size: 200%; -webkit-padding-start: 6px;"> 
+            <ion-icon name="md-checkmark"></ion-icon> 
+          </td>
+          <td style="-webkit-padding-start: 8px;">
+            Du hast deine Mithilfe angeboten. Sprech dich mit {{idea.displayName}} im Organisations-Chat ab.
+          </td>
+        </tr>
+      </table>  
+  </div>
+
+  <div *ngIf="(idea.userIsAttending && (!idea.userIsHelping))" class="dashbox"> 
+      
+      <table style="color: green;padding:4px;">
+          <tr>
+            <td style="font-size: 200%; -webkit-padding-start: 6px;"> 
+              <ion-icon name="md-calendar"></ion-icon> 
+            </td>
+            <td style="-webkit-padding-start: 8px;">
+                Du hast deine Teilnahme angemeldet. Trag dir den Termin in den Kalender ein.
+            </td>
+          </tr>
+        </table> 
+  </div>
+
+  <button *ngIf="((!idea.userIsHelping) && (!idea.userIsAttending))" ion-button block color="primary" (click)="buttonJoin()" style="margin-top: 24px;">
+      Mitmachen
+  </button>
+
+  <button *ngIf="idea.userIsHelping" ion-button block color="primary" (click)="buttonOrgaChat()" style="margin-top: 24px;">
+      Organisations-Chat
+  </button>
+
+  <button *ngIf="calculatesState=='vote'" (click)="vote()" ion-button clear class="additionalOption">
+      Super Idee - einmal Konfetti senden 🎉
+  </button>
+
+  <button *ngIf="((!idea.userIsHelping) && (idea.userIsAttending) && (idea.wantsHelper))" ion-button clear class="additionalOption">
+      Zusätzlich Hilfe anbieten
+  </button>
+
+  <button *ngIf="((!idea.userIsHelping) && (idea.userIsAttending))" ion-button clear class="additionalOption">
+      Meine Teilnahme wieder abmelden
+  </button>
+
+  <button *ngIf="idea.userIsHelping" ion-button clear class="additionalOption">
+      Meine Mithilfe wieder abmelden
+  </button>
 
 </ion-content>

@@ -813,7 +813,7 @@ export class ApiProvider {
             "description":"Am Spielplatz am Beispielplatz wollen wir ein oder mehrere Vogelhäuser bauen. Wer ist dabei?",
             "address":"Beipsielplatz 3",
             "gps":null,
-            "date":1521559800000,
+            "date":1521669800000,
             "wantsHelper":true,
             "helpDescription":"Jeder der einen Hammer Schwingen will. Wer eine kleine Motorstichsäge hat - das wäre super.",
             "wantsGuest":false,
@@ -822,6 +822,7 @@ export class ApiProvider {
             "konfettiUser": 0,
             "userIsHelping": false,
             "userIsAttending": false,
+            "orgaChatID":"5a6b4cd1439b9000013b51ab",
             "created": { 
               "byUser" : {
                 "nickname" : "Christian",
@@ -1154,6 +1155,7 @@ export interface Idea extends DisplayData {
   konfettiUser:number;
   userIsHelping:boolean;
   userIsAttending:boolean;
+  orgaChatID:string;
 }
 
 export interface VoteResult {
