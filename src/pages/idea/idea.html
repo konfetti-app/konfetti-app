@@ -116,27 +116,31 @@
         </table> 
   </div>
 
-  <button *ngIf="((!idea.userIsHelping) && (!idea.userIsAttending))" ion-button block color="primary" (click)="buttonJoin()" style="margin-top: 24px;">
+  <button (click)="buttonJoin()" *ngIf="((!idea.userIsHelping) && (!idea.userIsAttending)  && (idea.wantsHelper))" ion-button block color="primary" style="margin-top: 24px;">
       Mitmachen
   </button>
 
-  <button *ngIf="idea.userIsHelping" ion-button block color="primary" (click)="buttonOrgaChat()" style="margin-top: 24px;">
+  <button (click)="buttonJoin()" *ngIf="((!idea.userIsHelping) && (!idea.userIsAttending)  && (!idea.wantsHelper))" ion-button block color="primary" style="margin-top: 24px;">
+      Teilnahme anmelden
+  </button>
+
+  <button (click)="buttonOrgaChat()" *ngIf="idea.userIsHelping" ion-button block color="primary" style="margin-top: 24px;">
       Organisations-Chat
   </button>
 
-  <button *ngIf="calculatesState=='vote'" (click)="vote()" ion-button clear class="additionalOption">
-      Super Idee - einmal Konfetti senden 🎉
+  <button (click)="vote()" *ngIf="calculatesState=='vote'"  ion-button clear class="additionalOption">
+      Konfetti als Dankeschön werfen 🎉
   </button>
 
-  <button *ngIf="((!idea.userIsHelping) && (idea.userIsAttending) && (idea.wantsHelper))" ion-button clear class="additionalOption">
+  <button (click)="buttonHelping(true)" *ngIf="((!idea.userIsHelping) && (idea.userIsAttending) && (idea.wantsHelper))" ion-button clear class="additionalOption">
       Zusätzlich Hilfe anbieten
   </button>
 
-  <button *ngIf="((!idea.userIsHelping) && (idea.userIsAttending))" ion-button clear class="additionalOption">
+  <button (click)="buttonAttent(false)" *ngIf="((!idea.userIsHelping) && (idea.userIsAttending))" ion-button clear class="additionalOption">
       Meine Teilnahme wieder abmelden
   </button>
 
-  <button *ngIf="idea.userIsHelping" ion-button clear class="additionalOption">
+  <button (click)="buttonHelping(false)" *ngIf="idea.userIsHelping" ion-button clear class="additionalOption">
       Meine Mithilfe wieder abmelden
   </button>
 

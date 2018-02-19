@@ -134,6 +134,7 @@ export class ModuleGroupchatsComponent {
       this.loading = false;
       alert("TODO: Error on getting chatlist");
     });
+    
   }
 
   // user wants to view a existing group chat

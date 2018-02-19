@@ -14,3 +14,9 @@ page-idea {
     -webkit-margin-start: -12px !important; 
     margin-bottom: -6px !important;
 }
+
+.action-sheet-button .button-inner {
+    text-align: center;
+    color: color($colors, primary);
+
+}

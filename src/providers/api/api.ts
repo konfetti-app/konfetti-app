@@ -886,6 +886,18 @@ export class ApiProvider {
     });
   }
 
+  joinKonfettiIdea(ideaID:string, attent:boolean, helping:boolean) : Observable<JoinResult> {
+    return Observable.create((observer) => {
+      setTimeout(()=>{
+          let result:JoinResult = {} as JoinResult;
+          result.isAttending = attent;
+          result.isHelping = helping;
+          observer.next(result);
+          observer.complete();
+      },300);
+    });
+  }
+  
   setUserAvatarImage(file:any) : Observable<any> {
     return Observable.create((observer) => {
 
@@ -1161,6 +1173,11 @@ export interface Idea extends DisplayData {
 export interface VoteResult {
   konfettiIdea:number;    // the new balance on idea
   konfettiWallet:number;  // the new balance on user
+}
+
+export interface JoinResult {
+  isAttending:boolean;
+  isHelping:boolean;
 }
 
 export interface DisplayData {
