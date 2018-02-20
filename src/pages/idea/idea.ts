@@ -51,9 +51,6 @@ export class IdeaPage {
       this.calculatesState = 'done';
       this.running = false;
     }
-    console.log("IDEA",this.idea);
-
-    this.running = false;
 
     // get the actual neighborhood
     this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
