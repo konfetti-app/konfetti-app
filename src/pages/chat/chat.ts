@@ -22,6 +22,8 @@ import { Subscription } from 'rxjs';
 
 import { Keyboard } from '@ionic-native/keyboard';
 
+import { TranslateService } from "@ngx-translate/core";
+
 import { ChatEditPage } from '../chat-edit/chat-edit';
 import { ProfilePage } from '../profile/profile';
 
@@ -63,7 +65,6 @@ export class ChatPage {
   keyboardIsOpen:boolean = false;
   isIOS:boolean;
 
-  // TODO: i18n
   pageTitel:string = "";
 
   // platform event subscriptions
@@ -86,7 +87,8 @@ export class ChatPage {
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private keyboard: Keyboard,
-    private platform: Platform
+    private platform: Platform,
+    private translate: TranslateService
   ) {
 
     // browser needs some extra space on the panel
@@ -383,7 +385,6 @@ export class ChatPage {
             console.log("ERR",error);
 
             // FAIL
-            // TODO: i18n
             try {
 
               let err = JSON.parse(error.error);
@@ -391,7 +392,7 @@ export class ChatPage {
 
               if (err.errors[0].err.code==11000) {
                 this.toastCtrl.create({
-                  message: "Chat with this title already exists.",
+                  message: this.translate.instant('CHAT_EXISTS'),
                   cssClass: 'toast-invalid',
                   duration: 5000
                 }).present().then(()=>{
@@ -403,7 +404,7 @@ export class ChatPage {
             } catch (e) {
 
               this.toastCtrl.create({
-                message: "Failed to create Chat",
+                message: this.translate.instant('CHAT_CREATEFAIL'),
                 duration: 3000
               }).present().then(()=>{
                 this.navCtrl.pop();
@@ -420,6 +421,7 @@ export class ChatPage {
   
         } else {
   
+            // TODO
             // check if user edited existing chat details --> store
             this.toastCtrl.create({
               message: 'TODO: Check if user edited details and store ',
@@ -445,7 +447,7 @@ export class ChatPage {
       let modal : Modal = this.modalCtrl.create(ProfilePage, { 
         showAccountLink: false, 
         photoNeeded: false,
-        notice: 'Wir brauchen noch deinen Name, bevor du beim Chat mitmachen kannst.'
+        notice: this.translate.instant('CHAT_NEEDNAME'),
       });
       modal.onDidDismiss(data => {
         if (this.state.isMinimalUserInfoSet(false)) {
@@ -478,16 +480,16 @@ export class ChatPage {
 
   buttonDeleteChat() : void {
     let confirm = this.alertCtrl.create({
-      title: 'Delete Chat?',
-      message: 'Do you really want to delete this Chat with all its content?',
+      title: this.translate.instant('CHAT_DELETETITLE'), 
+      message: this.translate.instant('CHAT_DELETEMSG'),
       buttons: [
         {
-          text: 'No',
+          text: this.translate.instant('CHAT_DELETENO'),
           handler: () => {
           }
         },
         {
-          text: 'DELETE Chat',
+          text: this.translate.instant('CHAT_DELETEYES'),
           handler: () => {
             
               // show loading spinner
@@ -529,7 +531,7 @@ export class ChatPage {
         this.chat.subscribed = true;
 
         this.toastCtrl.create({
-          message: "Du erhälst jetzt Benachrichtingungen",
+          message: this.translate.instant('CHAT_NOTION'),
           cssClass: 'toast',
           duration: 3000
         }).present().then();
@@ -546,7 +548,7 @@ export class ChatPage {
         this.chat.subscribed = false;
 
         this.toastCtrl.create({
-          message: "Benachrichtingungen deaktiviert",
+          message: this.translate.instant('CHAT_NOTIOFF'),
           cssClass: 'toast',
           duration: 3000
         }).present().then();

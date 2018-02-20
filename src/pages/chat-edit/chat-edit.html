@@ -19,27 +19,26 @@
         <div *ngIf="newChatMode">
 
           <h3 style="text-align: start; -webkit-padding-start: 12px;">
-            Neuer Nachbarschafts-Chat
+            {{ 'CHAT_NEWCHAT' | translate }}
           </h3>
 
           <div class="intro-text">
-            Du brauchst etwas, wolltest mal was fragen, hast etwas zu verschenken .. 
-            starte einen Nachbarschafts-Chat und komm mit deinen Nachbarn ins Gespräch.
+            {{ 'CHAT_NEWNOTE' | translate }}
           </div> 
 
         </div>
 
         <div *ngIf="!newChatMode">
             <h3 style="text-align: start; -webkit-padding-start: 12px;">
-              Chat bearbeiten
+              {{ 'CHAT_EDIT' | translate }}
             </h3>
         </div>
 
         <ion-item>
-            <ion-label color="primary" stacked>Chat Titel (20 Zeichen)</ion-label>
+            <ion-label color="primary" stacked>{{ 'CHAT_TITLE' | translate }}</ion-label>
             <ion-input 
               type="text" 
-              placeholder="Gib hier einen kurzen Titel ein" 
+              placeholder="{{ 'CHAT_TITLEPLACE' | translate }}"
               maxlength="20"
               [(ngModel)]="chatTitle"
             ></ion-input>
@@ -49,7 +48,7 @@
           text-align: start;
           -webkit-padding-start: 16px;
           margin-top: 22px;"
-        stacked>Icon</ion-label>
+        stacked>{{ 'CHAT_ICON' | translate }}</ion-label>
         
         <ion-slides class="icon-slides" (click)="clickIcon()">
             <ion-slide *ngFor="let emoji of emojiMap">
@@ -61,8 +60,8 @@
           width: 100%;
           margin-top: 18px;
         ">
-          <span *ngIf="newChatMode">Chat anlegen</span>
-          <span *ngIf="!newChatMode">Speichern</span>
+          <span *ngIf="newChatMode">{{ 'CHAT_CREATE' | translate }}</span>
+          <span *ngIf="!newChatMode">{{ 'CHAT_SAVE' | translate }}</span>
         </button>
 
       </ion-list>

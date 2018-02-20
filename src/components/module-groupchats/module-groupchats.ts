@@ -10,6 +10,8 @@ import { ApiProvider, Chat, PushNotification } from '../../providers/api/api';
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 
+import { TranslateService } from "@ngx-translate/core";
+
 import { ChatPage } from '../../pages/chat/chat';
 import { ProfilePage } from '../../pages/profile/profile';
 
@@ -49,7 +51,8 @@ export class ModuleGroupchatsComponent {
     private persistence: AppPersistenceProvider,
     private modalCtrl: ModalController,
     private state: AppStateProvider,
-    private events: Events
+    private events: Events,
+    private translate : TranslateService
   ) {
 
     this.creationTS = Date.now();
@@ -154,7 +157,7 @@ export class ModuleGroupchatsComponent {
         let modal : Modal = this.modalCtrl.create(ProfilePage, { 
           showAccountLink: false, 
           photoNeeded: true,
-          notice: 'Wir brauchen noch Name und Foto von dir, bevor du einen neuen Chat anlegen kannst.'
+          notice: this.translate.instant('CHAT_NEEDNAMEFOTO')
         });
         modal.onDidDismiss(data => {
           if (this.state.isMinimalUserInfoSet(true)) this.buttonNew();
@@ -167,7 +170,7 @@ export class ModuleGroupchatsComponent {
         let modal : Modal = this.modalCtrl.create(ProfilePage, { 
           showAccountLink: false, 
           photoNeeded: true,
-          notice: 'Wir brauchen noch ein Foto von dir, bevor du einen neuen Chat anlegen kannst.'
+          notice: this.translate.instant('CHAT_NEEDFOTO')
         });
         modal.onDidDismiss(data => {
           if (this.state.isMinimalUserInfoSet(true)) this.buttonNew();
