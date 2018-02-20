@@ -117,7 +117,7 @@
           font-size: 16px;
           margin-top: 30px;
           margin-bottom: 4px;">
-            Dein Konfetti-Konto 
+           {{ 'PROFILE_ACCOUNT' | translate }}
           </div>
 
           <ion-item>
@@ -142,7 +142,7 @@
 
     <!-- This button only when user did not opened profile from side menu -->
     <button *ngIf="notice.length>0" ion-button block color="primary" (click)="buttonContinue()" style="margin-top: 38px;">
-      Weiter
+        {{ 'PROFILE_CONINUE' | translate }}
     </button>
 
   </div>

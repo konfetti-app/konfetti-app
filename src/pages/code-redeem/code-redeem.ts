@@ -203,9 +203,8 @@ export class CodeRedeemPage {
           // change focus to new neighborhood
           this.appPersistence.setLastFocusGroupId(code.neighbourhood);
 
-          // TODO: i18n
           this.toastCtrl.create({
-            message: 'New Neighborhood added',
+            message: this.translateService.instant('CODEREDEEM_ADDED'),
             cssClass: 'toast-valid',
             duration: 1500
           }).present().then(()=>{

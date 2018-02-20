@@ -247,23 +247,22 @@ export class ProfilePage {
        * On Real Device
        */
 
-      // TODO: i18n
       this.actionSheetCtrl.create({
         buttons: [
           {
-            text: 'Camera',
+            text: this.translateService.instant('PROFILE_CAMERA'),
             icon: 'camera',
             handler: () => {
               this.getPictureFromCamera(false);
             }
           },{
-            text: 'Gallery',
+            text: this.translateService.instant('PROFILE_GALLERY'),
             icon: 'images',
             handler: () => {
               this.getPictureFromCamera(true);
             }
           },{
-            text: 'Cancel',
+            text: this.translateService.instant('PROFILE_CANCEL'),
             role: 'cancel',
             icon: 'close',
             handler: () => {}
@@ -373,7 +372,6 @@ export class ProfilePage {
 
     // check if nickname is set
     if ((this.nickname==null) || (this.nickname.trim().length<1)) {
-      // TODO: i18n
       this.toastCtrl.create({
         message: this.translateService.instant('PROFILE_TOAST_NICKNAME'),
         cssClass: 'toast-invalid',
@@ -385,7 +383,6 @@ export class ProfilePage {
     if (this.photoNeeded) {
         // check if nickname is set
         if ((this.avatarUrl==null) || (this.avatarUrl.trim().length<1)) {
-          // TODO: i18n
           this.toastCtrl.create({
             message: this.translateService.instant('PROFILE_TOAST_PHOTO'),
             cssClass: 'toast-invalid',
@@ -433,9 +430,8 @@ export class ProfilePage {
         // hide loading spinner
         loadingModal.dismiss().then();
 
-        // TODO: i18n
         this.toastCtrl.create({
-          message: this.translateService.instant('Changes Saved'),
+          message: this.translateService.instant('PROFILE_SAVED'),
           cssClass: 'toast-valid',
           duration: 2000
         }).present().then();
@@ -454,9 +450,8 @@ export class ProfilePage {
         // hide loading spinner
         loadingModal.dismiss().then();
 
-        // TODO: i18n
         this.toastCtrl.create({
-          message: this.translateService.instant('Changes NOT Saved'),
+          message: this.translateService.instant('PROFILE_SAVEFAIL'),
           cssClass: 'toast-invalid',
           duration: 2000
         }).present().then();
