@@ -59,6 +59,10 @@
         "IDEAEDIT_CHOOSEAUDIENCE" : "select if you need help and/or invite visitors",
         "IDEAEDIT_SAVECHANGES" : "Save Changes",
 
+        "IDEADISTRO_HEADLINE": "Distribute Konfetti",
+        "IDEADISTRO_NOTE": "confetti points were voted on this event by the community. Forward them as a thank you to all helping hands.",
+        "IDEADISTRO_THANKS": "Thanks you for organizing this event.",
+
         "SUBTITLE_MAP" : "Explore Map",
         "SUBTITLE_NEWS" : "⇦ go to map",
         "SUBTITLE_IDEAS" : "Community Events",
@@ -402,6 +406,10 @@
         "IDEAEDIT_CHOOSEAUDIENCE" : "wähle aus ob du Helfer uns/oder Gäste suchst",
         "IDEAEDIT_SAVECHANGES" : "Änderungen speichern",
 
+        "IDEADISTRO_HEADLINE": "Konfetti verteilen",
+        "IDEADISTRO_NOTE": "Konfettipunkte haben alle Nachbarn zusammen für diese Idee gegeben. Verteile diese als Dankeschön an Organisatoren und Helfer.",
+        "IDEADISTRO_THANKS": "Danke, dass Du dieses Nachbarschaftstreffen organisiert hast.",
+
         "SUBTITLE_MAP" : "Umgebung entdecken",
         "SUBTITLE_NEWS" : "⇦ zur Karte",
         "SUBTITLE_IDEAS" : "Nachbarschaftstreffen",
@@ -744,6 +752,10 @@
         "IDEAEDIT_DATEINPAST" : "التاريخ لا يمكن أن يكون في الماضي",
         "IDEAEDIT_CHOOSEAUDIENCE" : "حدد إذا كنت بحاجة إلى مساعدة و / أو دعوة الزوار",
         "IDEAEDIT_SAVECHANGES" : "حفظ التغييرات",
+
+        "IDEADISTRO_HEADLINE": "توزيع كونفيتي",
+        "IDEADISTRO_NOTE": "تم التصويت على نقاط ملونة على هذا الحدث من قبل المجتمع. إعادة توجيههم كما شكر لجميع المساعدين.",
+        "IDEADISTRO_THANKS": "شكرا لك على تنظيم هذا الحدث.",
 
         "SUBTITLE_MAP" : "استكشاف الخريطة",
         "SUBTITLE_NEWS" : "انتقل إلى الخريطة",

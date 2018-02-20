@@ -16,12 +16,11 @@
 <ion-content padding>
 
     <div style="padding: 4px; margin-bottom: 12px;">
-        <h3>Konfetti verteilen</h3>
+        <h3>{{ 'IDEADISTRO_HEADLINE' | translate }}</h3>
 
         <div style="color: grey;">
-          {{idea.konfettiTotal}} Konfettipunkte haben alle Nachbarn zusammen für diese Idee gegeben. 
-          Verteile diese als Dankeschön an Organisatoren und Helfer.
-        </div>
+          {{idea.konfettiTotal}} {{ 'IDEADISTRO_NOTE' | translate }}
+       </div>
     </div>  
 
     <button (click)="buttonKonfettiDistribution()" ion-button block color="primary" 

@@ -17,6 +17,7 @@ import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 
 import { ParticlesProvider } from '../../providers/particles/particles';
+import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
 @Component({
@@ -45,6 +46,7 @@ export class DistributionPage {
     private konfettiRain: ParticlesProvider,
     private platform: Platform,
     private toastCtrl: ToastController,
+    private translateService: TranslateService
   ) {
 
     // get data from parameter
@@ -96,7 +98,7 @@ export class DistributionPage {
 
   buttonKonfettiDistribution() : void {
     if (this.isPlaying) return;
-    alert("TODO");
+    alert("TODO make server request");
     this.startAnimation();
   }
 
@@ -117,7 +119,7 @@ export class DistributionPage {
      });
 
      this.toastCtrl.create({
-      message: "Danke. Dass Du dieses Nachbarschaftstreffen organisiert hast.",
+      message: this.translateService.instant('IDEADISTRO_THANKS'),
       cssClass: 'toast-valid',
       duration: 6000
     }).present().then();
