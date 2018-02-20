@@ -3,6 +3,13 @@
   <ion-navbar>
     <ion-title>
     </ion-title>
+
+    <ion-buttons end class="navheader-end-buttons">
+        <button *ngIf="(idea.userIsAdmin && running)" ion-button icon-only (click)="buttonEditIdea()" style="width:40px;">
+          <i class="mdi mdi-pencil navheader-button" style="font-size: 160%;"></i>
+        </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
@@ -61,11 +68,17 @@
         />
       </td>
       <td>
-        <div style="
+        <div *ngIf="!idea.userIsAdmin" style="
           font-weight: bold;
           font-size: 150%;
         ">
           {{idea.displayName}}
+        </div>
+        <div *ngIf="idea.userIsAdmin" style="
+          font-weight: bold;
+          font-size: 150%;
+        ">
+          Du bist
         </div>
         <div>
           {{ 'IDEA_AUTORUNDERLINE' | translate }}
@@ -78,16 +91,21 @@
       </td>
     </tr>
     <tr>
-      <td *ngIf="idea.wantsHelper" colspan="2" style="padding-top: 12px; font-size: 120%; font-weight: bold;">
+      <td *ngIf="(idea.wantsHelper && running)" colspan="2" style="padding-top: 12px; font-size: 120%; font-weight: bold;">
         {{ 'IDEA_NEEDHELP' | translate }}
       </td>
     </tr>
     <tr>
-      <td *ngIf="idea.wantsHelper" colspan="2" style="padding-top: 12px; font-size: 120%;">
+      <td *ngIf="(idea.wantsHelper && running)" colspan="2" style="padding-top: 12px; font-size: 120%;">
           {{idea.helpDescription}}
       </td>
     </tr>
   </table>
+
+
+<!-- USER OPTIONS -->
+
+<div *ngIf="!idea.userIsAdmin">
 
   <div *ngIf="idea.userIsHelping" class="dashbox"> 
       <table style="color: green;padding:4px;">
@@ -143,5 +161,47 @@
   <button (click)="buttonHelping(false)" *ngIf="idea.userIsHelping" ion-button clear class="additionalOption">
       {{ 'IDEA_REMOVEHELP' | translate }}
   </button>
+
+</div>
+
+<!-- ADMIN OPTIONS -->
+
+<div *ngIf="(idea.userIsAdmin && running)">
+
+  <button (click)="buttonOrgaChat()" ion-button block color="primary" style="margin-top: 24px;">
+    {{ 'IDEA_ORGACHAT' | translate }}
+  </button>
+
+  <div class="dashbox" style="margin-top: 22px;">
+    <div>
+        Für die Organisation, hast du aktuell folgende Optionen:
+    </div>
+    <button (click)="buttonEditIdea()" ion-button clear class="additionalOption">
+        Die Angaben ändern
+    </button>
+    <button (click)="buttonAdminCancel()" ion-button clear class="additionalOption">
+        Diese Idee absagen bzw. löschen
+    </button>
+  </div>
+
+</div>  
+
+<div *ngIf="(idea.userIsAdmin && !running && (idea.konfettiTotal>0))">
+    <div class="dashbox" style="margin-top: 22px;">
+      <div>
+        Das Nachbarschaftstreffen war ein Erfolg? Dann verteile Konfetti als Dankeschön
+        an alle die geholfen haben.
+      </div>
+      <button (click)="buttonKonfettiDistribution()" ion-button block color="primary" style="margin-top: 8px;">
+          Konfetti verteilen
+      </button>
+    </div>
+    <button (click)="buttonAdminCancel()" ion-button clear class="additionalOption">
+        Ohne Konfettiverteilung löschen
+    </button>
+    <button (click)="buttonOrgaChat()" ion-button clear class="additionalOption">
+        {{ 'IDEA_ORGACHAT' | translate }}
+    </button>
+</div>
 
 </ion-content>

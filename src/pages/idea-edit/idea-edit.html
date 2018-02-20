@@ -14,11 +14,12 @@
 
 <ion-content padding>
 
-    <h3 style="text-align: start; -webkit-padding-start: 14px;">
-       {{ 'IDEAEDIT_HEADLINE' | translate }}
-    </h3>
+  <h3 style="text-align: start; -webkit-padding-start: 14px;">
+       <span *ngIf="!idea" >{{ 'IDEAEDIT_HEADLINE' | translate }}</span>
+       <span *ngIf="idea" >{{ title }}</span>
+  </h3>
 
-  <div class="enablePulsate" [style.opacity]='titleOpacity'>
+  <div *ngIf="!idea" class="enablePulsate" [style.opacity]='titleOpacity'>
   <ion-item>
     <ion-label>
       <ion-icon name="md-pricetag"></ion-icon>
@@ -75,7 +76,8 @@
   </div>
 
   <button ion-button block color="primary" (click)="buttonContinue()" style="margin-top: 36px;">
-      {{ 'IDEAEDIT_CONTINUE' | translate }}
+      <span *ngIf="!idea" >{{ 'IDEAEDIT_CONTINUE' | translate }}</span>
+      <span *ngIf="idea" >{{ 'IDEAEDIT_SAVECHANGES' | translate }}</span>
   </button>
 
 </ion-content>

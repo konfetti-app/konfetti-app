@@ -15,6 +15,8 @@ import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
 import { ChatPage } from '../../pages/chat/chat';
+import { IdeaEditPage } from '../../pages/idea-edit/idea-edit';
+import { DistributionPage } from '../../pages/distribution/distribution';
 
 @IonicPage()
 @Component({
@@ -26,6 +28,7 @@ export class IdeaPage {
   idea:Idea;
   calculatesState:string;
   activeGroupId:string;
+  running:boolean = true;
 
   constructor(
     private navCtrl: NavController, 
@@ -43,7 +46,14 @@ export class IdeaPage {
     this.idea = this.navParams.get("idea") as Idea;
     if (this.idea==null) this.idea = {} as Idea;
     this.calculatesState = (this.idea.konfettiUser==0) ? 'vote' : 'voted';
-    if ( new Date(this.idea.date).getTime() < Date.now() ) this.calculatesState = 'done';
+    if (this.idea.reviewStatus!='OK') this.running = false;
+    if ( new Date(this.idea.date).getTime() < Date.now() ) {
+      this.calculatesState = 'done';
+      this.running = false;
+    }
+    console.log("IDEA",this.idea);
+
+    this.running = false;
 
     // get the actual neighborhood
     this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
@@ -158,6 +168,18 @@ export class IdeaPage {
       loadingSpinner.dismiss().then();
       alert("TODO: Error on getting chatlist");
     });
+  }
+
+  buttonEditIdea() : void {
+    this.navCtrl.push(IdeaEditPage, { idea: this.idea } );
+  }
+
+  buttonAdminCancel() : void {
+    alert("TODO: Implement when delete endpoint available");
+  }
+
+  buttonKonfettiDistribution() : void {
+    this.navCtrl.push(DistributionPage, { idea: this.idea } );
   }
 
 }

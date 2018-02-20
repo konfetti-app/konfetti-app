@@ -9,6 +9,9 @@ import {
 } from 'ionic-angular';
 
 import { TranslateService } from "@ngx-translate/core";
+import { ApiProvider, Idea } from '../../providers/api/api';
+
+import { IdeaPage } from '../../pages/idea/idea';
 
 @IonicPage()
 @Component({
@@ -26,7 +29,7 @@ export class IdeaEditPage {
   address: string = "";
   addressOpacity: number = 1;
 
-  date: Date = new Date(0);
+  date: any = new Date(0);
   dateOpacity: number = 1;
 
   wantsHelper: boolean = false;
@@ -37,12 +40,27 @@ export class IdeaEditPage {
   minDate:string = new Date().toISOString();
   maxDate:string = new Date(Date.now() + (184 * 24 * 60 * 60 * 1000)).toISOString();
 
+  idea:Idea;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     private toastCtrl: ToastController,
     private translateService: TranslateService
   ) {
+
+    // get idea from parameter if this should be an edit
+    this.idea = this.navParams.get("idea") as Idea;
+    if (this.idea) {
+      this.address = this.idea.address;
+      this.description = this.idea.description;
+      this.date = new Date(this.idea.date).toISOString();
+      this.helpDescription = this.idea.helpDescription;
+      this.wantsGuest = this.idea.wantsGuest;
+      this.wantsHelper = this.idea.wantsHelper;
+      this.title = this.idea.title;
+    }
+
   }
 
   ionViewDidLoad() {
@@ -140,8 +158,25 @@ export class IdeaEditPage {
     data.wantsHelper = this.wantsHelper;
     data.helpDescription = this.helpDescription;
     data.wantsGuest = this.wantsGuest;
+    
+    // when its updated
+    if (this.idea) {
+      data._id = this.idea._id;
+    }
 
     alert('TODO: store on server:' + JSON.stringify(data));
+
+    if (this.idea) {
+      this.idea.address = this.address;
+      this.idea.description = this.description;
+      this.idea.helpDescription = this.helpDescription;
+      this.idea.date = this.date;
+      this.idea.wantsGuest = this.wantsGuest;
+      this.idea.wantsHelper = this.wantsHelper;
+      this.navCtrl.push( IdeaPage, { idea: this.idea } );
+    } else {
+      this.navCtrl.pop();
+    }
 
   }
 

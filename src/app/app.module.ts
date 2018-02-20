@@ -14,6 +14,7 @@ import { IdeaEditPage } from '../pages/idea-edit/idea-edit';
 import { ChatEditPage } from '../pages/chat-edit/chat-edit';
 import { SettingsPage } from '../pages/settings/settings';
 import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
+import { DistributionPage } from '../pages/distribution/distribution';
 
 import { ApiProvider } from '../providers/api/api';
 
@@ -52,6 +53,7 @@ import { ProfilePageModule } from '../pages/profile/profile.module'
 import { SettingsPageModule } from '../pages/settings/settings.module'
 import { LoginPageModule } from '../pages/login/login.module'
 import { InitPageModule } from '../pages/init/init.module'
+import { DistributionPageModule } from '../pages/distribution/distribution.module'
 
 import { AppConfigProvider } from '../providers/app-config/app-config';
 
@@ -78,7 +80,8 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     SettingsPageModule, 
     LoginPageModule,
     InitPageModule,
-    IdeaEditPageModule
+    IdeaEditPageModule,
+    DistributionPageModule 
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -88,6 +91,7 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     IntroPage,
     ProfilePage,
     CodeRedeemPage,
+    DistributionPage,
     LoginPage,
     ChatPage,
     IdeaPage,    

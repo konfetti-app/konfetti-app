@@ -809,6 +809,7 @@ export class ApiProvider {
         let simulatedResults:Array<Idea> = [];
         simulatedResults.push(JSON.parse(
           `{
+            "_id":"AAAAAAAAAAAAAA",
             "title":"Vogelhaus bauen",
             "description":"Am Spielplatz am Beispielplatz wollen wir ein oder mehrere Vogelhäuser bauen. Wer ist dabei?",
             "address":"Beipsielplatz 3",
@@ -825,6 +826,7 @@ export class ApiProvider {
             "orgaChatID":"5a6b4cd1439b9000013b51ab",
             "created": { 
               "byUser" : {
+                "_id": "5a88743b149512000130261f",
                 "nickname" : "Christian",
                 "avatar" : {
                   "filename" : "avatar-416c2727ae4fce156081d24b31fb3ada.jpg"
@@ -832,10 +834,11 @@ export class ApiProvider {
               },
               "ts" : 1516981457
             }
-          }`) as Idea);
+          }`) as Idea); 
 
           simulatedResults.push(JSON.parse(
             `{
+              "_id":"BBBBBBBBBBBBBB",
               "title":"Kinderfussball",
               "description":"Kinder. Fussball. 90 Minuten.",
               "address":"Beipsielplatz 3",
@@ -851,6 +854,7 @@ export class ApiProvider {
               "userIsAttending": false,
               "created": { 
                 "byUser" : {
+                  "_id": "768743b149512000130261f",
                   "nickname" : "Christian",
                   "avatar" : {
                     "filename" : "avatar-416c2727ae4fce156081d24b31fb3ada.jpg"
@@ -897,7 +901,7 @@ export class ApiProvider {
       },300);
     });
   }
-  
+
   setUserAvatarImage(file:any) : Observable<any> {
     return Observable.create((observer) => {
 
