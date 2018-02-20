@@ -42,18 +42,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // https://github.com/konfetti-app/konfetti-app/issues/20
 // import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
-import { MainPageModule } from '../pages/main/main.module'
-import { ChatPageModule } from '../pages/chat/chat.module'
-import { IdeaPageModule } from '../pages/idea/idea.module'
-import { IdeaEditPageModule } from '../pages/idea-edit/idea-edit.module'
-import { ChatEditPageModule } from '../pages/chat-edit/chat-edit.module'
-import { CodeRedeemPageModule } from '../pages/code-redeem/code-redeem.module'
-import { IntroPageModule } from '../pages/intro/intro.module'
-import { ProfilePageModule } from '../pages/profile/profile.module'
-import { SettingsPageModule } from '../pages/settings/settings.module'
-import { LoginPageModule } from '../pages/login/login.module'
-import { InitPageModule } from '../pages/init/init.module'
-import { DistributionPageModule } from '../pages/distribution/distribution.module'
+import { MainPageModule } from '../pages/main/main.module';
+import { ChatPageModule } from '../pages/chat/chat.module';
+import { IdeaPageModule } from '../pages/idea/idea.module';
+import { IdeaEditPageModule } from '../pages/idea-edit/idea-edit.module';
+import { ChatEditPageModule } from '../pages/chat-edit/chat-edit.module';
+import { CodeRedeemPageModule } from '../pages/code-redeem/code-redeem.module';
+import { IntroPageModule } from '../pages/intro/intro.module';
+import { ProfilePageModule } from '../pages/profile/profile.module';
+import { SettingsPageModule } from '../pages/settings/settings.module';
+import { LoginPageModule } from '../pages/login/login.module';
+import { InitPageModule } from '../pages/init/init.module';
+import { DistributionPageModule } from '../pages/distribution/distribution.module';
 
 import { AppConfigProvider } from '../providers/app-config/app-config';
 

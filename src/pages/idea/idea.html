@@ -74,12 +74,6 @@
         ">
           {{idea.displayName}}
         </div>
-        <div *ngIf="idea.userIsAdmin" style="
-          font-weight: bold;
-          font-size: 150%;
-        ">
-          Du bist
-        </div>
         <div>
           {{ 'IDEA_AUTORUNDERLINE' | translate }}
         </div>
@@ -186,7 +180,8 @@
 
 </div>  
 
-<div *ngIf="(idea.userIsAdmin && !running && (idea.konfettiTotal>0))">
+<!-- <div *ngIf="(idea.userIsAdmin && !running && (idea.konfettiTotal>0))"> -->
+<div *ngIf="(idea.userIsAdmin)">
     <div class="dashbox" style="margin-top: 22px;">
       <div>
           {{ 'IDEA_DISTRIBUTENOTE' | translate }} 

@@ -131,39 +131,46 @@ export class IdeaPage {
       });
   }
 
+  // gets the chat object from id
+  loadOrgaChat(callback:Function) {
+
+        // get all idea chats
+        let loadingSpinner = this.loadingCtrl.create({
+          content: ''
+        });
+        loadingSpinner.present().then();
+    
+        this.api.getChats(
+          this.activeGroupId,
+          "moduleGroupChat",
+          this.persistence.getAppDataCache().userid,
+          this.state.getUserInfo().nickname,
+          this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
+        ).subscribe((chats:Array<Chat>) => {
+    
+          loadingSpinner.dismiss().then();
+    
+          // search thru chats
+          let orgaChat:Chat = null;
+          chats.forEach((chat)=>{
+            if (chat._id==this.idea.orgaChatID) orgaChat = chat;
+          });
+    
+          if (orgaChat!=null) {
+            callback(orgaChat);
+          } else {
+            alert("FAIL ORGACHAT("+this.idea.orgaChatID+") NOT FOUND");
+          }
+    
+        }, (error) => {
+          loadingSpinner.dismiss().then();
+          alert("TODO: Error on getting chatlist");
+        });
+  }
+
   buttonOrgaChat() : void {
-
-    // get all idea chats
-    let loadingSpinner = this.loadingCtrl.create({
-      content: ''
-    });
-    loadingSpinner.present().then();
-
-    this.api.getChats(
-      this.activeGroupId,
-      "moduleGroupChat",
-      this.persistence.getAppDataCache().userid,
-      this.state.getUserInfo().nickname,
-      this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
-    ).subscribe((chats:Array<Chat>) => {
-
-      loadingSpinner.dismiss().then();
-
-      // search thru chats
-      let orgaChat:Chat = null;
-      chats.forEach((chat)=>{
-        if (chat._id==this.idea.orgaChatID) orgaChat = chat;
-      });
-
-      if (orgaChat!=null) {
-        this.navCtrl.push(ChatPage, { chat: orgaChat } );
-      } else {
-        alert("FAIL ORGACHAT("+this.idea.orgaChatID+") NOT FOUND");
-      }
-
-    }, (error) => {
-      loadingSpinner.dismiss().then();
-      alert("TODO: Error on getting chatlist");
+    this.loadOrgaChat((orgaChat:Chat) => {
+      this.navCtrl.push(ChatPage, { chat: orgaChat } );
     });
   }
 
@@ -176,7 +183,13 @@ export class IdeaPage {
   }
 
   buttonKonfettiDistribution() : void {
-    this.navCtrl.push(DistributionPage, { idea: this.idea } );
+    this.loadOrgaChat((orgaChat:Chat)=>{
+      this.navCtrl.push(DistributionPage, 
+        { 
+          idea: this.idea,  
+          chat: orgaChat
+        } );
+    });
   }
 
 }

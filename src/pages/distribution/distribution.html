@@ -7,12 +7,88 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>distribution</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+    <div style="padding: 4px; margin-bottom: 12px;">
+        <h3>Konfetti verteilen</h3>
+
+        <div style="color: grey;">
+          {{idea.konfettiTotal}} Konfettipunkte haben alle Nachbarn zusammen für diese Idee gegeben. 
+          Verteile diese als Dankeschön an Organisatoren und Helfer.
+        </div>
+    </div>  
+
+    <button (click)="buttonKonfettiDistribution()" ion-button block color="primary" 
+    style="margin-top: 14px; margin-bottom: 20px;">
+        🎉 {{ 'IDEA_DISTRIBUTE' | translate }} 🎉 
+    </button>
+
+    <!-- The Auther itself -->
+
+    <ion-card class="module-card" (click)="clickAuthor()">
+        <ion-card-content class="votingcard">
+          <table style="width:100%;">
+            <tr>
+                <td style="width:50px; font-size: 200%;">
+                    <ion-item>
+                        <ion-checkbox mode='ios' style="pointer-events: none;" color="primary" [checked]="authorSelected"></ion-checkbox>
+                    </ion-item>
+                </td>
+                <td style="width:60px;">
+                    <img 
+                      class="user-image"
+                      [src]="a" 
+                      onerror="this.src = './assets/imgs/icon.png';"
+                    />
+                </td>
+                <td class="content-cell">
+                  <div class="card-text-main">{{idea.displayName}}</div>
+                  <div class="card-text-underline">{{ 'IDEA_AUTORUNDERLINE' | translate }}</div>
+                </td>
+            </tr>
+          </table>  
+        </ion-card-content>
+    </ion-card>
+
+    <!-- The helping hands -->
+
+    <ion-card class="module-card"
+    *ngFor="let helper of helpers" (click)="clickHelper(helper)">
+        <ion-card-content class="votingcard">
+          <table style="width:100%;">
+            <tr>
+                <td style="width:50px; font-size: 200%;">
+                    <ion-item>
+                        <ion-checkbox mode='ios' style="pointer-events: none;" color="primary" [checked]="helper.selected"></ion-checkbox>
+                    </ion-item>
+                </td>
+                <td style="width:60px;">
+                    <img 
+                      class="user-image"
+                      [src]="helper.displayImage" 
+                      onerror="this.src = './assets/imgs/icon.png';"
+                    />
+                </td>
+                <td class="content-cell">
+                  <div class="card-text-main">{{helper.nickname}}</div>
+                </td>
+            </tr>
+          </table>  
+        </ion-card-content>
+      </ion-card>
+
+      <canvas #canvasObj style="position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;"></canvas>
 
 </ion-content>
