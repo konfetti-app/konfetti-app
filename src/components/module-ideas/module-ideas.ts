@@ -193,11 +193,11 @@ export class ModuleIdeasComponent {
         return;
       }
   
-      // get matching chat from list
+      // get matching idea from list
       this.hiddenIdeasAll.forEach((idea:Idea)=>{
         if (idea._id==notification.itemID) {
           console.log("processNotification: open Idea");
-          // TODO: What if the caht is to open?
+          // TODO: What if the notification is about the chat?
           this.openIdea(idea);
         }
       });
@@ -207,7 +207,7 @@ export class ModuleIdeasComponent {
   vote(idea:Idea) {
 
     if (idea.konfettiUser>0) {
-      // TODO: allow vote from user budget later on
+      // TODO: allow more votes from one user later if user has konfetti
       console.log("User already voted free vote - TODO: allow more than one vote if user has konfetti");
       return;
     }
@@ -259,8 +259,8 @@ export class ModuleIdeasComponent {
           // user needs to set profile namen and photo first
           let modal: Modal = this.modalCtrl.create(ProfilePage, {
             showAccountLink: false,
-            photoNeeded: true, // TODO: i18n
-            notice: 'Wir brauchen noch Name und Foto von dir, bevor du eine Idee anlegen kannst.'
+            photoNeeded: true, 
+            notice: this.translate.instant('IDEA_NEEDNAMEFOTO') 
           });
           modal.onDidDismiss(data => {
             if (this.state.isMinimalUserInfoSet(true)) this.buttonNew();
@@ -272,8 +272,8 @@ export class ModuleIdeasComponent {
           // user has name set but is missing still photo
           let modal: Modal = this.modalCtrl.create(ProfilePage, {
             showAccountLink: false,
-            photoNeeded: true, // TODO: i18n
-            notice: 'Wir brauchen noch ein Foto von dir, bevor du einen neue Idee anlegen kannst.'
+            photoNeeded: true,
+            notice: this.translate.instant('IDEA_NEEDFOTO')
           });
           modal.onDidDismiss(data => {
             if (this.state.isMinimalUserInfoSet(true)) this.buttonNew();

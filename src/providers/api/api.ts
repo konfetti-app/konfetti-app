@@ -14,7 +14,6 @@ import io from "socket.io-client";
 @Injectable()
 export class ApiProvider {
 
-  // TODO: make flexible later on
   private apiUrlBase : string = 'http://localhost:3000/';
 
   // temp storage of credentials

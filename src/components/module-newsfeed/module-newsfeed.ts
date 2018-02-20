@@ -95,23 +95,4 @@ export class ModuleNewsfeedComponent {
     this.events.publish('notification:process',post.meta as PushNotification);
   }
 
-  public closePost(post:Post) : void {
-
-    alert("TODO: Activate Real Delete once no simulated content anymore");
-    /*
-    this.api.deleteNewsFeedPost(post._id).subscribe(
-      () => {
-        // WIN
-      }, (error) => {
-        // FAIL
-      }
-    );*/
-
-    // find post and delete from array
-    this.posts = this.posts.filter((arrayPost)=>{
-      return arrayPost._id!=post._id;
-    })
-
-  }
-
 }

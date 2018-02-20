@@ -298,7 +298,6 @@ export class ChatPage {
       msg.displayName = 'Anonymous';
       msg.displayImage = "./assets/imgs/default-user.jpg";
       if (msg.parentUser!=null) {
-        // TODO get real name
         msg.displayName = msg.parentUser.nickname;
         if ((msg.parentUser.avatar) && (msg.parentUser.avatar.filename)) {
           msg.displayImage = this.api.buildImageURL(msg.parentUser.avatar.filename);
@@ -421,7 +420,7 @@ export class ChatPage {
   
         } else {
   
-            // TODO
+            // TODO if editing of chat details get reactivated ...
             // check if user edited existing chat details --> store
             this.toastCtrl.create({
               message: 'TODO: Check if user edited details and store ',

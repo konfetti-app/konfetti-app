@@ -44,7 +44,9 @@
         "IDEA_DELETE2" : "delete event without konfetti distribution",
         "IDEA_DISTRIBUTENOTE" : "The event was a success? Then distribute konfetti to all helping hands as a thank you.",
         "IDEA_DISTRIBUTE" : "Distribute Konfetti",
- 
+        "IDEA_NEEDNAMEFOTO" : "We need a name and a picture from you, before you can create a new idea.",
+        "IDEA_NEEDFOTO" : "We need a picture from you, before you can create a new idea.",
+
         "IDEAEDIT_HEADLINE" : "Create Community Event",
         "IDEAEDIT_TITLE" : "title",
         "IDEAEDIT_DESCRIPTION" : "description",
@@ -401,6 +403,8 @@
         "IDEA_EVENTMYNO2" : "Nimm an Ideen anderer teil, helft mit bei der Umsetzung oder erstell deine eigene Idee für die Nachbarschaft.",
         "IDEA_EVENTCREATE" : "Meine Idee für die Nachbarschaft",
         "IDEA_EVENTVOTE1" : "Du unterstützt diese Idee jetzt mit 1 Konfetti. Danke 😀",
+        "IDEA_NEEDNAMEFOTO" : "Wir brauchen noch Name und Foto von dir, bevor du eine Idee anlegen kannst.",
+        "IDEA_NEEDFOTO" : "Wir brauchen noch ein Foto von dir, bevor du einen neue Idee anlegen kannst.",
 
         "IDEA_AUTORUNDERLINE" : "Idee & Organisation",
         "IDEA_NEEDHELP" : "Es wird noch Hilfe benötigt:",
@@ -779,6 +783,8 @@
         "IDEA_EVENTMYNO2" : "احرص على تنظيم حدث مجتمعي، أو تقديم يد العون أو إنشاء فكرتك الخاصة للحي.",
         "IDEA_EVENTCREATE" : "فكرتي للحي",
         "IDEA_EVENTVOTE1" : "دو ونتيرستوتز دييز إيدي جيتست ميت 1 كونفيتي.",
+        "IDEA_NEEDNAMEFOTO" : "نحن بحاجة إلى اسم وصورة منك، قبل أن تتمكن من إنشاء فكرة جديدة.",
+        "IDEA_NEEDFOTO" : "نحن بحاجة إلى صورة منك، قبل أن تتمكن من إنشاء فكرة جديدة.",
 
         "IDEA_AUTORUNDERLINE" : "منظم",
         "IDEA_NEEDHELP" : "مساعدة مطلوب ل",

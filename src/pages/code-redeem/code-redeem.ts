@@ -113,7 +113,6 @@ export class CodeRedeemPage {
     this.loadingSpinner.dismiss().then();
     this.loadingSpinner=null;
 
-    // TODO: toast message should let user know that code was already redeemed
     if (error==="REDEEMED") {
       this.toastCtrl.create({
         message: this.translateService.instant('CODEREDEEM_CODE_UNVALID'),
