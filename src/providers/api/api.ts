@@ -842,27 +842,16 @@ createKonfettiIdea(idea:Idea): Observable<string> {
 
 // updates a konfetti idea
 updateKonfettiIdea(idea:Idea): Observable<string> {
-
   return Observable.create((observer) => {
-
     this.getJWTAuthHeaders().subscribe(headers => {
-
-      // prepare header for json body data
       headers = headers.append('Content-Type', 'application/json');
-
       this.http.post<any>(this.apiUrlBase + 'api/ideas/'+idea._id, JSON.stringify(idea),{
         headers: headers
       }).subscribe((resp) => {
-
-        /*
-         * WIN
-         */
-
+        // WIN
         observer.next(resp.data.idea._id);
         observer.complete();
-
       }, error => {
-
         // default error handling
         this.defaultHttpErrorHandling(error, observer, "updateKonfettiIdea", () => {
           this.updateKonfettiIdea(idea).subscribe(
@@ -870,13 +859,10 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
             (error) => observer.error(error)
           );
         });
-
       });
-
     }, error => {
       observer.error(error)
     });
-
   });
 }
 
@@ -994,15 +980,31 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
   }
 
   joinKonfettiIdea(ideaID:string, attent:boolean, helping:boolean) : Observable<JoinResult> {
-    return Observable.create((observer) => {
-      setTimeout(()=>{
-          let result:JoinResult = {} as JoinResult;
-          result.isAttending = attent;
-          result.isHelping = helping;
-          observer.next(result);
-          observer.complete();
-      },300);
+  return Observable.create((observer) => {
+    this.getJWTAuthHeaders().subscribe(headers => {
+      headers = headers.append('Content-Type', 'application/json');
+      let input:JoinResult = {} as JoinResult;
+      input.isAttending = attent;
+      input.isHelping = helping;
+      this.http.post<any>(this.apiUrlBase + 'api/ideas/'+ideaID+'/status', JSON.stringify(input),{
+        headers: headers
+      }).subscribe((resp) => {
+        // WIN
+        observer.next(input);
+        observer.complete();
+      }, error => {
+        // default error handling
+        this.defaultHttpErrorHandling(error, observer, "joinKonfettiIdea", () => {
+          this.joinKonfettiIdea(ideaID, attent, helping).subscribe(
+            (win) => {  observer.next(win); observer.complete(); },
+            (error) => observer.error(error)
+          );
+        });
+      });
+    }, error => {
+      observer.error(error)
     });
+  });
   }
 
   setUserAvatarImage(file:any) : Observable<any> {
