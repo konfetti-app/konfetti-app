@@ -868,78 +868,36 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
 
   getKonfettiIdeas(groupId:string, userId:string=null, userName:string=null, avatarFilename:string=null) : Observable<Array<Idea>> {
     return Observable.create((observer) => {
-      setTimeout(()=>{
-
-        // simulate server response
-        let simulatedResults:Array<Idea> = [];
-        simulatedResults.push(JSON.parse(
-          `{
-            "_id":"AAAAAAAAAAAAAA",
-            "title":"Vogelhaus bauen",
-            "description":"Am Spielplatz am Beispielplatz wollen wir ein oder mehrere Vogelhäuser bauen. Wer ist dabei?",
-            "address":"Beipsielplatz 3",
-            "gps":null,
-            "date":1521669800000,
-            "wantsHelper":true,
-            "helpDescription":"Jeder der einen Hammer Schwingen will. Wer eine kleine Motorstichsäge hat - das wäre super.",
-            "wantsGuest":false,
-            "reviewStatus":"OK",
-            "konfettiTotal": 11,
-            "konfettiUser": 0,
-            "userIsHelping": false,
-            "userIsAttending": false,
-            "orgaChatID":"5a6b4cd1439b9000013b51ab",
-            "created": { 
-              "byUser" : {
-                "_id": "5a88743b149512000130261f",
-                "nickname" : "Christian",
-                "avatar" : {
-                  "filename" : "avatar-416c2727ae4fce156081d24b31fb3ada.jpg"
-                }
-              },
-              "ts" : 1516981457
-            }
-          }`) as Idea); 
-
-          simulatedResults.push(JSON.parse(
-            `{
-              "_id":"BBBBBBBBBBBBBB",
-              "title":"Kinderfussball",
-              "description":"Kinder. Fussball. 90 Minuten.",
-              "address":"Beipsielplatz 3",
-              "gps": { "lat": 52.519839, "lon": 13.408893 },
-              "date":1521561800000,
-              "wantsHelper":false,
-              "helpDescription":"",
-              "wantsGuest":true,
-              "reviewStatus":"OK",
-              "konfettiTotal": 8,
-              "konfettiUser": 0,
-              "userIsHelping": false,
-              "userIsAttending": false,
-              "created": { 
-                "byUser" : {
-                  "_id": "768743b149512000130261f",
-                  "nickname" : "Christian",
-                  "avatar" : {
-                    "filename" : "avatar-416c2727ae4fce156081d24b31fb3ada.jpg"
-                  }
-                },
-                "ts" : 1517081457
-              }
-            }`) as Idea);
+      this.getJWTAuthHeaders().subscribe(headers => {
+        this.http.get<any>(this.apiUrlBase + 'api/ideas/neighbourhood/' + groupId
+        , {
+          headers: headers
+        }).subscribe((resp) => {
 
           // client side process 
-          let input:Array<Idea> = simulatedResults;
+          let ideas:Array<Idea> = resp.data.ideas as Array<Idea>;
           let results:Array<Idea> = [];
-          input.forEach(element => {
+          ideas.forEach(element => {
+            if (element.reviewStatus==null) element.reviewStatus = "OK";
+            if (element.konfettiTotal==null) element.konfettiTotal = 0;
+            if (element.konfettiUser==null) element.konfettiUser = 0;
             results.push(this.addDisplayData(element, userId, userName, avatarFilename));
           });
 
           observer.next(results);
           observer.complete();
-
-      },1000);
+        }, error => {
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "getKonfettiIdeas", () => {
+            this.getKonfettiIdeas(groupId, userId, userName, avatarFilename).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+        });
+      }, error => {
+        observer.error(error)
+      });
     });
   }
 

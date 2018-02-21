@@ -33,6 +33,10 @@
     </tr>
   </table>
 
+  <button (click)="vote()" *ngIf="calculatesState=='vote'"  ion-button clear class="additionalOption">
+    🎉 {{ 'IDEA_VOTEKONFETTI' | translate }}
+</button>
+
   <div style="
   border-style: solid;
   border-color: grey;
@@ -138,10 +142,6 @@
 
   <button (click)="buttonOrgaChat()" *ngIf="idea.userIsHelping" ion-button block color="primary" style="margin-top: 24px;">
       {{ 'IDEA_ORGACHAT' | translate }}
-  </button>
-
-  <button (click)="vote()" *ngIf="calculatesState=='vote'"  ion-button clear class="additionalOption">
-      {{ 'IDEA_VOTEKONFETTI' | translate }} 🎉
   </button>
 
   <button (click)="buttonHelping(true)" *ngIf="((!idea.userIsHelping) && (idea.userIsAttending) && (idea.wantsHelper))" ion-button clear class="additionalOption">

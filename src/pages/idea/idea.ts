@@ -94,12 +94,12 @@ export class IdeaPage {
       (result:JoinResult)=>{
         this.idea.userIsHelping = result.isHelping;
         this.idea.userIsAttending = result.isAttending;
-        loadingSpinner.dismiss().then();
         this.toastCtrl.create({
           message: this.translateService.instant('OK'),
           cssClass: 'toast-valid',
           duration: 2000
         }).present().then();
+        setTimeout(()=>{loadingSpinner.dismiss().then();},2000);
         return;
       }, 
       (error)=>{
@@ -117,12 +117,12 @@ export class IdeaPage {
       (result:JoinResult)=>{
         this.idea.userIsHelping = result.isHelping;
         this.idea.userIsAttending = result.isAttending;
-        loadingSpinner.dismiss().then();
         this.toastCtrl.create({
           message: this.translateService.instant('OK'),
           cssClass: 'toast-valid',
           duration: 2000
         }).present().then();
+        setTimeout(()=>{loadingSpinner.dismiss().then();},2000);
         return;
       }, 
       (error)=>{
@@ -142,7 +142,7 @@ export class IdeaPage {
     
         this.api.getChats(
           this.activeGroupId,
-          "moduleGroupChat",
+          "moduleIdeas",
           this.persistence.getAppDataCache().userid,
           this.state.getUserInfo().nickname,
           this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null

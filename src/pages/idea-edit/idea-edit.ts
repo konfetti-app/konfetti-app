@@ -187,7 +187,7 @@ export class IdeaEditPage {
           this.toastCtrl.create({
             message: this.translateService.instant('OK'),
             cssClass: 'toast-valid',
-            duration: 4000
+            duration: 2000
           }).present().then();
 
           setTimeout(()=>{
@@ -221,7 +221,7 @@ export class IdeaEditPage {
           this.toastCtrl.create({
             message: this.translateService.instant('OK'),
             cssClass: 'toast-valid',
-            duration: 4000
+            duration: 2000
           }).present().then();
 
           setTimeout(()=>{
