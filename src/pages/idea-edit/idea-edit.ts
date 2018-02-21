@@ -5,11 +5,13 @@ import {
   IonicPage, 
   NavController, 
   ToastController, 
+  LoadingController,
   NavParams 
 } from 'ionic-angular';
 
 import { TranslateService } from "@ngx-translate/core";
 import { ApiProvider, Idea } from '../../providers/api/api';
+import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
 import { IdeaPage } from '../../pages/idea/idea';
 
@@ -42,11 +44,16 @@ export class IdeaEditPage {
 
   idea:Idea;
 
+  activeGroupId:string;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     private toastCtrl: ToastController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private persistence: AppPersistenceProvider,
+    private api: ApiProvider,
+    private loadingCtrl: LoadingController
   ) {
 
     // get idea from parameter if this should be an edit
@@ -60,6 +67,9 @@ export class IdeaEditPage {
       this.wantsHelper = this.idea.wantsHelper;
       this.title = this.idea.title;
     }
+
+    // get the actual neighborhood
+    this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
 
   }
 
@@ -150,32 +160,89 @@ export class IdeaEditPage {
 
     // data to send to server
     let data: any = {};
+    data.parentNeighbourhood = this.activeGroupId;
     data.title = this.title;
     data.description = this.description;
     data.address = this.address;
-    data.gps = null; // later translate address to lat/lon
     data.date = new Date(this.date).getTime();
     data.wantsHelper = this.wantsHelper;
     data.helpDescription = this.helpDescription;
     data.wantsGuest = this.wantsGuest;
     
     // when its updated
-    if (this.idea) {
-      data._id = this.idea._id;
-    }
+    if (!this.idea) {
 
-    alert('TODO: store on server:' + JSON.stringify(data));
+      /*
+       * CREATE
+       */
+      let loadingSpinner = this.loadingCtrl.create({
+        content: ''
+      });
+      loadingSpinner.present().then();
+      this.api.createKonfettiIdea(data).subscribe(
+        (win:string)=>{
 
-    if (this.idea) {
-      this.idea.address = this.address;
-      this.idea.description = this.description;
-      this.idea.helpDescription = this.helpDescription;
-      this.idea.date = this.date;
-      this.idea.wantsGuest = this.wantsGuest;
-      this.idea.wantsHelper = this.wantsHelper;
-      this.navCtrl.push( IdeaPage, { idea: this.idea } );
+          console.log("OK new idea created with id: "+win);
+
+          this.toastCtrl.create({
+            message: this.translateService.instant('OK'),
+            cssClass: 'toast-valid',
+            duration: 4000
+          }).present().then();
+
+          setTimeout(()=>{
+            loadingSpinner.dismiss().then();
+            this.navCtrl.pop();
+          },2000);
+
+        },
+        (error)=>{
+          loadingSpinner.dismiss().then();
+          alert("FAILED TO CREATE IDEA:"+JSON.stringify(error));
+          this.navCtrl.pop();
+        }
+      );
+
     } else {
-      this.navCtrl.pop();
+
+      /*
+       * UPDATE
+       */
+      let loadingSpinner = this.loadingCtrl.create({
+        content: ''
+      });
+      loadingSpinner.present().then();
+      data._id = this.idea._id;
+      this.api.updateKonfettiIdea(data).subscribe(
+        (win)=>{
+
+          console.log("OK idea updated: "+win);
+
+          this.toastCtrl.create({
+            message: this.translateService.instant('OK'),
+            cssClass: 'toast-valid',
+            duration: 4000
+          }).present().then();
+
+          setTimeout(()=>{
+            loadingSpinner.dismiss().then();
+            this.idea.address = this.address;
+            this.idea.description = this.description;
+            this.idea.helpDescription = this.helpDescription;
+            this.idea.date = this.date;
+            this.idea.wantsGuest = this.wantsGuest;
+            this.idea.wantsHelper = this.wantsHelper;
+            this.navCtrl.push( IdeaPage, { idea: this.idea } );
+          },2000);
+          
+        },
+        (error)=>{
+          loadingSpinner.dismiss().then();
+          alert("FAILED TO UPDATE IDEA:"+JSON.stringify(error));
+          this.navCtrl.pop();
+        }
+      );
+
     }
 
   }

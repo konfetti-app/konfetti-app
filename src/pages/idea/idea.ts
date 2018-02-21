@@ -179,7 +179,28 @@ export class IdeaPage {
   }
 
   buttonAdminCancel() : void {
-    alert("TODO: Implement when delete endpoint available");
+    let loadingSpinner = this.loadingCtrl.create({
+      content: ''
+    });
+    loadingSpinner.present().then();
+    this.api.deleteKonfettiIdea(this.idea._id).subscribe(
+      (win)=>{
+        loadingSpinner.dismiss().then();
+        this.toastCtrl.create({
+          message: this.translateService.instant('OK'),
+          cssClass: 'toast-invalid',
+          duration: 2000
+        }).present().then();
+      },
+      (error)=>{
+        loadingSpinner.dismiss().then();
+        this.toastCtrl.create({
+          message: this.translateService.instant('FAIL'),
+          cssClass: 'toast-invalid',
+          duration: 2000
+        }).present().then();
+      }
+    );
   }
 
   buttonKonfettiDistribution() : void {

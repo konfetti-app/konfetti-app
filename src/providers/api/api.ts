@@ -800,6 +800,86 @@ export class ApiProvider {
     });
   }
 
+// creates a konfetti idea and returns the ID of the new idea
+createKonfettiIdea(idea:Idea): Observable<string> {
+
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        // prepare header for json body data
+        headers = headers.append('Content-Type', 'application/json');
+
+        this.http.post<any>(this.apiUrlBase + 'api/ideas/', JSON.stringify(idea),{
+          headers: headers
+        }).subscribe((resp) => {
+
+          /*
+           * WIN
+           */
+
+          observer.next(resp.data.idea._id);
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "createKonfettiIdea", () => {
+            this.createKonfettiIdea(idea).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
+// updates a konfetti idea
+updateKonfettiIdea(idea:Idea): Observable<string> {
+
+  return Observable.create((observer) => {
+
+    this.getJWTAuthHeaders().subscribe(headers => {
+
+      // prepare header for json body data
+      headers = headers.append('Content-Type', 'application/json');
+
+      this.http.post<any>(this.apiUrlBase + 'api/ideas/'+idea._id, JSON.stringify(idea),{
+        headers: headers
+      }).subscribe((resp) => {
+
+        /*
+         * WIN
+         */
+
+        observer.next(resp.data.idea._id);
+        observer.complete();
+
+      }, error => {
+
+        // default error handling
+        this.defaultHttpErrorHandling(error, observer, "updateKonfettiIdea", () => {
+          this.updateKonfettiIdea(idea).subscribe(
+            (win) => {  observer.next(win); observer.complete(); },
+            (error) => observer.error(error)
+          );
+        });
+
+      });
+
+    }, error => {
+      observer.error(error)
+    });
+
+  });
+}
+
   getKonfettiIdeas(groupId:string, userId:string=null, userName:string=null, avatarFilename:string=null) : Observable<Array<Idea>> {
     return Observable.create((observer) => {
       setTimeout(()=>{
@@ -874,6 +954,30 @@ export class ApiProvider {
           observer.complete();
 
       },1000);
+    });
+  }
+
+  deleteKonfettiIdea(id:string) : Observable<void> {
+    return Observable.create((observer) => {
+      this.getJWTAuthHeaders().subscribe(headers => {
+        headers = headers.append('Content-Type', 'application/json');
+        this.http.delete<any>(this.apiUrlBase + 'api/ideas/'+id,{
+          headers: headers
+        }).subscribe((resp) => {
+          observer.next();
+          observer.complete();
+        }, error => {
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "deleteKonfettiIdea", () => {
+            this.deleteKonfettiIdea(id).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+        });
+      }, error => {
+        observer.error(error)
+      });
     });
   }
 
@@ -1157,10 +1261,11 @@ export interface Chat extends DisplayData {
 
 export interface Idea extends DisplayData {
   _id:string;
+  parentNeighbourhood:string;
   title:string;
   description:string;
   address:string;
-  gps:any;
+  geoData:any;
   date:number;
   wantsHelper:boolean;
   helpDescription:string;
