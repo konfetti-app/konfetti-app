@@ -17,7 +17,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MenuController, Events } from 'ionic-angular';
 import { HttpClient} from '@angular/common/http';
-import { LoadingController, Loading } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { InitPage } from '../pages/init/init';
@@ -56,7 +55,6 @@ export class MyApp implements OnInit{
    * Init State
    */
 
-  loadingSpinner : Loading;
   readyPlatform : Boolean = false;
   readyI18N : Boolean = false;
   readyAll : Boolean = false;
@@ -75,7 +73,6 @@ export class MyApp implements OnInit{
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private events: Events,
-    private loadingCtrl: LoadingController,
     private translate: TranslateService,
     private appPersistence: AppPersistenceProvider,
     private appState: AppStateProvider,
@@ -228,11 +225,6 @@ export class MyApp implements OnInit{
 
   initializeAppAsync() {
 
-    this.loadingSpinner = this.loadingCtrl.create({
-      content: ''
-    });
-    this.loadingSpinner.present().then();
-
     // async --> platform is ready
     this.platform.ready().then(() => {
       this.processPlatformIsReady();
@@ -341,7 +333,6 @@ export class MyApp implements OnInit{
 
     // remove native splash screen
     this.readyAll = true;
-    this.loadingSpinner.dismiss().then();
     this.splashScreen.hide();
 
     // TODO init API data
