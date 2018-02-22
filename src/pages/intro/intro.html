@@ -13,43 +13,18 @@
 </ion-header>
 
 
-<ion-content *ngIf="!hidePage" padding no-bounce>
-
-    <table style="
-      width: 95%;
-      max-width: 600px;
-      margin-right: auto;
-      margin-left: auto;
-      margin-top: -12px;
-    ">
-      <tr>
-        <td style="width:50%; text-align: start;">
-          <img src="assets/imgs/logo_text.png" style="
-            width: 50%;
-            max-width: 300px;
-            margin-left:auto;
-            margin-right:auto;
-          ">
-        </td>
-        <td style="width:50%; text-align: end; vertical-align: middle;">
-          <button ion-button clear
-                  (click)="buttonChangeLanguage()"
-                  style="color:darkgrey; padding: 0px;
-                  text-transform: none;
-                  font-size: 120%;" >
-            <span style="padding-left: 4px; padding-right: 4px;">{{actualLanguage.displayname}}</span>
-            <img src="assets/imgs/language@2x.png" style="
-              width: 20px;
-              opacity: 0.3;
-              margin-sart: 5px;
-              "/>
-          </button>
-        </td>
-      </tr>
-    </table>
+<ion-content *ngIf="!hidePage" id="intro-content" padding no-bounce>
 
   <!-- TODO: the ion-slides seem to have a bug with 'rtl' slide direction - check again with ionic v4 -->
-  <ion-slides dir="ltr" pager style="max-height: 400px; margin-top: calc(100% - 300px)">
+  <ion-slides dir="ltr" pager style="
+  max-height: 400px;
+  max-width:  300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -250px;
+  ">
 
     <!-- SLIDE 1 -->
 
@@ -117,7 +92,7 @@
 
     </ion-slide>
 
-    <!-- SLIDE 4 -->
+    <!-- SLIDE 4 
 
     <ion-slide class="slide-background" style="
       background-image: url('assets/imgs/intro_slide2_back.png');
@@ -139,8 +114,44 @@
 
     </ion-slide>
 
+    -->
+
 
   </ion-slides>
+
+  <div style="position: absolute; top: 10px; left: 0px; width: 100%;">
+  <table style="
+  width: 95%;
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: -12px;
+">
+  <tr>
+    <td style="width:50%; text-align: start;">
+      <img src="assets/imgs/logo_text.png" style="
+        width: 50%;
+        max-width: 300px;
+        margin-left:auto;
+        margin-right:auto;
+      ">
+    </td>
+    <td style="width:50%; text-align: end; vertical-align: middle;">
+      <button ion-button clear
+              (click)="buttonChangeLanguage()"
+              style="color:darkgrey; padding: 0px;
+              text-transform: none;
+              font-size: 120%;" >
+        <span style="padding-left: 4px; padding-right: 4px;">{{actualLanguage.displayname}}</span>
+        <img src="assets/imgs/language@2x.png" style="
+          width: 20px;
+          opacity: 0.3;
+          "/>
+      </button>
+    </td>
+  </tr>
+</table>
+</div>
 
   <div style="position: absolute; bottom: 0px; left: 0px; width: 100%;">
 

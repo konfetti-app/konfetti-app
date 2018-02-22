@@ -35,7 +35,7 @@ export class ModuleNewsfeedComponent {
     private state: AppStateProvider,
     private events: Events,
     private persistence: AppPersistenceProvider,
-    private translateService : TranslateService // needed in template as parameter for pipe since
+    private translateService : TranslateService
   ) {
 
     this.isIOS = this.state.isIOS();
@@ -51,7 +51,7 @@ export class ModuleNewsfeedComponent {
     this.events.subscribe("refresh:news", () => {
       console.log("Eventbus: Refresh Newsfeed");
       if (!this.loading) {
-        console.log("Refreshing post list ...");
+        console.log(this.translateService.instant('OK')+" refreshing post list ...");
         this.refreshData();
       } else {
         console.log("Ignore refresh ... because still in loading process.");

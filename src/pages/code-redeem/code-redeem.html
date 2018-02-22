@@ -53,6 +53,13 @@
   <button ion-button large (click)="buttonRedeemCode()" style="max-width: 95%; margin-top: 24px;"
           [innerHTML]="'CODEREDEEM_SEND' | translate"></button>
 
+  <p style="
+    color: grey;
+    font-size: 18px;
+  ">
+    {{'CODEREDEEM_INFO' | translate}}
+  </p>
+
   <p *ngIf="modus=='intro'">
     <button ion-button clear (click)="buttonNoCode()" [innerHTML]="'CODEREDEEM_WHERE_TO_FIND' | translate"></button>
   </p>

@@ -1,5 +1,12 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, ToastController, ViewController, Platform} from 'ionic-angular';
+import { 
+  Component
+} from '@angular/core';
+import { 
+  IonicPage, 
+  ToastController, 
+  ViewController
+} from 'ionic-angular';
+
 import { AppStateProvider, LanguageInfo } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
@@ -21,8 +28,7 @@ export class SettingsPage {
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
     private appPersistence: AppPersistenceProvider,
-    private toastCtrl: ToastController,
-    private platform: Platform
+    private toastCtrl: ToastController
     ) {
 
       this.isIOS = this.appState.isIOS();

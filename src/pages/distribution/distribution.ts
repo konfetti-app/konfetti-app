@@ -13,7 +13,6 @@ import {
 } from 'ionic-angular';
 
 import { ApiProvider, Idea, Chat, Message } from '../../providers/api/api';
-import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 
 import { ParticlesProvider } from '../../providers/particles/particles';
@@ -41,7 +40,6 @@ export class DistributionPage {
     public navParams: NavParams,
     private api: ApiProvider,
     private loadingCtrl: LoadingController,
-    private state: AppStateProvider,
     private persistence: AppPersistenceProvider,
     private konfettiRain: ParticlesProvider,
     private platform: Platform,
