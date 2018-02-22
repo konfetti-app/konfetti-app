@@ -168,21 +168,19 @@ export class MyApp implements OnInit{
 
       if (errorReport.id==="OFFLINE") {
 
-        // TODO i18n
         this.alertCtrl.create({
-          title: 'Offline',
-          message: 'Kein Internet. Nochmal probieren?',
+          title: this.translate.instant('ALERT_OFFLINE'),
+          message: this.translate.instant('ALERT_OFFLINEMSG'),
           buttons: [
             {
-              text: 'App Schließen',
+              text: this.translate.instant('ALERT_CLOSEAPP'),
               role: 'cancel',
               handler: () => {
-                // TODO exit app
-                alert('TODO: Exit App');
+                this.exitApp();
               }
             },
             {
-              text: 'Nochmal',
+              text: this.translate.instant('ALERT_RETRY'),
               handler: () => {
                 errorReport.retryCallback();
               }
@@ -194,34 +192,39 @@ export class MyApp implements OnInit{
       if (errorReport.id==="AUTHFAIL") {
 
         this.alertCtrl.create({
-          title: 'Fehler',
-          subTitle: 'Es besteht ein Fehler. Bitte probieren sie es später nocheinmal.',
-          buttons: ['App Schließen']
-        }).present().then(() => {
-          // TODO i18n & exit app
-          alert("TODO APP");
-        });
+          title: this.translate.instant('ALERT_ERROR'),
+          subTitle: this.translate.instant('ALERT_ERRORRETRY'),
+          buttons: [{
+            text: this.translate.instant('ALERT_CLOSEAPP'),
+            handler: () => {
+              this.exitApp();
+            }
+          }]
+        }).present().then(() => {});
 
       } else {
 
-        // TODO i18n & exit app
         this.alertCtrl.create({
-          title: 'Fehler',
-          subTitle: 'Unbekannter Fehler: ' + errorReport.id,
-          buttons: ['App Schließen']
-        }).present().then(() => {
-          // TODO i18n & exit app
-          alert("TODO APP");
-        });
+          title: this.translate.instant('ALERT_ERROR'),
+          subTitle: this.translate.instant('ALERT_ERRORUNKNOWN')+' ' + errorReport.id,
+          buttons: [{ 
+            text: this.translate.instant('ALERT_CLOSEAPP'),
+            handler: () => {
+              this.exitApp();
+            }
+          }]
+        }).present().then(() => {});
 
       }
 
     });
-
-    // TODO: Remove DEBUG INFO
-    console.log('Native Device:'+this.appState.isRunningOnRealDevice());
-
   }
+
+  private exitApp() {
+    try {
+      navigator['app'].exitApp();
+    } catch (e) {}
+  };
 
   initializeAppAsync() {
 

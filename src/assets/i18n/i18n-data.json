@@ -120,6 +120,14 @@
         "PROFILE_ACCOUNT" : "Your Konfetti Account",
         "PROFILE_CONINUE" : "Continue",
 
+        "ALERT_OFFLINE" : "Offline",
+        "ALERT_OFFLINEMSG" : "No Internet. Retry?",
+        "ALERT_CLOSEAPP" : "Close App",
+        "ALERT_RETRY" : "Retry",
+        "ALERT_ERROR" : "Error",
+        "ALERT_ERRORRETRY" : "An Error occured. Please retry later.",
+        "ALERT_ERRORUNKNOWN" : "Unknown Error",
+
         "NEWSFEED_NONEWS": "No News",
         "NEWSFEED_PULLTOREFRESH": "Pull to Refresh",
 
@@ -136,9 +144,9 @@
         "TOUR_CONTINUE" : "More",
         "TOUR_READY" : "Get Started",
         "TOUR_TEXT_MAP" : "Explore your area on the map",
-        "TOUR_TEXT_NEWS" : "News and Messages",
+        "TOUR_TEXT_NEWS" : "Latest News and Messages",
         "TOUR_TEXT_IDEAS" : "Vote on new ideas and get involved",
-        "TOUR_TEXT_FORUM" : "Pin board and chat groups",
+        "TOUR_TEXT_FORUM" : "Join the conversation with your neighbors",
         "MENU_TITLE" : "Menu",
         "MENU_USERNAME_UNKNOWN" : "Unknown",
         "MENU_EDIT_PROFILE" : "Edit Profile",
@@ -501,6 +509,14 @@
         "PROFILE_ACCOUNT" : "Dein Konfetti Konto",
         "PROFILE_CONINUE" : "Weiter",
 
+        "ALERT_OFFLINE" : "Offline",
+        "ALERT_OFFLINEMSG" : "Kein Internet. Nochmal probieren?",
+        "ALERT_CLOSEAPP" : "App Schließen",
+        "ALERT_RETRY" : "Nochmal",
+        "ALERT_ERROR" : "Fehler",
+        "ALERT_ERRORRETRY" : "Es besteht ein Fehler. Bitte probieren sie es später nocheinmal.",
+        "ALERT_ERRORUNKNOWN" : "Unbekannter Fehler",
+
         "NEWSFEED_NONEWS": "Hier siehst du Neugikeiten zu den Projekten, für die du Konfetti verteilt hast, deinen Admins oder Nachrichtenverläufen.",
         "NEWSFEED_PULLTOREFRESH": ".. zum Aktualisieren ziehen ..",
 
@@ -518,8 +534,8 @@
         "TOUR_READY" : "Los gehts",
         "TOUR_TEXT_MAP" : "Entdecke Deine Konfetti-Nachbarschaft auf der Karte.",
         "TOUR_TEXT_NEWS" : "Alle Neuigkeiten und Nachrichten auf einen Blick.",
-        "TOUR_TEXT_IDEAS" : "Neue Projekte starten, unterstützen und mitmachen.",
-        "TOUR_TEXT_FORUM" : "Pinnwand und Chatgruppen",
+        "TOUR_TEXT_IDEAS" : "Über Ideen abstimmen und mitmachen.",
+        "TOUR_TEXT_FORUM" : "Mit anderen Nachbarn ins Gespräch kommen.",
         "MENU_TITLE" : "Menü",
         "MENU_USERNAME_UNKNOWN" : "Unbekannt",
         "MENU_EDIT_PROFILE" : "Profil bearbeiten",
@@ -882,6 +898,14 @@
         "PROFILE_ACCOUNT" : "حساب كونفيتي الخاص بك",
         "PROFILE_CONINUE" : "استمر",
 
+        "ALERT_OFFLINE" : "غير متصل على الانترنت",
+        "ALERT_OFFLINEMSG" : "لا انترنت. إعادة المحاولة؟",
+        "ALERT_CLOSEAPP" : "تطبيق وثيقة",
+        "ALERT_RETRY" : "إعادة المحاولة",
+        "ALERT_ERROR" : "خطأ",
+        "ALERT_ERRORRETRY" : "حدث خطأ. الرجاء إعادة المحاولة لاحقا.",
+        "ALERT_ERRORUNKNOWN" : "خطأ غير معروف",
+
         "NEWSFEED_NONEWS": "هنا يمكنك أن ترى الأخبار عن المشاريع التي قمت بتوزيع حلويات ل، المشرفين أو القصص الإخبارية.",
         "NEWSFEED_PULLTOREFRESH": "سحب لتحديث",
 
@@ -900,7 +924,7 @@
         "TOUR_TEXT_MAP" : "استكشاف منطقتك على الخريطة",
         "TOUR_TEXT_NEWS" : "الأخبار والرسائل",
         "TOUR_TEXT_IDEAS" : "التصويت على أفكار جديدة والمشاركة",
-        "TOUR_TEXT_FORUM" : "دبوس المجلس ومجموعات الدردشة",
+        "TOUR_TEXT_FORUM" : "الانضمام إلى محادثة مع جيرانك",
         "MENU_TITLE" : "قائمة طعام",
         "MENU_USERNAME_UNKNOWN" : "غير معروف",
         "MENU_EDIT_PROFILE" : "تعديل الملف الشخصي",

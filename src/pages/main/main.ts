@@ -685,9 +685,9 @@ export class MainPage {
   // returns the color depending of module id
   getModuleButtonColor(id : string) {
     if (id==='news') return '#d1736f';
-    if (id==='ideas') return '#92bc81';
-    if (id==='groupchats') return '#78bce9';
-    return 'red'; // fallback
+    if (id==='ideas') return '#d1736f';
+    if (id==='groupchats') return '#d1736f';
+    return '#d1736f'; // fallback
   }
 
   getModuleConfig(id : string) : any {
