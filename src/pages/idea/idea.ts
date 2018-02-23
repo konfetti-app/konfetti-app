@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
+import { 
+  Component,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 import { 
   IonicPage, 
   NavController, 
   ToastController, 
   NavParams,
   LoadingController,
-  ActionSheetController
+  ActionSheetController,
+  Platform
 } from 'ionic-angular';
 
 import { TranslateService } from "@ngx-translate/core";
@@ -17,6 +22,7 @@ import { AppPersistenceProvider } from "../../providers/app-persistence/app-pers
 import { ChatPage } from '../../pages/chat/chat';
 import { IdeaEditPage } from '../../pages/idea-edit/idea-edit';
 import { DistributionPage } from '../../pages/distribution/distribution';
+import { ParticlesProvider } from '../../providers/particles/particles';
 
 @IonicPage()
 @Component({
@@ -30,6 +36,10 @@ export class IdeaPage {
   activeGroupId:string;
   running:boolean = true;
 
+  // for the particle
+  @ViewChild('canvasObj') canvasElement : ElementRef;
+  isPlaying:boolean = false;
+
   constructor(
     private navCtrl: NavController, 
     private navParams: NavParams,
@@ -39,7 +49,9 @@ export class IdeaPage {
     private loadingCtrl: LoadingController,
     private persistence: AppPersistenceProvider,
     private state: AppStateProvider,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private konfettiRain: ParticlesProvider,
+    private platform: Platform,
   ) {
   
     // get idea from parameter and init data
@@ -57,12 +69,51 @@ export class IdeaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad IdeaPage');
+    setTimeout(() => {
+      try {
+        this.konfettiRain.initialiseCanvas(this.canvasElement.nativeElement, this.platform.width(), this.platform.height());
+      } catch (e) {
+        alert("FAILED to init this.canvasElement.nativeElement");
+      }
+    }, 300);
   }
 
   vote() : void {
+
+    if (this.isPlaying) return;
     if (this.calculatesState!='vote') return;
-    alert("TODO: When voting ready on module - copy over");
+    if (this.idea.konfettiUser>0) return;
+
+    let loadingSpinner = this.loadingCtrl.create({
+      content: ''
+    });
+    loadingSpinner.present().then();
+
+    this.api.voteKonfettiIdea(this.idea._id, 1).subscribe(
+      (win)=>{
+
+        loadingSpinner.dismiss().then();
+
+        this.idea.konfettiUser++;
+        this.idea.konfettiTotal=win.konfettiIdea;
+
+        this.isPlaying = true;
+        this.konfettiRain.startAnimation(500, 6500, ()=>{
+          this.isPlaying = false;
+        });
+
+        this.toastCtrl.create({
+          message: this.translateService.instant('IDEA_EVENTVOTE1'),
+          cssClass: 'toast-valid',
+          duration: 5000
+        }).present().then();
+
+      },
+      (error)=>{
+        console.log("FAILED VOTE: ",error);
+        loadingSpinner.dismiss().then();
+      }
+    );
   }
 
   buttonJoin() : void {

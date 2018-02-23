@@ -222,11 +222,9 @@ export class ModuleIdeasComponent {
 
         loadingSpinner.dismiss().then();
 
-        // TODO: server
         idea.konfettiUser++;
-        idea.konfettiTotal++;
+        idea.konfettiTotal=win.konfettiIdea;
         this.events.publish("main:konfettirain", null);
-        // TODO: update user konfetti
 
         this.toastCtrl.create({
           message: this.translate.instant('IDEA_EVENTVOTE1'),
