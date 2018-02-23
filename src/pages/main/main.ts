@@ -23,7 +23,7 @@ import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
 import { CodeRedeemPage } from '../code-redeem/code-redeem';
-import { ApiProvider, Code, User, PushNotification } from '../../providers/api/api';
+import { ApiProvider, Code, User, Idea, PushNotification } from '../../providers/api/api';
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppConfigProvider } from "../../providers/app-config/app-config";
@@ -139,9 +139,6 @@ export class MainPage {
   zoomControl : any;
 
   moduleConfig : Array<string>;
-
-  // this one just for dummy testing
-  notificationModuleA : boolean = false;
 
   // flag is running on iOS
   isIOS: boolean;
@@ -355,9 +352,6 @@ export class MainPage {
         this.showFabButton = false;
       }
 
-      // deactivate notification bubble on module
-      if (moduleName==='groupchats') this.notificationModuleA = false;
-
       if (this.showModuleFocus==='') {
         // fresh - just fade in
         this.showModuleFocus = moduleName;
@@ -529,6 +523,37 @@ export class MainPage {
 
     this.zoomControl.addTo(this.map);
 
+    // update events on map
+    this.api.getKonfettiIdeas(
+      this.persistence.getAppDataCache().lastFocusGroupId,
+      this.persistence.getAppDataCache().userid,
+      null,
+      null
+    ).subscribe(
+      (win:Array<Idea>)=>{
+
+        // clear existing event markers
+        this.map.removeLayer(this.eventMarkers);
+        this.eventMarkers = leaflet.featureGroup();
+        this.map.addLayer(this.eventMarkers);
+
+        // set new event markers
+        win.forEach((idea)=>{
+          if ((idea.geoData!=null) && (idea.geoData.latitude!=null)) {
+            let marker: any = leaflet.marker([idea.geoData.latitude, idea.geoData.longitude]).on('click', () => {
+              this.toastCtrl.create({
+                message: idea.title,
+                duration: 5000
+              }).present().then();
+            });
+            this.eventMarkers.addLayer(marker);
+          }
+        });
+
+    },(error)=>{
+      console.log("FAIL", );
+    });
+
     setTimeout(() => {
       if (this.stateModulePanel==='showMap') {
         this.showModuleFocus="";
@@ -610,15 +635,6 @@ export class MainPage {
         this.lat = group.geoData.latitude;
         this.zoom = this.state.convertRadiusToZoomLevel(group.geoData.radius);
         this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
-
-        // TODO: later Mapevents?
-        let marker: any = leaflet.marker([this.lat, this.lon]).on('click', () => {
-          this.toastCtrl.create({
-            message: 'TODO: What should happen?',
-            duration: 5000
-          }).present().then();
-        });
-        this.eventMarkers.addLayer(marker);
       }
 
       this.showModuleOverlay = true;
@@ -697,7 +713,6 @@ export class MainPage {
   }
 
   getModuleHasNotification(id: string) {
-    if (id==='groupchats') return this.notificationModuleA;
     return false; // fallback
   }
 
