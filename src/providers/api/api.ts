@@ -885,6 +885,14 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
             if (element.guests==null) element.guests = [];
             if (element.userIsHelping==null) element.userIsHelping = element.helpers.indexOf(userId)>=0;
             if (element.userIsAttending==null) element.userIsAttending = element.guests.indexOf(userId)>=0;
+            
+            if (element.konfettiSpent!=null) {
+              element.konfettiSpent.forEach((spending)=>{
+                element.konfettiTotal += spending.amount;
+                if (spending.byUser==userId) element.konfettiUser += spending.amount;
+              });
+            }
+            
             results.push(this.addDisplayData(element, userId, userName, avatarFilename));
           });
 
@@ -932,6 +940,7 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
   voteKonfettiIdea(ideaID:string, count:number) : Observable<VoteResult> {
     return Observable.create((observer) => {
       this.getJWTAuthHeaders().subscribe(headers => {
+        
         headers = headers.append('Content-Type', 'application/json');
         this.http.post<any>(this.apiUrlBase + 'api/ideas/'+ideaID+'/vote', JSON.stringify({amount: count}),{
           headers: headers
@@ -957,17 +966,6 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
         observer.error(error)
       });
     });
-    /*
-    return Observable.create((observer) => {
-      setTimeout(()=>{
-          let result:VoteResult = {} as VoteResult;
-          result.konfettiIdea = 1;
-          result.konfettiWallet = 0;
-          observer.next(result);
-          observer.complete();
-      },200);
-    });
-    */
   }
 
   joinKonfettiIdea(ideaID:string, attent:boolean, helping:boolean) : Observable<JoinResult> {
@@ -1271,6 +1269,7 @@ export interface Idea extends DisplayData {
   orgaChatID:string;
   helpers:Array<string>;
   guests:Array<string>;
+  konfettiSpent:Array<any>;
 }
 
 export interface VoteResult {
