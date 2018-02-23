@@ -94,8 +94,9 @@ export class IdeaPage {
 
         loadingSpinner.dismiss().then();
 
-        this.idea.konfettiUser++;
+        this.idea.konfettiUser = this.idea.konfettiUser + 1;
         this.idea.konfettiTotal=win.konfettiIdea;
+        this.calculatesState = "voted";
 
         this.isPlaying = true;
         this.konfettiRain.startAnimation(500, 6500, ()=>{
