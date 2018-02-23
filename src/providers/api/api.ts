@@ -881,8 +881,10 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
             if (element.reviewStatus==null) element.reviewStatus = "OK";
             if (element.konfettiTotal==null) element.konfettiTotal = 0;
             if (element.konfettiUser==null) element.konfettiUser = 0;
+            if (element.helpers==null) element.helpers = [];
+            if (element.guests==null) element.guests = [];
             if (element.userIsHelping==null) element.userIsHelping = element.helpers.indexOf(userId)>=0;
-            if (element.userIsAttending==null) element.userIsAttending = element.subscribers.indexOf(userId)>=0;
+            if (element.userIsAttending==null) element.userIsAttending = element.guests.indexOf(userId)>=0;
             results.push(this.addDisplayData(element, userId, userName, avatarFilename));
           });
 
@@ -1239,7 +1241,7 @@ export interface Idea extends DisplayData {
   userIsAttending:boolean;
   orgaChatID:string;
   helpers:Array<string>;
-  subscribers:Array<string>;
+  guests:Array<string>;
 }
 
 export interface VoteResult {
