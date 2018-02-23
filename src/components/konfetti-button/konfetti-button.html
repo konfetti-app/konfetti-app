@@ -1,9 +1,14 @@
 <div class="button-div" [ngClass]="{ 'inactive' : (state=='done' || state=='cancel') }">
-  <div style="
+  <div class="konfetti-votecount-div" style="
         color: white;
   ">{{count}}</div>
-  <div *ngIf="state=='vote'" style="padding-top: 1px;">🎉</div>
-  <div *ngIf="state=='voted'" style="
+  <div class="konfetti-status-div konfetti-status-div-vote" *ngIf="state=='vote'" style="
+      padding-top: 1px;
+      -webkit-padding-start: 7px;
+  ">
+  🎉
+  </div>
+  <div class="konfetti-status-div konfetti-status-div-voted" *ngIf="state=='voted'" style="
         color: green;
         font-size: 30px;
         font-weight: 400;
@@ -11,12 +16,12 @@
         margin-left: 1px;">
     <ion-icon name="checkmark"></ion-icon>
   </div>
-  <div *ngIf="state=='done'" style="
+  <div class="konfetti-status-div konfetti-status-div--done" *ngIf="state=='done'" style="
       color: green;
       font-size: 23px;
       font-weight: 400;
       margin-top: -1px;
       margin-left: 1px;">
-<ion-icon name="md-done-all"></ion-icon>
-</div>
+      <ion-icon name="md-done-all"></ion-icon>
+   </div>
 </div>

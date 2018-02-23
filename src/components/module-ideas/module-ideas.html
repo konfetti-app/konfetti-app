@@ -165,7 +165,7 @@
                                   <div class="card-text-main">{{idea.title}}</div>
                                   <div class="card-text-underline">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</div>
                                 </td>
-                                <td style="width:50px; font-size: 200%;">
+                                <td style="width:50px;">
                                   <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
                                 </td>
                             </tr>

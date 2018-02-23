@@ -22,7 +22,7 @@
         <h3>{{idea.title}}</h3>
       </td>
       <td style="width:60px; text-align: end;">
-        <konfetti-button [state]="calculatesState" [count]="idea.konfettiTotal" (click)="vote()"></konfetti-button>
+        <konfetti-button id="idea-konfetti-button" [state]="calculatesState" [count]="idea.konfettiTotal" (click)="vote()"></konfetti-button>
       </td>
     </tr>
     <tr>

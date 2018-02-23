@@ -18,5 +18,12 @@ page-idea {
 .action-sheet-button .button-inner {
     text-align: center;
     color: color($colors, primary);
+}
 
+#idea-konfetti-button .konfetti-votecount-div {
+    padding-top:3px;
+}
+
+#idea-konfetti-button .konfetti-status-div-voted {
+    margin-top: -4px;
 }
