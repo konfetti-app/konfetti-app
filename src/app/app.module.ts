@@ -15,6 +15,7 @@ import { ChatEditPage } from '../pages/chat-edit/chat-edit';
 import { SettingsPage } from '../pages/settings/settings';
 import { CodeRedeemPage } from '../pages/code-redeem/code-redeem';
 import { DistributionPage } from '../pages/distribution/distribution';
+import { LocationPickerPage } from '../pages/location-picker/location-picker';
 
 import { ApiProvider } from '../providers/api/api';
 
@@ -54,6 +55,7 @@ import { SettingsPageModule } from '../pages/settings/settings.module';
 import { LoginPageModule } from '../pages/login/login.module';
 import { InitPageModule } from '../pages/init/init.module';
 import { DistributionPageModule } from '../pages/distribution/distribution.module';
+import { LocationPickerPageModule } from '../pages/location-picker/location-picker.module';
 
 import { AppConfigProvider } from '../providers/app-config/app-config';
 
@@ -81,7 +83,8 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     LoginPageModule,
     InitPageModule,
     IdeaEditPageModule,
-    DistributionPageModule 
+    DistributionPageModule,
+    LocationPickerPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -97,7 +100,8 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
     IdeaPage,    
     IdeaEditPage,
     ChatEditPage,
-    SettingsPage
+    SettingsPage,
+    LocationPickerPage
   ],
   providers: [
     StatusBar,
