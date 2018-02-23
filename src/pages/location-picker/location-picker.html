@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>location-picker</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -22,6 +22,28 @@
     background-color: lightgoldenrodyellow;
     background-image: url('assets/imgs/default-background.png');
     background-size: 100%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
   "></div>
+  <div *ngIf="marker==null" style="
+    position: relative;
+    top: -150px;
+    font-weight: bold;
+    z-index: 10002;
+    color: white;
+    text-shadow: 0 0 5px black;
+    font-size: 18px;
+    pointer-events: none;
+    text-transform: uppercase;
+  ">
+    Please Pinpoint Location
+  </div>  
+
+  <!-- This button only when user did not opened profile from side menu -->
+  <button ion-button block color="primary" (click)="buttonContinue()" style="margin-top: 38px;">
+    {{ 'OK' | translate }}
+  </button>
+
 
 </ion-content>

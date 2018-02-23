@@ -68,11 +68,16 @@ export class LocationPickerPage {
 
     this.map.on('click', (e) => {
       console.log('click',e.latlng);
-      
+    
       this.lat = e.latlng.lat;
       this.lon = e.latlng.lng;
 
-      this.map.panTo({lon: this.lon, lat: this.lat}, this.zoom);
+      if (this.zoom<16) {
+        this.zoom = 16;
+        this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
+      } else {
+        this.map.panTo({lon: this.lon, lat: this.lat}, this.zoom);
+      }
 
       if (this.marker!=null) {
         this.eventMarkers.removeLayer(this.marker);
@@ -80,9 +85,14 @@ export class LocationPickerPage {
       this.marker = leaflet.marker([this.lat, this.lon]);
       this.eventMarkers.addLayer(this.marker);
       });
+    console.log("added on click");
 
     this.mapInitDone = true;
 
+  }
+
+  private buttonContinue() : void {
+    alert("TODO");
   }
 
 }
