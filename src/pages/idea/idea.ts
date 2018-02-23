@@ -78,6 +78,9 @@ export class IdeaPage {
     }, 300);
   }
 
+  ionViewWillEnter() {
+  }  
+
   vote() : void {
 
     if (this.isPlaying) return;

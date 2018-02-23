@@ -65,6 +65,9 @@
         "IDEADISTRO_NOTE": "confetti points were voted on this event by the community. Forward them as a thank you to all helping hands.",
         "IDEADISTRO_THANKS": "Thanks you for organizing this event.",
 
+        "LOCATIONPICKER_PINPOINT" : "Please Pinpoint Location",
+        "LOCATIONPICKER_IDEA" : "Please mark the location of the following address on the map.",
+
         "CHAT_NEEDNAMEFOTO": "We need Name and a picture from you, before you can create a new chat.",
         "CHAT_NEEDFOTO" : "We need a additional pictiure of you, before you can create a new chat.",
         "CHAT_NOCHATS" : "No chats available yet.",
@@ -454,6 +457,9 @@
         "IDEADISTRO_NOTE": "Konfettipunkte haben alle Nachbarn zusammen für diese Idee gegeben. Verteile diese als Dankeschön an Organisatoren und Helfer.",
         "IDEADISTRO_THANKS": "Danke, dass Du dieses Nachbarschaftstreffen organisiert hast.",
 
+        "LOCATIONPICKER_PINPOINT" : "Bitte Ort markieren",
+        "LOCATIONPICKER_IDEA" : "Bitte markiere die folgende Adresse auf der Karte.",
+
         "CHAT_NEEDNAMEFOTO": "Wir brauchen noch Name und Foto von dir, bevor du einen neuen Chat anlegen kannst.",
         "CHAT_NEEDFOTO" : "Wir brauchen noch ein Foto von dir, bevor du einen neuen Chat anlegen kannst.",
         "CHAT_NOCHATS" : "Noch keine Chats vorhanden.",
@@ -842,6 +848,9 @@
         "IDEADISTRO_HEADLINE": "توزيع كونفيتي",
         "IDEADISTRO_NOTE": "تم التصويت على نقاط ملونة على هذا الحدث من قبل المجتمع. إعادة توجيههم كما شكر لجميع المساعدين.",
         "IDEADISTRO_THANKS": "شكرا لك على تنظيم هذا الحدث.",
+
+        "LOCATIONPICKER_PINPOINT" : "يرجى تحديد الموقع",
+        "LOCATIONPICKER_IDEA" : "يرجى وضع علامة على موقع العنوان التالي على الخريطة.",
 
         "CHAT_NEEDNAMEFOTO": "نحن بحاجة إلى اسم وصورة منك، قبل أن تتمكن من إنشاء دردشة جديدة.",
         "CHAT_NEEDFOTO" : "نحن بحاجة إلى صورة إضافية من أنت، قبل أن تتمكن من إنشاء دردشة جديدة.",

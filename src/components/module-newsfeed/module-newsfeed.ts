@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { 
-  Events,
-  ModalController
+  Events
 } from 'ionic-angular';
 
 import { TranslateService } from "@ngx-translate/core";
@@ -10,8 +9,6 @@ import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
 import { ApiProvider, Post, PushNotification } from '../../providers/api/api';
-
-import { LocationPickerPage } from '../../pages/location-picker/location-picker';
 
 @Component({
   selector: 'module-newsfeed',
@@ -39,7 +36,6 @@ export class ModuleNewsfeedComponent {
     private events: Events,
     private persistence: AppPersistenceProvider,
     private translateService : TranslateService,
-    public modalCtrl: ModalController
   ) {
 
     this.isIOS = this.state.isIOS();
@@ -97,11 +93,6 @@ export class ModuleNewsfeedComponent {
 
   public selectCard(post:Post) : void {
     this.events.publish('notification:process',post.meta as PushNotification);
-  }
-
-  public presentPopover():void {
-    let modal = this.modalCtrl.create(LocationPickerPage);
-    modal.present();
   }
 
 }

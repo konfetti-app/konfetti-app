@@ -8,12 +8,24 @@
 
   <ion-navbar>
     <ion-title></ion-title>
+    <ion-buttons end class="navheader-end-buttons" >
+        <button ion-button icon-only (click)="buttonClose()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+      </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding style="text-align:center;">
+
+    <div *ngIf="((notice!=null) && (notice.length>0))" class="notice-text"> 
+        {{notice}}
+        <div *ngIf="((address!=null) && (address.length>0))"
+          style=" margin-top: 15px; color: grey;">
+            <ion-icon name="md-pin"></ion-icon> {{address}}
+        </div>
+    </div>
 
     <div id="mappicker" style="
     width:280px;
@@ -26,24 +38,30 @@
     margin-left: auto;
     margin-right: auto;
   "></div>
-  <div *ngIf="marker==null" style="
-    position: relative;
-    top: -150px;
-    font-weight: bold;
-    z-index: 10002;
-    color: white;
-    text-shadow: 0 0 5px black;
-    font-size: 18px;
-    pointer-events: none;
-    text-transform: uppercase;
-  ">
-    Please Pinpoint Location
-  </div>  
 
   <!-- This button only when user did not opened profile from side menu -->
-  <button ion-button block color="primary" (click)="buttonContinue()" style="margin-top: 38px;">
-    {{ 'OK' | translate }}
+  <button ion-button block color="primary" (click)="buttonContinue()" style="
+    max-width: 280px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  ">
+    {{textButton}}
   </button>
+
+  <div *ngIf="marker==null" style="
+  position: relative;
+  top: -180px;
+  font-weight: bold;
+  z-index: 10002;
+  color: white;
+  text-shadow: 0 0 5px black;
+  font-size: 18px;
+  pointer-events: none;
+  text-transform: uppercase;
+">
+  {{ 'LOCATIONPICKER_PINPOINT' | translate }}
+</div>  
 
 
 </ion-content>

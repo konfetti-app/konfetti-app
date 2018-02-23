@@ -3,17 +3,20 @@ import {
 } from '@angular/core';
 import { 
   IonicPage, 
+  NavParams,
   NavController, 
   ToastController, 
   LoadingController,
-  NavParams 
+  ModalController,
 } from 'ionic-angular';
 
 import { TranslateService } from "@ngx-translate/core";
 import { ApiProvider, Idea } from '../../providers/api/api';
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
+import { AppStateProvider } from "../../providers/app-state/app-state";
 
 import { IdeaPage } from '../../pages/idea/idea';
+import { LocationPickerPage } from '../../pages/location-picker/location-picker';
 
 @IonicPage()
 @Component({
@@ -53,7 +56,9 @@ export class IdeaEditPage {
     private translateService: TranslateService,
     private persistence: AppPersistenceProvider,
     private api: ApiProvider,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    public modalCtrl: ModalController,
+    private state: AppStateProvider,
   ) {
 
     // get idea from parameter if this should be an edit
@@ -110,7 +115,7 @@ export class IdeaEditPage {
     }
 
     // check date filled out
-    if ((this.date == null) || (new Date(this.date).getTime()==0)) {
+    if ((this.date == null) || (new Date(this.date).getTime() == 0)) {
       this.dateOpacity = 0;
       setTimeout(() => {
         this.dateOpacity = 1;
@@ -129,16 +134,16 @@ export class IdeaEditPage {
     }
 
     // check if checkmarks are set
-    console.log("this.wantsGuest",this.wantsGuest);
-    console.log("this.wantsHelper",this.wantsHelper);
+    console.log("this.wantsGuest", this.wantsGuest);
+    console.log("this.wantsHelper", this.wantsHelper);
     if ((!this.wantsGuest) && (!this.wantsHelper)) {
-   
-      setTimeout(()=>{
+
+      setTimeout(() => {
         this.selectOpacity = 0;
         setTimeout(() => {
           this.selectOpacity = 1;
         }, 500);
-      },1000);
+      }, 1000);
 
       this.toastCtrl.create({
         message: this.translateService.instant('IDEAEDIT_CHOOSEAUDIENCE'),
@@ -151,7 +156,7 @@ export class IdeaEditPage {
 
     // when help description is needed
     this.helpDescription = this.helpDescription.trim();
-    if ((this.wantsHelper) && (this.helpDescription.length==0)) {
+    if ((this.wantsHelper) && (this.helpDescription.length == 0)) {
       this.toastCtrl.create({
         message: this.translateService.instant('IDEAEDIT_HELPDETAIL'),
         cssClass: 'toast-invalid',
@@ -160,93 +165,131 @@ export class IdeaEditPage {
       return;
     }
 
-    // data to send to server
-    let data: any = {};
-    data.parentNeighbourhood = this.activeGroupId;
-    data.title = this.title;
-    data.description = this.description;
-    data.address = this.address;
-    data.date = new Date(this.date).getTime();
-    data.wantsHelper = this.wantsHelper;
-    data.helpDescription = this.helpDescription;
-    data.wantsGuest = this.wantsGuest;
-    
-    // when its updated
-    if (!this.idea) {
+    let focusGroupId = this.persistence.getAppDataCache().lastFocusGroupId;
+    let group = this.state.getNeighbourhoodById(focusGroupId);
+    console.log("group",group);
 
-      /*
-       * CREATE
-       */
-      let loadingSpinner = this.loadingCtrl.create({
-        content: ''
-      });
-      loadingSpinner.present().then();
-      this.api.createKonfettiIdea(data).subscribe(
-        (win:string)=>{
-
-          console.log("OK new idea created with id: "+win);
-
-          this.toastCtrl.create({
-            message: this.translateService.instant('OK'),
-            cssClass: 'toast-valid',
-            duration: 2000
-          }).present().then();
-
-          setTimeout(()=>{
-            loadingSpinner.dismiss().then();
-            this.navCtrl.pop();
-          },2000);
-
-        },
-        (error)=>{
-          loadingSpinner.dismiss().then();
-          alert("FAILED TO CREATE IDEA:"+JSON.stringify(error));
-          this.navCtrl.pop();
-        }
-      );
-
-    } else {
-
-      /*
-       * UPDATE
-       */
-      let loadingSpinner = this.loadingCtrl.create({
-        content: ''
-      });
-      loadingSpinner.present().then();
-      data._id = this.idea._id;
-      this.api.updateKonfettiIdea(data).subscribe(
-        (win)=>{
-
-          console.log("OK idea updated: "+win);
-
-          this.toastCtrl.create({
-            message: this.translateService.instant('OK'),
-            cssClass: 'toast-valid',
-            duration: 2000
-          }).present().then();
-
-          setTimeout(()=>{
-            loadingSpinner.dismiss().then();
-            this.idea.address = this.address;
-            this.idea.description = this.description;
-            this.idea.helpDescription = this.helpDescription;
-            this.idea.date = this.date;
-            this.idea.wantsGuest = this.wantsGuest;
-            this.idea.wantsHelper = this.wantsHelper;
-            this.navCtrl.push( IdeaPage, { idea: this.idea } );
-          },2000);
-          
-        },
-        (error)=>{
-          loadingSpinner.dismiss().then();
-          alert("FAILED TO UPDATE IDEA:"+JSON.stringify(error));
-          this.navCtrl.pop();
-        }
-      );
-
+    let pickerData: any = {
+      notice: this.translateService.instant('LOCATIONPICKER_IDEA'),
+      address: this.address,
+      textButton: this.translateService.instant('OK')
+    };
+    if ((group!=null) && (group.geoData != null)) {
+      pickerData.mapPosition = {
+        lat: group.geoData.latitude,
+        lon: group.geoData.longitude
+      };
     }
+    if ((this.idea!=null) && (this.idea.geoData != null)
+      && (this.idea.geoData.latitude != null)
+      && (this.idea.geoData.longitude != null)) {
+      pickerData.pinPosition = {
+        lat: this.idea.geoData.latitude,
+        lon: this.idea.geoData.longitude
+      };
+    }
+    let modal = this.modalCtrl.create(LocationPickerPage, pickerData);
+    modal.onDidDismiss((locationData) => {
+
+      // got location data from server
+      if (locationData.success) {
+
+        // data to send to server
+        let data: any = {};
+        data.parentNeighbourhood = this.activeGroupId;
+        data.title = this.title;
+        data.description = this.description;
+        data.address = this.address;
+        data.date = new Date(this.date).getTime();
+        data.wantsHelper = this.wantsHelper;
+        data.helpDescription = this.helpDescription;
+        data.wantsGuest = this.wantsGuest;
+        if (locationData.lat != null) {
+          data.geoData = {
+            longitude: locationData.lon,
+            latitude: locationData.lat
+          }
+        };
+
+        // when its updated
+        if (!this.idea) {
+
+          // CREATE    
+          let loadingSpinner = this.loadingCtrl.create({
+            content: ''
+          });
+          loadingSpinner.present().then();
+          this.api.createKonfettiIdea(data).subscribe(
+            (win: string) => {
+
+              console.log("OK new idea created with id: " + win);
+
+              this.toastCtrl.create({
+                message: this.translateService.instant('OK'),
+                cssClass: 'toast-valid',
+                duration: 2000
+              }).present().then();
+
+              setTimeout(() => {
+                loadingSpinner.dismiss().then();
+                this.navCtrl.pop();
+              }, 2000);
+
+            },
+            (error) => {
+              loadingSpinner.dismiss().then();
+              alert("FAILED TO CREATE IDEA:" + JSON.stringify(error));
+              this.navCtrl.pop();
+            }
+          );
+
+        } else {
+
+          //UPDATE
+          let loadingSpinner = this.loadingCtrl.create({
+            content: ''
+          });
+          loadingSpinner.present().then();
+          data._id = this.idea._id;
+          this.api.updateKonfettiIdea(data).subscribe(
+            (win) => {
+
+              console.log("OK idea updated: " + win);
+
+              this.toastCtrl.create({
+                message: this.translateService.instant('OK'),
+                cssClass: 'toast-valid',
+                duration: 2000
+              }).present().then();
+
+              setTimeout(() => {
+                loadingSpinner.dismiss().then();
+                /*
+                this.idea.address = this.address;
+                this.idea.description = this.description;
+                this.idea.helpDescription = this.helpDescription;
+                this.idea.date = this.date;
+                this.idea.wantsGuest = this.wantsGuest;
+                this.idea.wantsHelper = this.wantsHelper;
+                this.idea.geoData.latitude = locationData.lat;
+                this.idea.geoData.longitude = locationData.lon;
+                */
+                this.navCtrl.popToRoot();
+              }, 2000);
+
+            },
+            (error) => {
+              loadingSpinner.dismiss().then();
+              alert("FAILED TO UPDATE IDEA:" + JSON.stringify(error));
+              this.navCtrl.pop();
+            }
+          );
+
+        }
+      }
+
+    });
+    modal.present();
 
   }
-
 }
