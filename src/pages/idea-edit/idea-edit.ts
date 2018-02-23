@@ -129,6 +129,8 @@ export class IdeaEditPage {
     }
 
     // check if checkmarks are set
+    console.log("this.wantsGuest",this.wantsGuest);
+    console.log("this.wantsHelper",this.wantsHelper);
     if ((!this.wantsGuest) && (!this.wantsHelper)) {
    
       setTimeout(()=>{

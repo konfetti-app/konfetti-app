@@ -447,7 +447,7 @@
         "IDEAEDIT_WANTSGUESTS" : "Teilnehmer / Gäste",   
         "IDEAEDIT_CONTINUE" : "Weiter",
         "IDEAEDIT_DATEINPAST" : "Datum kann nicht in der Vergangenheit liegen",
-        "IDEAEDIT_CHOOSEAUDIENCE" : "wähle aus ob du Helfer uns/oder Gäste suchst",
+        "IDEAEDIT_CHOOSEAUDIENCE" : "wähle aus ob du Helfer und/oder Gäste suchst",
         "IDEAEDIT_SAVECHANGES" : "Änderungen speichern",
 
         "IDEADISTRO_HEADLINE": "Konfetti verteilen",
