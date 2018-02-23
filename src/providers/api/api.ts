@@ -931,6 +931,34 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
 
   voteKonfettiIdea(ideaID:string, count:number) : Observable<VoteResult> {
     return Observable.create((observer) => {
+      this.getJWTAuthHeaders().subscribe(headers => {
+        headers = headers.append('Content-Type', 'application/json');
+        this.http.post<any>(this.apiUrlBase + 'api/ideas/'+ideaID+'/vote', JSON.stringify({amount: count}),{
+          headers: headers
+        }).subscribe((resp) => {
+          // WIN
+
+          let result:VoteResult = {} as VoteResult;
+          result.konfettiIdea = resp.data.konfettiIdea;
+          result.konfettiWallet = null;
+
+          observer.next(result);
+          observer.complete();
+        }, error => {
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "updateKonfettiIdea", () => {
+            this.voteKonfettiIdea(ideaID, count).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+        });
+      }, error => {
+        observer.error(error)
+      });
+    });
+    /*
+    return Observable.create((observer) => {
       setTimeout(()=>{
           let result:VoteResult = {} as VoteResult;
           result.konfettiIdea = 1;
@@ -939,6 +967,7 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
           observer.complete();
       },200);
     });
+    */
   }
 
   joinKonfettiIdea(ideaID:string, attent:boolean, helping:boolean) : Observable<JoinResult> {
