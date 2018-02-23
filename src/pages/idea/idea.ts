@@ -16,7 +16,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 
 import { ApiProvider, Idea, Chat, JoinResult } from '../../providers/api/api';
-import { AppStateProvider } from "../../providers/app-state/app-state";
+//import { AppStateProvider } from "../../providers/app-state/app-state";
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 
 import { ChatPage } from '../../pages/chat/chat';
@@ -48,7 +48,7 @@ export class IdeaPage {
     private api: ApiProvider,
     private loadingCtrl: LoadingController,
     private persistence: AppPersistenceProvider,
-    private state: AppStateProvider,
+    //private state: AppStateProvider,
     private actionSheetCtrl: ActionSheetController,
     private konfettiRain: ParticlesProvider,
     private platform: Platform,
@@ -189,37 +189,28 @@ export class IdeaPage {
   // gets the chat object from id
   loadOrgaChat(callback:Function) {
 
-        // get all idea chats
+        if (this.idea.orgaChat==null) {
+          console.log("FAIL No OrgaID",this.idea);
+          this.toastCtrl.create({
+            message: 'FAIL: No OrgaID',
+            cssClass: 'toast-invalid',
+            duration: 2000
+          }).present().then();
+          return;
+        }
+
         let loadingSpinner = this.loadingCtrl.create({
           content: ''
         });
         loadingSpinner.present().then();
     
-        this.api.getChats(
-          this.activeGroupId,
-          "moduleIdeas",
-          this.persistence.getAppDataCache().userid,
-          this.state.getUserInfo().nickname,
-          this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null
-        ).subscribe((chats:Array<Chat>) => {
-    
+        this.api.getChat(this.idea.orgaChat).subscribe((win)=>{
           loadingSpinner.dismiss().then();
-    
-          // search thru chats
-          let orgaChat:Chat = null;
-          chats.forEach((chat)=>{
-            if (chat._id==this.idea.orgaChatID) orgaChat = chat;
-          });
-    
-          if (orgaChat!=null) {
-            callback(orgaChat);
-          } else {
-            alert("FAIL ORGACHAT("+this.idea.orgaChatID+") NOT FOUND");
-          }
-    
-        }, (error) => {
+          win.description = "";
+          callback(win);
+        },(error)=>{
           loadingSpinner.dismiss().then();
-          alert("TODO: Error on getting chatlist");
+          callback(null);
         });
   }
 

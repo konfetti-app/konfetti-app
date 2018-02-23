@@ -96,8 +96,18 @@ export class DistributionPage {
 
   buttonKonfettiDistribution() : void {
     if (this.isPlaying) return;
-    alert("TODO make server request");
-    this.startAnimation();
+
+    let idsOfAllSelected:Array<string> = [];
+    this.helpers.forEach((helper)=>{
+      if (helper.selected) idsOfAllSelected.push(helper._id);
+    }); 
+    if (this.authorSelected) idsOfAllSelected.push(this.persistence.getAppDataCache().userid);
+    this.api.distributeKonfgettiIdea(this.idea._id, idsOfAllSelected).subscribe((win)=>{
+      this.startAnimation();
+    },(error)=>{
+      console.log("FAIL",error);
+    });
+
   }
 
   clickAuthor() {
@@ -111,7 +121,7 @@ export class DistributionPage {
   public startAnimation() : void
   {
      this.isPlaying = true;
-     this.konfettiRain.startAnimation(500, 6500, ()=>{
+     this.konfettiRain.startAnimation(500, 5000, ()=>{
        this.isPlaying = false;
        this.navCtrl.popToRoot();
      });

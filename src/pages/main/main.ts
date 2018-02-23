@@ -540,11 +540,18 @@ export class MainPage {
         // set new event markers
         win.forEach((idea)=>{
           if ((idea.geoData!=null) && (idea.geoData.latitude!=null)) {
-            let marker: any = leaflet.marker([idea.geoData.latitude, idea.geoData.longitude]).on('click', () => {
+            let marker: any = leaflet.marker([idea.geoData.latitude, idea.geoData.longitude]).on('click', (event) => {
+              console.log("event",event);
+              this.map.panTo({lon: idea.geoData.longitude, lat: idea.geoData.latitude}, this.zoom);
+              setTimeout(()=>{
+
+              },300);
+              /*
               this.toastCtrl.create({
                 message: idea.title,
                 duration: 5000
               }).present().then();
+              */
             });
             this.eventMarkers.addLayer(marker);
           }

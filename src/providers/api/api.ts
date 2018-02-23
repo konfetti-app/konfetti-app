@@ -469,6 +469,29 @@ export class ApiProvider {
     });
   }
 
+  getChat(chatID:string) : Observable<Chat> {
+    return Observable.create((observer) => {
+      this.getJWTAuthHeaders().subscribe(headers => {
+        this.http.get<any>(this.apiUrlBase + 'api/chats/'+chatID, {
+          headers: headers
+        }).subscribe((resp) => {
+          observer.next(resp.data.chatChannel as Chat);
+          observer.complete();
+        }, error => {
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "getChat", () => {
+            this.getChat(chatID).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+        });
+      }, error => {
+        observer.error(error)
+      });
+    });
+  }
+
   getChats(groupId:String, context:String, userId:string=null, userName:string=null, avatarFilename:string=null) : Observable<Array<Chat>> {
 
   return Observable.create((observer) => {
@@ -496,7 +519,7 @@ export class ApiProvider {
 
       }, error => {
         // default error handling
-        this.defaultHttpErrorHandling(error, observer, "getChat", () => {
+        this.defaultHttpErrorHandling(error, observer, "getChats", () => {
           this.getChats(groupId, context).subscribe(
             (win) => {  observer.next(win); observer.complete(); },
             (error) => observer.error(error)
@@ -826,6 +849,39 @@ createKonfettiIdea(idea:Idea): Observable<string> {
           // default error handling
           this.defaultHttpErrorHandling(error, observer, "createKonfettiIdea", () => {
             this.createKonfettiIdea(idea).subscribe(
+              (win) => {  observer.next(win); observer.complete(); },
+              (error) => observer.error(error)
+            );
+          });
+
+        });
+
+      }, error => {
+        observer.error(error)
+      });
+
+    });
+  }
+
+  distributeKonfgettiIdea(ideaID:string, helpers:Array<string>) : Observable<void> {
+    return Observable.create((observer) => {
+
+      this.getJWTAuthHeaders().subscribe(headers => {
+
+        this.http.post<any>(this.apiUrlBase + 'api/ideas/'+ideaID+'/distribute', {
+          recipients: helpers
+        }, {
+          headers: headers
+        }).subscribe( resp => {
+
+          observer.next();
+          observer.complete();
+
+        }, error => {
+
+          // default error handling
+          this.defaultHttpErrorHandling(error, observer, "distributeKonfgettiIdea", () => {
+            this.distributeKonfgettiIdea(ideaID, helpers).subscribe(
               (win) => {  observer.next(win); observer.complete(); },
               (error) => observer.error(error)
             );
@@ -1266,7 +1322,7 @@ export interface Idea extends DisplayData {
   konfettiUser:number;
   userIsHelping:boolean;
   userIsAttending:boolean;
-  orgaChatID:string;
+  orgaChat:string;
   helpers:Array<string>;
   guests:Array<string>;
   konfettiSpent:Array<any>;
