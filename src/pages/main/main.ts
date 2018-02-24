@@ -10,7 +10,8 @@ import {
   ToastController, 
   LoadingController, 
   Events,
-  Platform
+  Platform,
+  PopoverController
 } from 'ionic-angular';
 import { 
   trigger, 
@@ -23,6 +24,8 @@ import { TranslateService } from "@ngx-translate/core";
 import leaflet from 'leaflet';
 
 import { CodeRedeemPage } from '../code-redeem/code-redeem';
+import { PopoverIdeaPage } from '../popover-idea/popover-idea';
+
 import { ApiProvider, Code, User, Idea, PushNotification } from '../../providers/api/api';
 import { AppPersistenceProvider } from './../../providers/app-persistence/app-persistence';
 import { AppStateProvider } from "../../providers/app-state/app-state";
@@ -163,7 +166,8 @@ export class MainPage {
     private state: AppStateProvider,
     private config: AppConfigProvider,
     private platform: Platform,
-    private konfettiRain: ParticlesProvider
+    private konfettiRain: ParticlesProvider,
+    public popoverCtrl: PopoverController
   ) {
     this.showModuleFocus = "";
 
@@ -544,7 +548,11 @@ export class MainPage {
               console.log("event",event);
               this.map.panTo({lon: idea.geoData.longitude, lat: idea.geoData.latitude}, this.zoom);
               setTimeout(()=>{
+                let popover = this.popoverCtrl.create(PopoverIdeaPage,{ idea: idea });
+                popover.present({
+                  ev: event.originalEvent
 
+                });
               },300);
               /*
               this.toastCtrl.create({

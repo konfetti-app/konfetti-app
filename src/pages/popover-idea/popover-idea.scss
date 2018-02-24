@@ -1,0 +1,21 @@
+page-popover-idea {
+
+}
+
+.user-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    border-width: 1px;
+    border-color: #f1f1f1;
+    border-style: solid;
+}
+
+.main-title {
+    color: white;
+    background-color: color($colors, primary);
+    font-size: 120%;
+    font-weight: bold;
+    padding: 4px;
+    margin-bottom: 8px;
+}

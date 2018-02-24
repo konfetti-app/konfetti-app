@@ -12,7 +12,6 @@ import {
 
 import leaflet from 'leaflet';
 import { TranslateService } from "@ngx-translate/core";
-import { NonNullAssert } from '@angular/compiler';
 
 /**
  * Use Leafelet Map to pick a location.

@@ -1,0 +1,50 @@
+<ion-content>
+  
+  <div style="
+    color:grey;
+    font-size: 80%;
+    padding: 4px;
+  ">
+    Nachbarschaftstreffen
+  </div>
+
+  <div class="main-title">
+    {{idea.title}}
+  </div>  
+
+  <table style="margin: 4px;">
+    <tr>
+        <td style="width:68px;" rowspan=3>
+            <img 
+              class="user-image"
+              [src]="idea.displayImage" 
+              onerror="this.src = './assets/imgs/icon.png';"
+            />
+        </td>
+      <td style="color: #333; font-size: 90%;">
+          <ion-icon name="md-pin"></ion-icon>&nbsp;
+          <span style="font-size:120%;">
+            {{idea.address}}
+          </span>
+      </td>
+    </tr> 
+    <tr>
+        <td style="color: #333; font-size: 90%;">
+            <ion-icon name="md-calendar"></ion-icon>&nbsp;
+            <span style="font-size:120%;">
+              {{idea.date | date: 'dd.MM.yyyy'}}
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td style="color: #333;  font-size: 90%;">
+            <ion-icon name="md-time"></ion-icon>&nbsp;
+            <span style="font-size:120%;">
+              {{idea.date | date: 'HH:mm'}}
+            </span>
+        </td>
+    </tr>
+  </table>
+
+
+</ion-content>
