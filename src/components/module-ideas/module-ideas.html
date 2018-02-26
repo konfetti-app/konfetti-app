@@ -26,20 +26,20 @@
                     <ion-card-content class="votingcard">
                       <table style="width:100%;">
                         <tr>
-                          <td style="width:60px;">
-                              <img 
-                                class="user-image"
-                                [src]="idea.displayImage" 
-                                onerror="this.src = './assets/imgs/icon.png';"
-                              />
+                          <td style="width:60px; font-size: 200%;">
+                                <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
                           </td>
                           <td  (click)="openIdea(idea)" class="content-cell">
                             <div class="card-text-overline">{{idea.displayName}}</div>
                             <div class="card-text-main">{{idea.title}}</div>
                             <div class="card-text-underline">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</div>
                           </td>
-                          <td style="width:50px; font-size: 200%;">
-                            <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                          <td style="width:60px;">
+                              <img 
+                                class="user-image-idea"
+                                [src]="idea.displayImage" 
+                                onerror="this.src = './assets/imgs/icon.png';"
+                              />
                           </td>
                         </tr>
                       </table>  
@@ -55,20 +55,20 @@
 
                         <table style="width:100%;">
                           <tr>
-                              <td style="width:60px;">
-                                  <img 
-                                    class="user-image"
-                                    [src]="idea.displayImage" 
-                                    onerror="this.src = './assets/imgs/icon.png';"
-                                  />
+                              <td style="width:60px; font-size: 200%;">
+                                  <konfetti-button state="done" [count]="idea.konfettiTotal"></konfetti-button>
                               </td>
                               <td  (click)="openIdea(idea)" class="content-cell">
                                 <div class="card-text-overline">{{idea.displayName}}</div>
                                 <div class="card-text-main">{{idea.title}}</div>
                                 <div class="card-text-underline">{{idea.date | since : translate}}</div>
                               </td>
-                              <td style="width:50px; font-size: 200%;">
-                                <konfetti-button state="done" [count]="idea.konfettiTotal"></konfetti-button>
+                              <td style="width:60px;">
+                                  <img 
+                                    class="user-image-idea"
+                                    [src]="idea.displayImage" 
+                                    onerror="this.src = './assets/imgs/icon.png';"
+                                  />
                               </td>
                           </tr>
                         </table>  
@@ -91,12 +91,8 @@
                     <ion-card-content class="votingcard">
                       <table style="width:100%;">
                         <tr>
-                          <td style="width:60px;">
-                              <img 
-                                class="user-image"
-                                [src]="idea.displayImage" 
-                                onerror="this.src = './assets/imgs/icon.png';"
-                              />
+                          <td style="width:60px; font-size: 200%;">
+                                <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
                           </td>
                           <td  (click)="openIdea(idea)" class="content-cell">
                             <div class="card-text-overline">Administrator</div>
@@ -107,8 +103,12 @@
                               <span *ngIf="idea.reviewStatus=='OK'" style="color:green;">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</span>
                             </div>
                           </td>
-                          <td style="width:50px; font-size: 200%;">
-                            <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                          <td style="width:60px;">
+                              <img 
+                                class="user-image-idea"
+                                [src]="idea.displayImage" 
+                                onerror="this.src = './assets/imgs/icon.png';"
+                              />
                           </td>
                         </tr>
                       </table>  
@@ -124,20 +124,20 @@
 
                         <table style="width:100%;">
                           <tr>
-                              <td style="width:60px;">
-                                  <img 
-                                    class="user-image"
-                                    [src]="idea.displayImage" 
-                                    onerror="this.src = './assets/imgs/icon.png';"
-                                  />
+                              <td style="width:60px; font-size: 200%;">
+                                  <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
                               </td>
                               <td  (click)="openIdea(idea)" class="content-cell">
                                 <div class="card-text-overline">{{'IDEA_EVENTSHELP' | translate}}</div>
                                 <div class="card-text-main">{{idea.title}}</div>
                                 <div class="card-text-underline">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</div>
                               </td>
-                              <td style="width:50px; font-size: 200%;">
-                                <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                              <td style="width:60px;">
+                                  <img 
+                                    class="user-image-idea"
+                                    [src]="idea.displayImage" 
+                                    onerror="this.src = './assets/imgs/icon.png';"
+                                  />
                               </td>
                           </tr>
                         </table>  
@@ -154,19 +154,19 @@
                           <table style="width:100%;">
                             <tr>
                                 <td style="width:60px;">
-                                    <img 
-                                      class="user-image"
-                                      [src]="idea.displayImage" 
-                                      onerror="this.src = './assets/imgs/icon.png';"
-                                    />
+                                    <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
                                 </td>
                                 <td  (click)="openIdea(idea)" class="content-cell">
                                   <div class="card-text-overline">{{'IDEA_EVENTSGUEST' | translate}}</div>
                                   <div class="card-text-main">{{idea.title}}</div>
                                   <div class="card-text-underline">{{'IDEA_ONTIME' | translate}} {{idea.date | date :'dd.MM.yyyy' }}</div>
                                 </td>
-                                <td style="width:50px;">
-                                  <konfetti-button [state]="(idea.konfettiUser==0) ? 'vote' : 'voted'" [count]="idea.konfettiTotal" (click)="vote(idea)"></konfetti-button>
+                                <td style="width:60px;">
+                                    <img 
+                                      class="user-image-idea"
+                                      [src]="idea.displayImage" 
+                                      onerror="this.src = './assets/imgs/icon.png';"
+                                    />
                                 </td>
                             </tr>
                           </table>  
