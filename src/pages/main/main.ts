@@ -181,8 +181,8 @@ export class MainPage {
 
     // ordering is important
     this.moduleConfig = new Array<string>();
-    this.moduleConfig.push('groupchats');
     this.moduleConfig.push('ideas');
+    this.moduleConfig.push('groupchats');
     this.moduleConfig.push('news');
 
     /*
@@ -311,11 +311,8 @@ export class MainPage {
   }
 
   setStateKonfettiNotice(show: boolean) : void{
-    if (!this.showKonfettiNotice) this.showKonfettiNotice=true;
     this.stateKonfettiNotice = show ? 'show' : 'hide';
-    setTimeout(() => {
-      this.showKonfettiNotice = this.getStateKonfettiNotice();
-    },1500);
+    this.showKonfettiNotice = this.getStateKonfettiNotice();
   }
 
   getStateKonfettiNotice() : boolean {
@@ -479,17 +476,6 @@ export class MainPage {
       }
 
       if (this.konfettiTourStep===2) {
-        this.classKonfettiTourFocus = 'konfetti-tour-focus-module2';
-        setTimeout(()=>{
-          this.stateKonfettiTourFocus = 'show';
-          this.buttonModule('ideas');
-          setTimeout(()=>{
-            this.konfettiTourText = this.translateService.instant('TOUR_TEXT_IDEAS');
-          },600);
-        },100);
-      }
-
-      if (this.konfettiTourStep===3) {
         this.classKonfettiTourFocus = 'konfetti-tour-focus-module1';
         setTimeout(()=>{
           this.stateKonfettiTourFocus = 'show';
@@ -501,32 +487,27 @@ export class MainPage {
         },100);
       }
 
+      if (this.konfettiTourStep===3) {
+        this.classKonfettiTourFocus = 'konfetti-tour-focus-module2';
+        setTimeout(()=>{
+          this.stateKonfettiTourFocus = 'show';
+          this.buttonModule('ideas');
+          setTimeout(()=>{
+            this.konfettiTourText = this.translateService.instant('TOUR_TEXT_IDEAS');
+          },600);
+        },100);
+      }
+
       if (this.konfettiTourStep===4) {
         this.showKonfettiTour = false;
-        this.buttonModule('news');
+        //this.buttonModule('news');
       }
 
       },1000);
 
   }
 
-  transformShowMap() {
-
-    if (this.showKonfettiTour) {
-      console.log("dont go to map during intro tour");
-      return;
-    }
-
-    this.showFabButton = false;
-    if (this.showModuleFocus!="") this.setSubTitleAccordingToModule('map');
-
-    this.setStateModulePanel(false);
-
-    this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
-    this.map.addLayer(this.eventMarkers);
-
-    this.zoomControl.addTo(this.map);
-
+  updateEventPinsOnMap() : void {
     let nickname = null;
     let avatar = null;
     if (this.state.getUserInfo()!=null) {
@@ -534,8 +515,6 @@ export class MainPage {
       avatar = this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null;
     }
     
-
-    // update events on map
     this.api.getKonfettiIdeas(
       this.persistence.getAppDataCache().lastFocusGroupId,
       this.persistence.getAppDataCache().userid,
@@ -562,12 +541,6 @@ export class MainPage {
 
                 });
               },300);
-              /*
-              this.toastCtrl.create({
-                message: idea.title,
-                duration: 5000
-              }).present().then();
-              */
             });
             this.eventMarkers.addLayer(marker);
           }
@@ -576,6 +549,26 @@ export class MainPage {
     },(error)=>{
       console.log("FAIL", );
     });
+  }
+
+  transformShowMap() {
+
+    if (this.showKonfettiTour) {
+      console.log("dont go to map during intro tour");
+      return;
+    }
+
+    this.showFabButton = false;
+    if (this.showModuleFocus!="") this.setSubTitleAccordingToModule('map');
+
+    this.setStateModulePanel(false);
+
+    this.map.flyTo({lon: this.lon, lat: this.lat}, this.zoom);
+    this.map.addLayer(this.eventMarkers);
+
+    this.zoomControl.addTo(this.map);
+
+    this.updateEventPinsOnMap();
 
     setTimeout(() => {
       if (this.stateModulePanel==='showMap') {
@@ -673,6 +666,7 @@ export class MainPage {
       } else {
         // mark intro shown on group/hood
         this.persistence.setFlagOnGroup(group._id,AppPersistenceProvider.FLAG_INTROSHOWN);
+        this.updateEventPinsOnMap();
       }
 
       // hide loading modal

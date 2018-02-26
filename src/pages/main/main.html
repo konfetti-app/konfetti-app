@@ -133,15 +133,15 @@
           </div>
         </div>
 
+        <div *ngSwitchCase="'groupchats'">
+            <div *ngIf="showModuleFocus==='groupchats'" style="padding: 6px; padding-top: 48px;">
+              <module-groupchats [config]="getModuleConfig(id)"></module-groupchats>
+            </div>
+        </div>
+
         <div *ngSwitchCase="'ideas'">
           <div *ngIf="showModuleFocus==='ideas'" style="padding: 6px; padding-top: 48px;">
             <module-ideas [config]="getModuleConfig(id)"></module-ideas>
-          </div>
-        </div>
-
-        <div *ngSwitchCase="'groupchats'">
-          <div *ngIf="showModuleFocus==='groupchats'" style="padding: 6px; padding-top: 48px;">
-            <module-groupchats [config]="getModuleConfig(id)"></module-groupchats>
           </div>
         </div>
 
