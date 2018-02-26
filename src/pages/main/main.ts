@@ -167,7 +167,7 @@ export class MainPage {
     private config: AppConfigProvider,
     private platform: Platform,
     private konfettiRain: ParticlesProvider,
-    public popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController
   ) {
     this.showModuleFocus = "";
 
@@ -527,12 +527,20 @@ export class MainPage {
 
     this.zoomControl.addTo(this.map);
 
+    let nickname = null;
+    let avatar = null;
+    if (this.state.getUserInfo()!=null) {
+      nickname = this.state.getUserInfo().nickname;
+      avatar = this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null;
+    }
+    
+
     // update events on map
     this.api.getKonfettiIdeas(
       this.persistence.getAppDataCache().lastFocusGroupId,
       this.persistence.getAppDataCache().userid,
-      null,
-      null
+      nickname,
+      avatar
     ).subscribe(
       (win:Array<Idea>)=>{
 

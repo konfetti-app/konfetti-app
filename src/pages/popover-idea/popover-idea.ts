@@ -4,10 +4,12 @@ import {
 import { 
   IonicPage,
    NavController, 
-   NavParams 
+   NavParams,
+   ViewController,
+   Events
 } from 'ionic-angular';
 
-import { Idea } from '../../providers/api/api';
+import { Idea, PushNotification } from '../../providers/api/api';
 
 @IonicPage()
 @Component({
@@ -20,7 +22,9 @@ export class PopoverIdeaPage {
 
   constructor(
     public navCtrl: NavController, 
-    public navParams: NavParams
+    public navParams: NavParams,
+    private events: Events,
+    private viewCtrl: ViewController
   ) {
 
     this.idea = this.navParams.get("idea") as Idea;
@@ -28,6 +32,15 @@ export class PopoverIdeaPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PopoverIdeaPage');
+  }
+
+  buttonMoreDetails() : void {
+    let simulatedNotification: PushNotification = {} as PushNotification;
+    simulatedNotification.module = "ideas";
+    simulatedNotification.groupId = this.idea.parentNeighbourhood;
+    simulatedNotification.itemID = this.idea._id;
+    this.events.publish("notification:process", simulatedNotification);
+    this.viewCtrl.dismiss({ success: true } ).then();
   }
 
 }

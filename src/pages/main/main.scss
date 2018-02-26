@@ -205,3 +205,8 @@ page-main {
   background-size: 65%;
   background-position: 50% 50%;
 }
+
+.popover-content {
+  top: calc(50% - -5px) !important;
+  left: calc(50% - 125px) !important;
+}
