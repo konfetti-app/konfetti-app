@@ -229,6 +229,37 @@ export class AppPersistenceProvider {
     });
   }
 
+  exportLocalStorage() : string {
+    let obj:any = {};
+    for (var key in localStorage){
+      obj[key] = localStorage.getItem(key);
+    }
+    return JSON.stringify(obj);
+  }
+
+  importLocalStorage(json:string) : boolean {
+
+    try {
+
+      // store data
+      let obj = JSON.parse(json);
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          localStorage.setItem(key, obj[key]);
+        }
+      }
+
+      // load data to app
+      this.getAppDataAsync().subscribe((win)=>{},(error)=>{});
+
+      return true;
+    } catch (e) {
+      console.log("JSON: "+json);
+      console.log("IMPORT FAIL: ", e);
+      return false;
+    }
+  }
+
   /*
    * PRIVATE METHODS
    */

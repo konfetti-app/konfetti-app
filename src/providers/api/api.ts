@@ -1004,7 +1004,7 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
           // WIN
 
           let result:VoteResult = {} as VoteResult;
-          result.konfettiIdea = resp.data.konfettiIdea;
+          result.konfettiIdea = resp.data.result.konfettiIdea.konfettiIdea;
           result.konfettiWallet = null;
 
           observer.next(result);

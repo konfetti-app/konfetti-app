@@ -24,6 +24,9 @@ export class SettingsPage {
   // flag is running on iOS
   isIOS: boolean;
 
+  localStorageImport:string = "";
+  localStorageExport:string = "";
+
   constructor(
     private viewCtrl: ViewController,
     private appState: AppStateProvider,
@@ -58,6 +61,9 @@ export class SettingsPage {
   ionViewWillEnter() {
     this.availableLanguages = this.appState.getAllAvailableLanguages();
     this.actualLanguage = this.appState.getActualAppLanguageInfo();
+
+    this.localStorageExport = this.appPersistence.exportLocalStorage();
+
   }
 
   changeLanguage() : void {
@@ -83,6 +89,10 @@ export class SettingsPage {
 
   compareLangs(lang1:LanguageInfo, lang2:LanguageInfo) : boolean {
     return lang1.locale === lang2.locale;
+  }
+
+  buttonImportLocalStorage(): void {
+    alert(this.appPersistence.importLocalStorage(this.localStorageImport));
   }
 
 }

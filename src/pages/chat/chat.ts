@@ -195,6 +195,7 @@ export class ChatPage {
       this.chat = {} as Chat;
       this.chat.name = "";
       this.chat.description = "";
+      this.chat.userIsAdmin = true;
       this.showDialogEditChat();
 
     } else {
@@ -336,6 +337,11 @@ export class ChatPage {
   }
 
   showDialogEditChat() : void {
+
+    if (!this.chat.userIsAdmin) {
+      console.log("User is not allowed to edit chat.");
+      return;
+    }
 
     let modal : Modal = this.modalCtrl.create(ChatEditPage, { chat: this.chat });
     modal.onDidDismiss( (data:any) => {

@@ -515,8 +515,10 @@ export class MainPage {
       avatar = this.state.getUserInfo().avatar ? this.state.getUserInfo().avatar.filename : null;
     }
     
-    this.api.getKonfettiIdeas(
-      this.persistence.getAppDataCache().lastFocusGroupId,
+
+    let actualGroupId = this.persistence.getAppDataCache().lastFocusGroupId;
+    if (actualGroupId!=null) this.api.getKonfettiIdeas(
+      actualGroupId,
       this.persistence.getAppDataCache().userid,
       nickname,
       avatar

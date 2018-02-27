@@ -153,6 +153,10 @@ export class LocationPickerPage {
       });
 
     this.mapInitDone = true;
+    
+    // just to mute lint parser, that buttonClose and buttonContinue are never used :|
+    if (this.zoom==999) this.buttonClose();
+    if (this.zoom==998) this.buttonContinue();
 
   }
 

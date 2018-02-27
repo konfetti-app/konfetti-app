@@ -90,6 +90,7 @@
         "CHAT_DELETENO" : "No",
         "CHAT_NOTION" : "You now will receive notifications.",
         "CHAT_NOTIOFF" : "Notifications deactivated",
+        "CHAT_PEOPLE" : "Members",
 
         "SUBTITLE_MAP" : "Explore Map",
         "SUBTITLE_NEWS" : "⇦ go to map",
@@ -482,6 +483,7 @@
         "CHAT_DELETENO" : "Nein",
         "CHAT_NOTION" : "Du erhälst jetzt Benachrichtingungen",
         "CHAT_NOTIOFF" : "Benachrichtingungen deaktiviert",
+        "CHAT_PEOPLE" : "Personen",
 
         "SUBTITLE_MAP" : "Umgebung entdecken",
         "SUBTITLE_NEWS" : "⇦ zur Karte",
@@ -874,6 +876,7 @@
         "CHAT_DELETENO" : "لا",
         "CHAT_NOTION" : "سوف تتلقى الآن الإخطارات.",
         "CHAT_NOTIOFF" : "تم إلغاء تنشيط الإشعارات",
+        "CHAT_PEOPLE" : "أفراد",
 
         "SUBTITLE_MAP" : "استكشاف الخريطة",
         "SUBTITLE_NEWS" : "انتقل إلى الخريطة",

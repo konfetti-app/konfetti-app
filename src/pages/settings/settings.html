@@ -40,6 +40,22 @@
 
   </ion-list>
 
+
+  <div style="padding: 8px; border-style: dashed; border-width: 1px; border-color: grey;margin-bottom: 18px;">
+    <div>
+      Local Storage Import/Export
+    </div>
+    <ion-item>
+      <ion-label fixed>Export</ion-label>
+      <ion-input type="text" [ngModel]="localStorageExport"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Import</ion-label>
+      <ion-input type="text" [(ngModel)]="localStorageImport"></ion-input>
+    </ion-item>
+    <button ion-button (click)="buttonImportLocalStorage()" style="margin-bottom: 8px; margin-top: 8px;" >Import/Overwrite Local Storage</button>
+  </div>
+
   <button ion-button block color="danger" (click)="buttonResetApp()">RESET APP</button>
 
 

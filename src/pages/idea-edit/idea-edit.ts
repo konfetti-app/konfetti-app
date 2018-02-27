@@ -14,8 +14,6 @@ import { TranslateService } from "@ngx-translate/core";
 import { ApiProvider, Idea } from '../../providers/api/api';
 import { AppPersistenceProvider } from "../../providers/app-persistence/app-persistence";
 import { AppStateProvider } from "../../providers/app-state/app-state";
-
-import { IdeaPage } from '../../pages/idea/idea';
 import { LocationPickerPage } from '../../pages/location-picker/location-picker';
 
 @IonicPage()
