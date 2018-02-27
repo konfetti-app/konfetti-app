@@ -138,6 +138,9 @@ export class CodeRedeemPage {
 
   buttonRedeemCode() : void {
 
+    this.code = this.code.trim();
+    if (this.code.length==0) return;
+
     // show loading spinner
     this.loadingSpinner = this.loadingCtrl.create({
       content: ''

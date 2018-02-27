@@ -924,6 +924,12 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
 
   getKonfettiIdeas(groupId:string, userId:string=null, userName:string=null, avatarFilename:string=null) : Observable<Array<Idea>> {
     return Observable.create((observer) => {
+
+      if (groupId==null) {
+        observer.error("ERROR: neighborhood is NULL");
+        return;
+      }
+
       this.getJWTAuthHeaders().subscribe(headers => {
         this.http.get<any>(this.apiUrlBase + 'api/ideas/neighbourhood/' + groupId
         , {
