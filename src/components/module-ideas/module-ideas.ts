@@ -139,15 +139,21 @@ export class ModuleIdeasComponent {
         // MY TABS
         if (idea.userIsAdmin) {
           // A) Admin
-          this.myIdeasAdmin.push(idea);
+          if (( ideaTS > nowTS ) || ( idea.konfettiTotal>0 )) {
+            this.myIdeasAdmin.push(idea);
+          }  
         } else
         if (idea.userIsHelping) {
           //B) Helper
-          this.myIdeasHelp.push(idea);
+          if ( ideaTS > nowTS ) {
+            this.myIdeasHelp.push(idea);
+          }  
         } else 
         if (idea.userIsAttending) {
           // C) Attending
-          this.myIdeasVisit.push(idea);
+          if ( ideaTS > nowTS ) {
+            this.myIdeasVisit.push(idea);
+          }  
         }
       });
 

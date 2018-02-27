@@ -82,12 +82,14 @@ export class ParticlesProvider {
   {
     this.mp = count;
     setTimeout(()=>{
+      console.log("Stopping Konfetti Rain");
       cancelAnimationFrame(this._ANIMATION);
       this.clearCanvas();
       if (callbackWhenDone!=null) callbackWhenDone();
     }, milliseconds);
      this.clearCanvas();
      this.renderToCanvas();
+     console.log("Rendering Konfetti Rain");
   }
 
   /**

@@ -40,7 +40,7 @@ export class IdeaEditPage {
   helpDescription: string = "";
   selectOpacity: number = 1;
 
-  minDate:string = new Date().toISOString();
+  minDate:string = new Date(Date.now() - ( new Date().getTimezoneOffset() * 1000 * 60 )).toISOString();
   maxDate:string = new Date(Date.now() + (184 * 24 * 60 * 60 * 1000)).toISOString();
 
   idea:Idea;
@@ -62,9 +62,19 @@ export class IdeaEditPage {
     // get idea from parameter if this should be an edit
     this.idea = this.navParams.get("idea") as Idea;
     if (this.idea) {
+
+      // ionic time input is ignoring local time offset - workaround
+      let serverTimestamp = new Date(this.idea.date).getTime();
+      let localTimestamp = serverTimestamp - ( new Date().getTimezoneOffset() * 1000 * 60);
+      let inputDate = new Date(localTimestamp).toISOString();
+      console.log("ideaDate("+this.idea.date+")");
+      console.log("serverTimestamp("+serverTimestamp+")");
+      console.log("localTimestamp("+localTimestamp+")");
+      console.log("inputDate("+inputDate+")");
+
       this.address = this.idea.address;
       this.description = this.idea.description;
-      this.date = new Date(this.idea.date).toISOString();
+      this.date = inputDate;
       this.helpDescription = this.idea.helpDescription;
       this.wantsGuest = this.idea.wantsGuest;
       this.wantsHelper = this.idea.wantsHelper;
@@ -192,13 +202,22 @@ export class IdeaEditPage {
       // got location data from server
       if (locationData.success) {
 
+        // ionic time input is ignoring local time offset - workaround
+        let localTimestamp = new Date(this.date).getTime();
+        let serverTimestamp = localTimestamp + ( new Date().getTimezoneOffset() * 1000 * 60);
+        let serverDate = new Date(serverTimestamp).toISOString();
+        console.log("inputDate("+this.date+")");
+        console.log("localTimestamp("+localTimestamp+")");
+        console.log("serverTimestamp("+serverTimestamp+")");
+        console.log("sendToServer("+serverDate+")");
+
         // data to send to server
         let data: any = {};
         data.parentNeighbourhood = this.activeGroupId;
         data.title = this.title;
         data.description = this.description;
         data.address = this.address;
-        data.date = new Date(this.date).getTime();
+        data.date = serverTimestamp;
         data.wantsHelper = this.wantsHelper;
         data.helpDescription = this.helpDescription;
         data.wantsGuest = this.wantsGuest;
