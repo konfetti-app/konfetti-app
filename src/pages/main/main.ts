@@ -481,7 +481,6 @@ export class MainPage {
           this.stateKonfettiTourFocus = 'show';
           this.buttonModule('groupchats');
           setTimeout(()=>{
-            this.langKeyTourNext = 'TOUR_READY';
             this.konfettiTourText = this.translateService.instant('TOUR_TEXT_FORUM');
           },600);
         },100);
@@ -493,6 +492,7 @@ export class MainPage {
           this.stateKonfettiTourFocus = 'show';
           this.buttonModule('ideas');
           setTimeout(()=>{
+            this.langKeyTourNext = 'TOUR_READY';
             this.konfettiTourText = this.translateService.instant('TOUR_TEXT_IDEAS');
           },600);
         },100);
@@ -516,6 +516,7 @@ export class MainPage {
     }
     
 
+    console.log("Refreshing MapEvents");
     let actualGroupId = this.persistence.getAppDataCache().lastFocusGroupId;
     if (actualGroupId!=null) this.api.getKonfettiIdeas(
       actualGroupId,
