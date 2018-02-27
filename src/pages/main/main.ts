@@ -289,6 +289,8 @@ export class MainPage {
   processNotification(notification:PushNotification) {
 
     if (notification.module=='moduleGroupChat') notification.module = 'groupchats';
+    if (notification.module=='IdeaChat') notification.module = 'ideas';
+    
 
     // open module referenced on screen 
     this.buttonModule(notification.module);

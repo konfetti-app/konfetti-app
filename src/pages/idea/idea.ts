@@ -64,6 +64,13 @@ export class IdeaPage {
       this.running = false;
     }
 
+    let openChat:boolean = this.navParams.get("openChat") as boolean;
+    if ((openChat!=null) && (openChat)) {
+      setTimeout(()=>{
+        this.buttonOrgaChat();
+      },500);
+    }
+
     // get the actual neighborhood
     this.activeGroupId =  this.persistence.getAppDataCache().lastFocusGroupId;
   }

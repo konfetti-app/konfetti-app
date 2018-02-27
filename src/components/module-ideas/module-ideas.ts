@@ -108,6 +108,7 @@ export class ModuleIdeasComponent {
    
     this.loading = true;
 
+    console.log("Refreshing Idea Module");
     this.api.getKonfettiIdeas(
       this.activeGroupId,
       this.persistence.getAppDataCache().userid,
@@ -194,13 +195,19 @@ export class ModuleIdeasComponent {
       }
   
       // get matching idea from list
+      let found:boolean = false;
       this.hiddenIdeasAll.forEach((idea:Idea)=>{
         if (idea._id==notification.itemID) {
           console.log("processNotification: open Idea");
-          // TODO: What if the notification is about the chat?
-          this.openIdea(idea);
+          found=true;
+          this.openIdea(idea, false);
+        }
+        if (idea.orgaChat==notification.itemID) {
+          found=true;
+          this.openIdea(idea, true);
         }
       });
+      console.log("Notification itemID('"+notification.itemID+"') found --> "+found);
 
     }
 
@@ -241,9 +248,9 @@ export class ModuleIdeasComponent {
 
   }
 
-  public openIdea(idea: Idea) {
+  public openIdea(idea: Idea, openChat:boolean) {
     console.log("idea",idea);
-    this.navCtrl.push(IdeaPage, { idea: idea});
+    this.navCtrl.push(IdeaPage, { idea: idea, openChat: openChat});
   }
 
   // user wants to create a new group chat
