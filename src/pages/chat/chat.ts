@@ -343,6 +343,11 @@ export class ChatPage {
       return;
     }
 
+    if ((typeof this.chat._id != "undefined") && (this.chat._id!=null)) {
+      console.log("Dont allow edit of Chat for now");
+      return;
+    } 
+
     let modal : Modal = this.modalCtrl.create(ChatEditPage, { chat: this.chat });
     modal.onDidDismiss( (data:any) => {
 
