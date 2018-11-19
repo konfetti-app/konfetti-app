@@ -6,7 +6,7 @@
  */
 window.appConfig = {
     forceRealServer: true,
-    realServer: 'https://api.konfettiapp.de:3000/',
+    realServer: 'https://api.konfettiapp.de:443/',
     oneSignalAppId: '',
     googleProjectNumber: ''
 };
