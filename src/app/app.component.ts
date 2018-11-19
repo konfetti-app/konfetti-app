@@ -14,7 +14,7 @@ import {
 } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+//import { SplashScreen } from '@ionic-native/splash-screen';
 import { MenuController, Events } from 'ionic-angular';
 import { HttpClient} from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
@@ -71,7 +71,7 @@ export class MyApp implements OnInit{
     private platform: Platform,
     private http: HttpClient,
     private statusBar: StatusBar,
-    private splashScreen: SplashScreen,
+    //private splashScreen: SplashScreen,
     private events: Events,
     private translate: TranslateService,
     private appPersistence: AppPersistenceProvider,
@@ -333,7 +333,7 @@ export class MyApp implements OnInit{
 
     // remove native splash screen
     this.readyAll = true;
-    this.splashScreen.hide();
+    //this.splashScreen.hide();
 
     // TODO init API data
     if (this.appPersistence.getAppDataCache().password) {

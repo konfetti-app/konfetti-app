@@ -21,7 +21,7 @@ import { PopoverIdeaPage } from '../pages/popover-idea/popover-idea';
 import { ApiProvider } from '../providers/api/api';
 
 import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+//import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpClientModule } from '@angular/common/http';
 
 // http://ionicframework.com/docs/developer-resources/ng2-translate/
@@ -109,7 +109,7 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
   ],
   providers: [
     StatusBar,
-    SplashScreen,
+    //SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider,
     NativeStorage,

@@ -325,6 +325,7 @@ export class ApiProvider {
          * FAIL
          */
 
+        console.log("FAIL on redeemCodeAnonymous:"); 
         console.dir(error);
 
         // code invalid
@@ -1144,6 +1145,7 @@ updateKonfettiIdea(idea:Idea): Observable<string> {
         }
 
       });
+
     } else {
 
       // forward to original error callback

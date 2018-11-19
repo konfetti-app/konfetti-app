@@ -33,7 +33,7 @@ color: grey;
           ">
             <div class="card-text-overline">{{chat.displayName}}</div>
             <div class="card-text-main">{{chat.name}}</div>
-            <div class="card-text-underline">{{(chat.members.length)}} Personen</div>
+            <div class="card-text-underline">{{(chat.members.length)}} {{ 'CHAT_PEOPLE' | translate }}</div>
           </td>
           <td style="width:50px; font-size: 200%;">
               {{chat.description}}

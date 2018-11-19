@@ -1,6 +1,6 @@
 {
   "name": "de.konfettiapp.konfettiapp",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Christian Rotzoll",
   "homepage": "https://konfettiapp.de",
   "private": true,
@@ -38,7 +38,6 @@
     "cordova-plugin-camera": "^4.0.2",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-nativestorage": "^2.2.2",
-    "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "git+https://github.com/apache/cordova-plugin-statusbar.git",
     "cordova-plugin-whitelist": "^1.3.3",
     "ionic-angular": "3.7.0",
@@ -63,13 +62,12 @@
       "cordova-plugin-nativestorage": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-device": {},
-      "cordova-plugin-splashscreen": {},
       "cordova-plugin-whitelist": {},
       "onesignal-cordova-plugin": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
