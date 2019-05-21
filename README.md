@@ -2,9 +2,9 @@
 
 App to build better local communities.
 
-You find prototype v1 here: https://github.com/rootzoll/konfetti-app
-This repo contains prototype v2 - with a big UX redesign.
-During the summer of 2019 we will build a prototype v3.
+* You find prototype v1 here: https://github.com/rootzoll/konfetti-app
+* This repo contains prototype v2 - with a big UX redesign.
+* During the summer of 2019 we will build a prototype v3.
 
 ### Get it running locally for development
 
