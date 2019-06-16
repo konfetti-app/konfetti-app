@@ -14,7 +14,7 @@ import io from "socket.io-client";
 @Injectable()
 export class ApiProvider {
 
-  private apiUrlBase : string = 'http://localhost:3000/';
+  private apiUrlBase : string = '/';
 
   // temp storage of credentials
   private jsonWebToken : JsonWebToken;
@@ -149,6 +149,88 @@ export class ApiProvider {
         // default error handling
         this.defaultHttpErrorHandling(error, observer, "refreshAccessToken", () => {
           this.refreshAccessToken(user, pass).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
+            observer.error(error);
+          });
+        });
+
+      });
+
+    });
+
+  }
+
+  /**
+   * Refresh Json Web Token (JWT) with email and password.
+   * @param {string} email
+   * @param {string} pass
+   * @returns {Observable<void>}
+   */
+  getAccessToken(email:string, pass:string) : Observable<JsonWebToken> {
+
+    return Observable.create((observer) => {
+
+      // Basic Auth with username and password
+      let headers =  new HttpHeaders();
+      headers = headers.append("Authorization", "Basic " + btoa(email+":"+pass));
+
+      // get new JWT token
+      this.http.post<JsonWebTokenResponse>(this.apiUrlBase+'api/authenticate/email','{"email" : "'+email+'", "password" : "'+pass+'"}', {
+        headers: headers
+      }).subscribe( data => {
+
+        /*
+         * SUCCESS
+         */
+
+        // remember access tokens
+        this.user = data.data.username;
+        this.pass = pass;
+        this.jsonWebToken = new JsonWebToken();
+        this.jsonWebToken.token = data.data.token;
+
+        // decode JWT
+        let base64Url = data.data.token.split('.')[1];
+        let base64 = base64Url.replace('-', '+').replace('_', '/');
+        let tokenObject = JSON.parse(window.atob(base64));
+
+        // calculate token timeout timestamp ba
+        let secondsUntilTokenExpires = tokenObject.exp - tokenObject.iat;
+        this.jsonWebToken.deadline = Date.now() + ((secondsUntilTokenExpires-10) * 1000);
+
+        // if listener set, inform about new access token
+        if (this.observerNewAccessToken!=null) {
+          this.observerNewAccessToken.next(this.jsonWebToken);
+        }
+
+        // return success
+        observer.next(this.jsonWebToken);
+        observer.complete();
+
+      }, (error) => {
+
+        /*
+         * ERROR
+         */
+
+        // username wrong
+        try {
+          if (JSON.parse(error.error).errors[0].message === 'user not found.') {
+            observer.error('USER');
+            return;
+          }
+        } catch (e) {}
+
+        // password wrong
+        try {
+          if (JSON.parse(error.error).errors[0].message === 'wrong password.') {
+            observer.error('PASSWORD');
+            return;
+          }
+        } catch (e) {}
+
+        // default error handling
+        this.defaultHttpErrorHandling(error, observer, "getAccessToken", () => {
+          this.getAccessToken(email, pass).subscribe((win) => {observer.next(win); observer.complete();}, (error) => {
             observer.error(error);
           });
         });
@@ -1429,4 +1511,5 @@ interface JsonWebTokenResponse {
 
 interface JsonWebTokenData {
   token : string;
+  username : string;
 }

@@ -23,9 +23,9 @@ try {
 }
 
 // write the config.prod.js from root to the app assets
-try {
-  fs.createReadStream('./config.prod.js').pipe(fs.createWriteStream('./src/assets/js/config.js'));
-  process.stdout.write('OK --> ./src/assets/js/config.js was overwritten with config.prod.js for ionic build\n');
-} catch (e) {
-  process.stdout.write("FAIL hookBuildPrepare.js --> "+JSON.stringify(e)+" \n");
-}
+//try {
+//  fs.createReadStream('./config.prod.js').pipe(fs.createWriteStream('./src/assets/js/config.js'));
+//  process.stdout.write('OK --> ./src/assets/js/config.js was overwritten with config.prod.js for ionic build\n');
+//} catch (e) {
+//  process.stdout.write("FAIL hookBuildPrepare.js --> "+JSON.stringify(e)+" \n");
+//}

@@ -11,9 +11,10 @@ export class AppConfigProvider {
     if (win.appConfig) {
       this.config = win.appConfig as Config;
     } else {
-      alert("FAIL: No App config available.");
+      console.log("FAIL: No App config available.");
       this.config = new Config();
       this.config.forceRealServer = false;
+      this.config.realServer = "/";
     }
 
   }

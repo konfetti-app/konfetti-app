@@ -86,18 +86,16 @@ export class MyApp implements OnInit{
 
     // set API to real server, when running in real device or not on localhost in browser
     let connectToRealServer: boolean = false;
-    if (this.appState.isRunningOnRealDevice()) {
-      // Real Device
-      connectToRealServer = true;
-    } else {
-      // Browser
-      if (!(location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
         connectToRealServer = true;
-      }
+    } else {
+        connectToRealServer = false;
     }
 
     // set API base url - if defined above or when forced by config
-    if (connectToRealServer || this.config.isForceRealServer()) this.api.setApiBaseUrl(this.config.getRealServer());
+    if (connectToRealServer || this.config.isForceRealServer()) {
+      this.api.setApiBaseUrl(this.config.getRealServer());
+    }
 
     // on beginning disable side menu
     this.menuController.enable(false);
