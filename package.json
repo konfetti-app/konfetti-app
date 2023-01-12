@@ -49,7 +49,7 @@
     "zone.js": "0.8.17"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.0.0",
+    "@ionic/app-scripts": "3.2.4",
     "typescript": "2.3.4"
   },
   "description": "App to build better local communities.",
